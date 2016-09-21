@@ -1,0 +1,7 @@
+# openssh
+
+* xauth command injection CVE-2016-3115 <=7.2p1 (post auth)
+requires X11Forwarding yes on server
+bypass /bin/false and forced-commands (but not /bin/nologin)
+https://github.com/tintinweb/pub/tree/master/pocs/cve-2016-3115
+http://seclists.org/fulldisclosure/2016/Mar/46

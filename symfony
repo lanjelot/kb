@@ -1,0 +1,6 @@
+# symfony
+
+if symfony exists
+go to app_dev.php/_profiler/
+if they misprovisioned you can do fun stuff
+http://account.leagueoflegends.com/app_dev.php/_profiler/phpinfo

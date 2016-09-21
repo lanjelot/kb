@@ -1,0 +1,18 @@
+# axis2
+
+# prereq
+export AXIS2_HOME=/path/to/axis2/axis2-1.4.1
+export AXIS2C_HOME=/path/to/axis2/axis2c-bin-1.5.0-linux
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:${AXIS2C_HOME}/lib
+export CLASSPATH=$(ls $AXIS2_HOME/lib/*.jar | tr '\n' ':')
+
+# WSDL2C.sh -d adb -u -uri bla.wsdl
+
+# SAP BusinessObjects dswsbobje fail
+http://spl0it.org/files/talks/basc10/demo.txt
+
+# XML entity
+Old Axis2 installation are vulnerable to XML Entity injection stuff BUT you must set the content type to "application/xml"
+
+# cf nikto db
+@AXIS2=/ /axis2/ /imcws/ /WebServiceImpl/ /dswsbobje/ /ws/  

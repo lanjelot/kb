@@ -1,0 +1,12 @@
+# jquery
+
+* CVE-2011-4969 xss in jQuery before 1.6.3
+https://bugs.jquery.com/ticket/9521
+PoC http://vuln/#<img src=/ onerror=alert(1)> https://github.com/ctfs/write-ups-2014/tree/master/csaw-ctf-2014/hashes
+
+http://www.securityweek.com/developers-fix-xss-vulnerability-jquery-validation-plugin-script
+jquery-validation/demo/captcha/index.php 
+- <div id="captchaimage"><a href="<?php echo $_SERVER['PHP_SELF']; ?>" id="refreshimg
++ <div id="captchaimage"><a href="<?php echo htmlEntities($_SERVER['PHP_SELF'], ENT_QUOTES); ?>" id
+
+old jquery dom xss: if jQuery is used to evaluate location.hash, that would allow an attacker to inject script into the page. This flaw has been patched in jQuery 1.6.3 and beyond. 

@@ -1,0 +1,8 @@
+# evasion
+
+http://noxxi.de/research/http-evader.html
+
+./fragroute/PKGBUILD:pkgdesc="A network intrusion detection evasion toolkit"
+./inundator/PKGBUILD:pkgdesc="An ids evasion tool, used to anonymously inundate intrusion detection logs with false positives in order to obfuscate a real attack."
+
+http://pauldotcom.com/2009/08/tcp-frament-evasion-attacks.html

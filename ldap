@@ -1,0 +1,20 @@
+# ldap
+
+ldapsearch -h host -p 389
+ldapsearch -h host -p 389 -s sub -b '' -x -D '' -v   # auth anonyme
+ldapsearch -h host -p 389 -s sub -b 'o=blah,ou=blah' -D 'cn=Directory Manager' -w password
+ldapsearch -h host -p 389 -s sub -b 'o=blah,ou=blah" "(objectclass=*)"
+
+socat -d tcp-l:6636,fork,reuseaddr openssl:192.168.1.100:636,verify=0
+ldapsearch -h 127.0.0.1 -p 6636  ...
+
+ldapsearch -h 192.168.122.55 -x -D 'SECURUS\Administrator' -w Password1 -b "" -s base 'objectclass=*' # limits the scope of the search to the base DN to get the Root DSE
+ldapsearch -H ldap://192.168.122.55 -x -D 'SECURUS\Administrator' -w Password1 -b 'dc=securus,dc=corp,dc=com' # active directory
+
+# windows
+ldifde -a "cn=Directory Manager" s3cr3t -s 172.10.10.11 -f d:\\path\\export.ldif -d ou=demo,ou=blah,dc=thecompany,dc=com
+ldifde -a cn=Administrateur,cn=users,dc=dc1,dc=myowndomain,dc=local Password1 -s 192.168.111.189 -f export.ldif
+
+# ldap injection
+vuln=*)(sn=
+vuln=*)!(sn=*

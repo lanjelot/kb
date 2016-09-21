@@ -1,0 +1,13 @@
+# gef
+https://gef.readthedocs.io/en/latest/
+
+entry-break
+vmmap (mprotect to change +x stack)
+
+gef config context.nb_lines_stack 15
+
+# context in separate pane
+gef> !tmux split-w h "tty; cat"
+gef> gef config context.clear_screen 1
+gef> gef config context.show_registers_raw 0
+gef> gef config context.redirect /dev/pts/14

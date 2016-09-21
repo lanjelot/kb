@@ -1,0 +1,8 @@
+# smtp
+
+vrfy <alias>
+expn <mailing list>
+
+ehlo relay.hsc.fr
+mail from:<blah@domain.com>
+rcpt to:<sme@hsc.fr>

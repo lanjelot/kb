@@ -1,0 +1,6 @@
+# vagrant
+
+mkdir v && cd v
+vagrant box add ubuntu/trusty64 --box-version 20160621.0.0
+vagrant init ubuntu/trusty64 --box-version 20160621.0.0
+

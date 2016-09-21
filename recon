@@ -1,0 +1,13 @@
+# recon
+
+# DNS lookup for all IPv4 PTR records
+https://scans.io/study/sonar.rdns
+
+# HTTP GET request for all IPv4 hosts with an open 80/TCP
+https://scans.io/study/sonar.http
+
+# domain tool box
+https://w3dt.net/
+
+# social media reconnaissance
+http://raidersec.blogspot.com.au/2012/12/automated-open-source-intelligence.html

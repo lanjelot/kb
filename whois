@@ -1,0 +1,16 @@
+# whois
+
+$ whois -h whois.ripe.net example.com
+[...]
+nserver NETDNS01.SYSTALIANS.EU 217.109.14.181
+
+$ whois 217.109.14.181
+[...]
+tech-c Ljc10-RIPE
+
+$ whois -h whois.ripe.net Ljc10-RIPE
+person: John Smith
+
+# recherche inverse sur le contact technique
+$ whois -h whois.ripe.net -i tech-c Ljc10-RIPE
+

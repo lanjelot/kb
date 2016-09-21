@@ -1,0 +1,23 @@
+# coldfusion
+
+# famous LFIs
+http://www.blackhatlibrary.net/Coldfusion_hacking
+
+# lfi2shell in versions 6 to 10
+http://hatriot.github.io/blog/2014/04/02/lfi-to-stager-payload-in-coldfusion/
+
+# home-made reversible encrypted passwords in cf6
+http://ringzer0team.com/paper/10/ColdFusion-MX6-admin-password-decryptor
+
+# more
+http://www.ampliasecurity.com/research.html
+http://hexale.blogspot.com/2009/10/how-to-decrypt-coldfusion-v6-datasource.html
+http://hexale.blogspot.com/2008/07/how-to-decrypt-coldfusion-datasource.html 
+http://jumpespjump.blogspot.com.au/2014/03/attacking-adobe-coldfusion.html
+http://www.infointox.net/?p=59 
+http://www.gnucitizen.org/blog/coldfusion-directory-traversal-faq-cve-2010-2861/ 
+http://www.securiteam.com/tools/5ZP0B00FPG.html
+http://www.slideshare.net/chrisgates/coldfusion-for-penetration-testers
+
+# version disclosure
+CFIDE/adminapi/administrator.cfc?method=getBuildNumber

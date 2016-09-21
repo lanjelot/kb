@@ -1,0 +1,6 @@
+# uuid
+
+version 1 UUID is composed of a timesteamp and the server's MAC address
+
+# version identification
+http://stackoverflow.com/a/1709834

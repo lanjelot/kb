@@ -1,0 +1,4 @@
+# mp3splt
+
+# extraire un morceau d'une interview audio
+mp3splt in.mp3 22.36 25.25 -o out.mp3

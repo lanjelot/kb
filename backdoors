@@ -1,0 +1,5 @@
+# backdoors
+
+# prism
+https://github.com/andreafabrizi/prism.git
+trigger a TCP reverse connect by sending a ICMP packet to victim

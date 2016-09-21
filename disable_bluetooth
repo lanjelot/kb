@@ -1,0 +1,8 @@
+# disable bluetooth
+
+blacklist bluetooth
+blacklist btusb
+
+set BLUETOOTH_ENABLED to zero in /etc/default/bluetooth
+
+echo disabled > /proc/acpi/ibm/bluetooth

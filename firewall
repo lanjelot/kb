@@ -1,0 +1,22 @@
+# firewall
+
+NetAsq
+SonicWall
+NetScreen (Juniper)
+Fortigate (Fortinet)
+Cisco PIX
+CheckPoint
+
+# backdoors
+Juniper ScreenOS
+Fortigate: http://seclists.org/fulldisclosure/2016/Jan/26 someone said it worked on FortiWifi60C FortiOS 4.0 and 5.0
+
+# fortigate (de fortinet)
+possible de definir des interfaces
+logs envoyés over le reseau vers un fortianalyser
+
+# checkpoint
+tout est defini globalement (plus lisible)
+
+# analysis
+https://github.com/averagesecurityguy/prometheus

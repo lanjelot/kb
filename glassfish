@@ -1,0 +1,7 @@
+# glassfish
+
+# start default domain
+./bin/asadmin start-domain
+
+# start database
+./bin/asadmin start-database

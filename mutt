@@ -1,0 +1,28 @@
+# mutt
+
+# pour ouvrir les PDF dans Kpdf depuis mutt, j'ai ajouté la ligne suivante dans mon ~/.mailcap
+application/pdf; kpdf %s
+
+# mais bizarrement il n'est pas lu, donc j'ai ajouté cette ligne dans /etc/mailcap et là ça marche.
+
+# search
+/~b blahblah
+
+# to_chars
++ email not addressed to your address
+T I am the only recipient
+C I am in To: but not alone
+F I am in CC: but not alone
+L sent to a mailing list I suscribed to
+
+# fedora mutt + patch sidebar
+j'ai recuperer le srpm officiel du packet mutt avec yumdownloader --source mutt # downloads mutt-1.5.21-20.fc19.src.rpm
+j'ai extrait le rpm
+j'ai ajoute le patch sidebar dans le mutt.spec
+j'ai supprime les lignes du patch sidebar qui modifiait le configure.ac pk ca faisait foirer un autre patch
+j'ai contruit le .rpm et le .src.rpm, ils sont dans bak sur kool
+
+# convert *.eml files to maildir
+mkdir -vp /tmp/inbox/{cur,new,tmp}
+for i in *.eml; do cat "$i" | getmail_maildir /tmp/inbox; done
+mutt -R -m mailbox -f /tmp/inbox/

@@ -1,0 +1,7 @@
+# postfix
+
+# afficher un mail dans la queue
+postcat -q ABCDEF1234
+
+# supprimer un mail de la queue
+postsuper -d ABCDEF1234

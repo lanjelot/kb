@@ -1,0 +1,38 @@
+# nortel
+
+# default creds
+                     Model                      | Username        Password
+------------------------------------------------+---------------+-----------------
+Meridian Link                                   | disttech  | 4tas
+Meridian Link                                   | maint   | maint
+Meridian Link                                   | mlusr   | mlusr
+Remote Office 9150                              | admin   | root
+Accelar (Passport) 1000 series routing switches | l2    | l2
+Accelar (Passport) 1000 series routing switches | l3    | l3
+Accelar (Passport) 1000 series routing switches | ro    | ro
+Accelar (Passport) 1000 series routing switches | rw    | rw
+Accelar (Passport) 1000 series routing switches | rwa     | rwa
+Extranet Switches                               | admin   | setup
+Baystack 350-24T                                | n/a     | secure
+Meridian PBX                                    | login   | 0
+Meridian PBX                                    | login   | 1111
+Meridian PBX                                    | login   | 8429
+Meridian PBX                                    | spcl    | 0
+Meridian MAX                                    | service   | smile
+Meridian MAX                                    | root    | 3ep5w2u
+Matra 6501 PBX                                  | (none)  | 0
+Meridian MAX                                    | maint   | ntacdmax
+Meridian CCR                                    | service   | smile
+Meridian CCR                                    | disttech  | 4tas
+Meridian CCR                                    | maint   | maint
+Meridian CCR                                    | ccrusr  | ccrusr
+Meridian                                        | n/a     | (none)
+Meridian Link                                   | service   | smile
+Contivity Extranet/VPN switches                 | admin   | setup
+dms                                             | n/a     | (none)
+Business Communications Manager 3.5 and 3.6     | supervisor  | PlsChgMe
+Phone System All                                | n/a     | 266344
+Norstar                                         | 266344  | 266344
+p8600                                           | n/a     | (none)
+VPN Gateway                                     | admin   | admin
+Passport 2430                                   | Manager   | (none)

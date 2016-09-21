@@ -1,0 +1,62 @@
+# encryption
+
+# pkcs structures
+http://www.cem.me/pki/index.html
+
+# great resources
+http://crypto.interactive-maths.com/
+http://practicalcryptography.com/cryptanalysis/
+http://rumkin.com/tools/cipher/
+http://www.moserware.com/2009/09/stick-figure-guide-to-advanced.html (aes well explained)
+
+# Forward Secrecy.
+With this feature enabled, each connection uses separate encryption keys, which means that the encrypted data remains safe if the server private key is compromised.
+
+# wordpress cookie
+cookie: $username|$expiry|$hmac
+key = wp_hash($username . $expiration) # based on wordpress SECRET_KEY
+hash_hmac('md5', $username . $expiry, $key) == $hmac
+following values will generate same hash:
+admin1 1353464343
+admin  11353464343
+
+# hash length extension
+https://blog.whitehatsec.com/hash-length-extension-attacks/
+http://www.vnsecurity.net/2010/03/codegate_challenge15_sha1_padding_attack/
+https://blog.skullsecurity.org/2012/everything-you-need-to-know-about-hash-length-extension-attacks
+
+Given an application that prepends a secret to a string before hashing it, the application is vulnerable if an attacker knows both the string and the hash. The attacker is able to append extra information to the original string and still generate a valid hash from it without knowing the secret. In a query, the extra data that is appended is given preference over the original data.
+
+https://github.com/stephenbradshaw/hlextend
+https://github.com/bwall/HashPump
+https://github.com/iagox86/hash_extender
+
+# substitution ciphers
+* monoalphabetic
+caesar: for i in {0..25}; do echo "Ackkmaa" |  /usr/games/bin/caesar $i ; done 
+* polyalphabetic
+vigenere
+autokey
+porta (13 alphabet instead of 26 like vigenere)
+...
+anagram
+online cryptogram solver: http://quipqiup.com/
+best results with tools/crypto/practicalcryptography.com/*.py (e.g. tools/crypto/pygenere's VigCrack.crack_codeword fails when ciphertext too small)
+
+# transposition cipher
+scytale
+rail fence
+route
+columnar transposition (break_coltrans.py) unlikely if there are no many vowels
+
+# xortool
+github.com/hellman/xortool: use -c 00 for encrypted binaries, -c ' ' for texts (sometimes fails to find correct xor key)
+
+# XORsearch
+https://blog.didierstevens.com/?s=xorsearch
+
+# ADVGVX
+ciphertext only consists of these letters
+
+# scrambler
+if the algo is cyclic, keep running the ciphertext through the scramler until output makes sense

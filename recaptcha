@@ -1,0 +1,35 @@
+# recaptcha
+
+02:19 < lanjelot> hi guys, i'm looking into stiltwakler v2 because the audio recaptcha used by the website i am pentesting gives 3 groups of 3 digits
+02:20 < lanjelot> and sometimes, 1 group of 4 digits and 2 groups of 3 digits
+02:29 < lanjelot> stiltwalkerv2 fails at guessing the 9 digits
+02:37 < lanjelot> i've changed number_of_words_per_piece and number_of_pieces to 3 of course
+02:38 < lanjelot> but the fuckit_splitter fails at splitting the .mp3 correctly i guess, as some of the .wav contain more than 1 digit
+03:30 -!- jeffball [~jeff@c-69-242-197-112.hsd1.sc.comcast.net] has joined #dc-949
+04:54 < lanjelot> i've modified fuckit_splitter.py with pixels[x,y][0] >= 250 and pixels[x,y][1] >= 200 to have 3 groups right away
+04:55 < lanjelot> and i've changed sample_rate = 16000  in splitterbase.py
+04:56 < lanjelot> the different .wav match every digits better now, but the guesses are still all wrong :(
+05:05 < lanjelot> do i need to train the neural network?
+05:31 < jeffball> it's been a while since I trained it, so I aplogize if some steps are incomplete
+05:31 < jeffball> but essentially you need a directory in the format of: solved_clusters/answer/sample.wav
+05:32 < jeffball> where solved_clusters is the root (name it anything), answer is the letter/digit/word that matches all the samples in that directory
+05:32 < jeffball> and sample###.wav is just any filename under that directory.  The more samples you get the better
+05:34 < jeffball> then run s-plot/splotitup.sh on it: cd s-plot; splotitup.sh solved_clusters/ dat/ $bitmask
+05:35 < jeffball> where bitmask is the type of data you want to train on.  See splot.py for a description.  Generally we used 24, but 8 and 32 worked alright too
+05:37 < jeffball> this generates dat/*.csv for each word/digit/letter.
+05:37 < jeffball> *Just noticed s-plot/README.txt*
+05:56 < jeffball> then run generate_ml_inputs.sh, this will convert those csv's into octave's format in trainingsetx.csv, trainingsety.csv, and y_mappings.txt
+05:57 < jeffball> they'll get copied to image-neural-network folder
+05:58 < jeffball> then you can run image-neural-network/trainNN3.m with octave: octave trainNN3.m arguments
+05:58 < jeffball> Usage: octave trainNN3.m inputs hidden iterations save_every name_prefix inputx inputy output
+05:59 < jeffball> and that will create the theta values you can use to solve with.
+06:09 < lanjelot> right, i just remembered downloading the corpus. I understand now why the sample_rate was hard-coded
+06:19 < lanjelot> jeffball: how come the recaptcha that this website is using looks like it could be solved by stiltwalker?
+06:21 < lanjelot> didn't Google roll back reCAPTCHA to the difficult version (for humans) after you released stiltwalker v3?
+06:22 < lanjelot> or is it that reCAPTCHA customers can choose to have an old version, hence usable for blind people
+11:52 < jeffball> reCAPTCHA switched to a had version but then moved towards a different version with just quick numbers, similar to round 2
+11:53 < jeffball> it's different in that the number of digits in each of the 3 sections is varriable (mostly 3 or 4), perhaps to try to mess with the fuckit splitter.  Their goal is not that you can't decipher 
+                  the digits, but that you can't split them.  In all honesty it's probably capable of being broken, but we just haven't the time/motivation to release another round
+11:54 < jeffball> if you get splitting to work, do a bnuch of the captchas and retrain, you'll probably break it
+11:54 < jeffball> *switched to a bad version
+12:46 < lanjelot> cool thx for clarifying that up 

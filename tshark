@@ -1,0 +1,13 @@
+# tshark
+
+tshark -t a -lnp -i eth0 -b filesize:100000 -w incoming.pcap -S 'dst host 172.26.1.29 and tcp and tcp[tcpflags] & (tcp-syn) != 0 and tcp[tcpflags] & (tcp-ack) = 0'
+
+-o column.format:'"Source", "%s", "Destination","%d", "dstport", "%uD"'
+
+tshark -lnn -i eth0  -Y 'tcp.flags.syn==1'
+tshark -lnn -i eth0  -Y 'tcp.flags.syn==1 && tcp.flags.ack==0' -f 'dst host 6.6.6.6'
+
+tshark -q -lnn -i eth0 -Y http.request -V -f 'dst host 6.6.6.6 and dst port 3000' | sed -e '/Frame [0-9]/,/Hypertext Transfer Protocol/d' -e '/^ \+\[/d' -e '/(Request Method|Request URI|Request Version)/d'
+tshark -q -lnn -i eth0 -Y http.request -V | sed -n -e '/Full request URI: /s,^.\+URI: \(.\+\)\],\1,p' -e '/Line-based text data/{n;p}'
+
+tshark -o "ssl.keys_list:192.168.105.160,443,http,privkey.pem" -Y frame.number==15 -x

@@ -1,0 +1,42 @@
+# websphere
+
+# admin console (to confirm)
+https://<ip>:9043/ibm/console/
+
+# {xor}Lz4sLCgwLTs=
+python -c "print(''.join([chr(ord(c) ^ ord('_')) for c in 'Lz4sLCgwLTs='.decode('base64')]))"
+
+# xmlaccess
+http://192.168.122.238:10039
+
+* Export.xml
+Should exports users from LDAP
+<request
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:noNamespaceSchemaLocation="PortalConfig_1.4.xsd"
+    type="export"
+    export-users="true">
+    
+    <portal action="export"/>
+</request>
+
+* deploy a new malicious portlet
+see vm_deploy.xml (based on template DeployPortlet.xml)
+/wps/PA_WPS_WSTest/
+
+pb if cluster setup, server will NOT start new portlet (error msg like "wait for synchronisation of all nodes to be done")
+ConfigEngine.sh activate-portlets (or xml-samples/ActivatePortlet.xml)
+
+maybe a solution is to update an existing portlet like Welcome (mais a tester)
+
+# blog d'un fanboy
+http://codyburleson.com/2013/01/24/xmlaccess-samples-in-ibm-websphere-portal/
+
+# links
+http://www-947.ibm.com/support/entry/portal/documentation/software/websphere/websphere_portal
+http://www.ibm.com/developerworks/websphere/zones/portal/proddoc/
+http://www-10.lotus.com/ldd/portalwiki.nsf/xpViewCategories.xsp?lookupName=Product%20Documentation
+http://www-10.lotus.com/ldd/portalwiki.nsf/xpDocViewer.xsp?lookupName=IBM+WebSphere+Portal+8+Product+Documentation#action=openDocument&content=catcontent&ct=prodDoc
+
+# Disable unused apps
+http://www-01.ibm.com/support/docview.wss?uid=swg21472871

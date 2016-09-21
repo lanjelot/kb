@@ -1,0 +1,6 @@
+# allegro rompager
+
+* bof and misfortune cookie only affects 4.07 < 4.34 (CVE-2014-9222 and CVE-2014-9223 fixed in 4.34). Both vulns introducded in 4.07.
+https://www.allegrosoft.com/allegro-software-urges-manufacturers-to-maintain-firmware-for-highest-level-of-embedded-device-security/news-press.html
+
+* see 2-many-cooks-exploiting-tr069_tal-oppenheim_31c3.pdf

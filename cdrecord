@@ -1,0 +1,4 @@
+# cdrecord
+
+cdrecord dev=/dev/cdrom blank=fast -v
+cdrecord gracetime=2 dev=/dev/cdrom -raw -v path/to/image.iso

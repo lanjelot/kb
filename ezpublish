@@ -1,0 +1,12 @@
+# ezpublish
+
+# default admin creds
+admin / publish
+https://doc.ez.no/eZ-Publish/User-manual/4.x/The-administration-interface/The-login-page
+
+# vulns
+* sqli CVE-2010-2672
+3.7.0 through 4.2.0 allow remote attackers to execute arbitrary SQL commands via the (1) SectionID and (2) SearchTimestamp parameters to the search feature and the (3) SearchContentClassAttributeID parameter to the advancedsearch feature. 
+
+* unspecified and unknown impact lol CVE-2012-1565
+Unspecified vulnerability in ez Publish 4.1.4, 4.2, 4.3, 4.4, 4.5, and 4.6 has unknown impact and attack vectors related to an insecure direct object reference. 

@@ -1,0 +1,7 @@
+# bind
+
+# 953/tcp
+listen on 953/tcp for commands (e.g. rmdc)
+
+# CVE-2015-5477
+https://raw.githubusercontent.com/robertdavidgraham/cve-2015-5477/master/tkill.c

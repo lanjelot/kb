@@ -1,0 +1,10 @@
+# tightvnc
+
+- password key
+"HKEY_LOCAL_MACHINE\SOFTWARE\TightVNC\Server",  "Password"
+
+- password to lock the 'options'
+"HKEY_LOCAL_MACHINE\SOFTWARE\TightVNC\Server",  "ControlPassword"
+
+- to enable using passwords
+"HKEY_LOCAL_MACHINE\SOFTWARE\TightVNC\Server",  "UseControlAuthentication

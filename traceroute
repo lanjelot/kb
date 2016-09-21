@@ -1,0 +1,7 @@
+# traceroute
+
+# traceroute-nanog
+le man contient des exemples interessants
+- buggy hop that forwards packets with a zero TTL
+- hops that doesn't send "time exceeded"s
+- hops using the TTL from our arriving datagram as the TTL  in  its  icmp reply

@@ -1,0 +1,10 @@
+# scada
+
+capteurs/compteurs <- PLC -> station de controle (os win)
+stuxnet visait systeme windows avec SIMATIC WinCC SCADA ou PCS7 et S7-PLC, logiciels qui controlent des PLC de type Siemens
+
+https://github.com/scadastrangelove/SCADAPASS
+
+# hsc newsletter
+http://www.hsc-news.com/archives/2007/000036.html
+http://www.hsc-news.com/archives/2008/000044.html

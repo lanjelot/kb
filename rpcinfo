@@ -1,0 +1,31 @@
+# rpcinfo / nfs
+
+# mount NFS shares
+https://github.com/bonsaiviking/NfSpy
+mount -vvv -t nfs -o nolock 1.2.3.4:/public /nfsmount
+
+# lister les applications en ecoute sur TCP/UDP:111 ou TCP/UDP:32771
+rpcinfo -p 1.2.3.4
+rpcinfo -n 32771 -p 1.2.3.4
+nmap -sR 1.2.3.4 (-sV inclus -sR)
+
+# lister les NFS shares
+nmap nfs-ls.nse
+
+# rwho 513/udp
+rwho 1.2.3.4
+
+# rusers (RPC program 100002)
+rusers -l 1.2.3.4
+
+# NIS (RPC program 100004)
+pscan/pscan.c (v1.4 par Pluvius) -> essayer -n et -r
+
+# NFS TCP/UDP 2049
+showmount -e 1.2.3.4
+mount 1.2.3.4:/ /mnt/itchy
+ou
+nfsshell
+
+# cool vuln
+https://www.trustwave.com/Resources/Security-Advisories/Advisories/TWSL2010-003/?fid=3767

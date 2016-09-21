@@ -1,0 +1,21 @@
+# fuzzing
+
+# forks de sulley
+https://github.com/jtpereyda/boofuzz
+https://github.com/cisco-sas/kitty
+
+# radamsa
+https://code.google.com/p/ouspg/
+
+# zulu
+https://github.com/nccgroup/Zulu
+
+# vfork in python
+https://labs.mwrinfosecurity.com/blog/2014/12/10/faster-fuzzing-with-python/
+
+# pentoo-portage-trunk
+app-fuzz
+
+# blackarch
+hexinject
+tcpjunk

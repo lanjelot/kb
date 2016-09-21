@@ -1,0 +1,9 @@
+# ip tcp
+
+https://code.google.com/p/packetdrill/
+
+# tcp syn cookies allows an attacker to spoof a tcp connection
+http://www.jakoblell.com/blog/2013/08/13/quick-blind-tcp-connection-spoofing-with-syn-cookies/
+
+# injecting raw sockets in python
+http://www.pythonforpentesting.com/2014/08/tcp-packet-injection-with-python.html

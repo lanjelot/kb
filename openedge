@@ -1,0 +1,14 @@
+# openedge
+
+p = "theeaglehaslandedandthefatmanwalksalone"
+
+def md5_4k(s):
+  for i in range(4000):
+    s = md5(s).digest()
+  return s
+
+first_half = md5_4k(p).encode('hex')
+print 'first half: %s' % first_half
+
+second_half = md5_4k(first_half.decode('hex')+p).encode('hex')
+print 'second half: %s' % second_half

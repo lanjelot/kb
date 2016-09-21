@@ -1,0 +1,31 @@
+# router
+
+# autopwn
+https://github.com/jh00nbr/Routerhunter-2.0
+
+# known remote vuln
+http://www.routerpwn.com/
+
+# linksys (WAG200G)/netgear backdoor
+32764/tcp
+https://github.com/elvanderb/TCP-32764/raw/master/backdoor_description.pptx
+
+# dlink backdoor
+http://www.devttys0.com/2013/10/reverse-engineering-a-d-link-backdoor/
+headers={'User-Agent' : 'xmlset_roodkcableoj28840ybtide'}
+
+# routeur PE
+Provider Edge : Routeur de périphérie du réseau MPLS Mutualisé
+
+Un routeur Provider Edge (PE) se place entre un ISP et d'autres ISP.
+Le terme "routeur PE" désigne un equipement capable de router les protocoles suivants:
+	- BGP
+	- OSPF
+	- MPLS
+(source: wikipedia)
+
+# routeur CPE
+Equipement réseau d’opérateur localisé dans les locaux du Client (Customer Premises Equipment)
+
+Customer Premises Equipment (CPE) est un équipement qui se trouve dans le site d'un client (d'une entreprise) et qui est raccordé à l'infrastructure d'un opérateur
+(source: http://fr.wikipedia.org/wiki/Customer_Premises_Equipment)

@@ -1,0 +1,34 @@
+# john the ripper
+
+# format
+http://pentestmonkey.net/cheat-sheet/john-the-ripper-hash-formats
+
+# incremental avec un charset [a-z0-9]{6,8}
+-- creer un john.pot avec une seule ligne:
+*6C03989037359284236EED9F551513C28869CAD5:abcdefghijklmnopqrstuvwxyz0123456789
+$ echo -n abcdefghijklmnopqrstuvwxyz0123456789 | openssl dgst -sha1 -binary | openssl dgst -sha1 | tr '[a-z]' '[A-Z]'
+6C03989037359284236EED9F551513C28869CAD5
+-- creer le fichier alnum_az09.chr
+$ john --make-charset=alnum_lower.chr
+-- creer une nouvelle section dans john.conf
+[Incremental:alnum_lower]
+File = $JOHN/alnum_lower.chr
+MinLen = 6
+MaxLen = 8
+CharCount = 36
+-- lancer john en incremental
+john -i=alnum_lower path/to/pw_file
+
+# casser du LM/NT et decouvrir la vraie casse ("true case") des mots de passe
+-- isoler les empreintes LM et NT qu'il reste à casser
+john -format:lm -show=left dc01_fgdump.pw > dc01_lm.pw
+john -format:nt -show=left dc01_fgdump.pw > dc01_nt.pw
+-- casser les empreintes avec john et rcrack
+-- creer le dico des mots de passe trouvés pour LM
+john -show dc01_lm.pw | grep ':' | cut -d: -f2- | sort -u > fgdump_lm.dic
+john -show=left -format:nt dc01_fgdump.pw > dc01_nt.pw
+-- trouver la vraie casse
+john -format:nt -rules:nt -w:fgdump_lm.dic dc01_nt.pw
+
+# vBulletin
+john -field-separator-char=';'

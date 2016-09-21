@@ -1,0 +1,8 @@
+# sort
+
+# sort by popularity
+cat pass.dic | sort | uniq -c | sort -k 1nr -k 2 | sed -e 's,^ *[0-9]\+ ,,'
+
+# pure
+unset LANG
+cat rockyou-75.txt | sed -e '/[^a-zA-Z]/d' | tr '[[:upper:]]' '[[:lower:]]' | tr -cd '\12\141-\172' | cut -b -8 > rockyou.pure 

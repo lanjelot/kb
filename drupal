@@ -1,0 +1,8 @@
+# drupal
+
+* install module to get a shell
+https://www.drupal.org/project/shell
+
+* sqli in prepared statements
+https://www.sektioneins.de/en/advisories/advisory-012014-drupal-pre-auth-sql-injection-vulnerability.html
+https://www.sektioneins.de/en/blog/14-10-15-drupal-sql-injection-vulnerability.html

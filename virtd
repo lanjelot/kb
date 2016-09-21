@@ -1,0 +1,43 @@
+# virtd
+
+# restarting dnsmasq
+virsh net-destroy default
+virsh net-start default
+
+# disable dhcp
+virsh
+net-edit default
+<network>
+  <name>default</name>
+  <uuid>8a32d862-bd28-4cb5-84b6-cfecd954dd25</uuid>
+  <forward mode='nat'/>
+  <bridge name='virbr0' stp='on' delay='0' />
+  <mac address='52:54:00:92:24:23'/>
+  <ip address='192.168.122.1' netmask='255.255.255.0'>
+-    <dhcp>
+-      <range start='192.168.122.2' end='192.168.122.254' />
+-    </dhcp>
+  </ip>
+</network>
+
+# snapshots
+http://fedoraproject.org/wiki/Features/Virt_Live_Snapshots
+qemu-img convert -f raw -O qcow2 w2k8r2sp1x64-adpoc.img w2k8r2sp1x64-adpoc.qcow2
+
+virsh # snapshot-create w2k8r2sp1x64-adpoc
+Domain snapshot 1385009602 created
+virsh # snapshot-list w2k8r2sp1x64-adpoc
+ Name                 Creation Time             State
+------------------------------------------------------------
+ 1385009602           2013-11-21 15:53:22 +1100 running
+
+virsh # snapshot-revert w2k8r2sp1x64-adpoc --snapshotname 1385009602
+or
+virsh # snapshot-revert w2k8r2sp1x64-adpoc 1385009602 --force
+
+# dnsmasq virtd
+log-queries
+log-facility=/tmp/dnsmasq-virt.log
+cache-size=0
+#no-resolv
+#server=8.8.8.8

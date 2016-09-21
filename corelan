@@ -1,0 +1,25 @@
+# corelan
+
+# /GS
+stack cookie only if a variable is a string (so no stack cookie if e.g. structure like with the ANI exploit)
+
+# SafeSEH
+
+# SEHOP
+
+# DEP
+Since Windows XP SP2 and 2003 SP1
+Software DEP == Safeseh
+Hardware DEP == NX/XD
+
+bypass options:
+ret2libc
+ZwProtectVirtualMemory
+NtSetInformationProcess (disable for the process)
+
+# ASLR
+Since Vista
+
+bypass options:
+partial EIP overwrite
+use non-aslr loaded module

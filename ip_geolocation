@@ -1,0 +1,46 @@
+# ip geolocation
+
+http://en.wikipedia.org/wiki/Geolocation_software
+super liste detaillée: http://www.caida.org/tools/utilities/netgeo/
+curl ipinfo.io/1.2.3.4
+
+* www.geoplugin.com
+quite precise, utilise MaxMind
+
+* www.wipmania.com 
+maintiennent une BDD telechargeable (sql, txt)
+
+* www.iplocationtools.com 
+maintiennent une BDD telechargeable (sql, csv)
+et "ou databases includes GeoLite data created by MaxMind"
+
+* www.countryipblocks.net 
+maintiennent des fichiers de format divers (eg. .htaccess) 
+pour faire la correspondance CC <-> netblock
+
+* www.maxmind.com 
+online demo (payant)
+dev-libs/geoip
+free databases to download from http://geolite.maxmind.com/download/geoip/database/
+version gratuite donne uniquement CC+nom_pays (pas city, etc.)
+$ geoiplookup 209.85.227.99 
+GeoIP Country Edition: US, United States
+
+API dispo pour bcp de langages: http://geolite.maxmind.com/download/geoip/api/
+
+* flagfox
+-> bdd gratuite de MaxMind embarquée dans plugin
+http://flagfox.servehttp.com/forum/viewtopic.php?f=3&t=49
+"We import the free version of their (MaxMind) country location database for use within Flagfox"
+"Flagfox uses an internal IP location database to do its lookups"
+"Each month, a new version of Flagfox is released with the new database version"
+
+* GeoTrace www.nabber.org/projects/geotrace
+traceroute + City + Country
+=> utilise DNS LOC, hostip.info, whois
+
+* GTrace
+derniere release: 11/5/99 
+
+* www.geobytes.com
+

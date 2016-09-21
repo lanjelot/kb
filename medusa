@@ -1,0 +1,6 @@
+# medusa
+
+# bug auth basic tomcat manager
+./medusa -v 4 -M http -U ~/logins.wl -P ~/passwords.wl -m DIR:/manager/html -h 127.0.0.1 -n 8080
+
+medusa marche pas quand la reponse 401 est fragmentée en 2 paquets TCP. Faut augmenter le delay2 mais du coup on lit toute la reponse et on perd en perf.

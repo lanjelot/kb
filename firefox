@@ -1,0 +1,9 @@
+# firefox
+
+# to have a nicer save dialog
+ui.allow_platform_file_picker -> false
+
+# pour voler les mots de passe sauvegardés sans master password,
+# copier ces 2 fichiers dans ma VM
+key3.db
+signons.sqlite

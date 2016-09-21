@@ -1,0 +1,8 @@
+# load balancer
+
+Client-Date: pour detecter plusieurs srv derriere un Load Balancer
+
+hping -S -p 80 -c 5 80.100.101.102; hping -S -p 80 -c 5 80.70.60.50
+Si les ID se suivent, les 2 plages correspondent aux memes machines
+
+

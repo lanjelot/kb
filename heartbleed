@@ -1,0 +1,29 @@
+# heartbleed
+
+http://blog.existentialize.com/diagnosis-of-the-openssl-heartbleed-bug.html # good writeup
+http://www.westpoint.ltd.uk/blog/2014/04/14/understanding-the-heartbleed-proof-of-concept/ # nice read
+https://www.duosecurity.com/blog/heartbleed-defense-in-depth-part-2 # timeline of ssl bugs
+
+* PoCs
+openssl s_client -connect google\.com:443 -tlsextdebug 2>&1| grep 'server extension "heartbeat" (id=15)' || echo safe # not enough to confirm if vulnerable though
+grep -l 'libssl.*deleted' /proc/*/maps | tr -cd 0-9\\n | xargs -r ps u # search for processes still using old OpenSSL vuln to heartbleed
+# this only detects whether you've disabled heartbeats. Checking for 1.0.1g without exploiting is challenging
+# also, you can be safe even if heartbeats are still enabled, if you have upgraded to 1.0.1g
+https://gist.github.com/sh1n0b1/10100394 by Jared Stafford # original PoC at http://s3.jspenguin.org/ssltest.py
+https://gist.github.com/takeshixx/10107280 (linked from https://www.mattslifebytes.com/?p=533) # PoC can dump memory to stdout and also has STARTLS support
+https://gist.github.com/mpdavis/10171593 by Michael Davis # altered to dump session IDs en masse (https://www.michael-p-davis.com/using-heartbleed-for-hijacking-user-sessions/)
+https://github.com/isgroup-srl/openmagic # with loop
+but all PoCs are pretty much based on the same code (ie. a dirty PoC sending hardcoded heartbeat request)
+https://github.com/Lekensteyn/pacemaker # attacking clients
+https://gist.github.com/epixoip/10570627 # private key 7th cloudflare
+https://github.com/musalbas/heartbleed-masstest # multiscanner
+https://gist.github.com/ah8r/10632982 by Hut3 # cardiac arrest supposedly works best (http://cryptogasm.com/2014/04/whats-worse-than-heartbleed-bugs-in-heartbleed-detection-scripts/)
+https://hacking.ventures/rsa-keys-in-heartbleed-memory/ # find RSA keys from memory dumps
+https://github.com/falstaff84/heartbleed_test_openvpn # openvpn
+https://bitbucket.org/johannestaas/heartattack # original PoC by Jared adapted by Johan Nestaas 
+https://github.com/robertdavidgraham/heartleech # can parse pcap and extract private key
+http://seclists.org/fulldisclosure/2014/Apr/109 # iptables & tshark rules
+
+* cupid (client-side)
+e.g. free wifi to make clients connect to malicious server
+

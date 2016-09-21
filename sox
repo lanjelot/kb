@@ -1,0 +1,4 @@
+# sox
+
+export AUDIODRIVER=alsa
+play blah.[mp3|wav] trim 0.50 1.25

@@ -1,0 +1,101 @@
+# android
+
+https://github.com/tanprathan/MobileApp-Pentest-Cheatsheet/
+https://www.owasp.org/index.php/Projects/OWASP_Mobile_Security_Project_-_Top_Ten_Mobile_Risks
+
+# great blog about android security (michael)
+http://nelenkov.blogspot.com.au/2013/09/using-sim-card-as-secure-element.html
+
+# intro android security DC19
+http://www.youtube.com/watch?v=GoMgK3om8Vo
+http://slandail.net/step-by-step-guide-to-decompiling-android-apps/
+
+# static analysis
+smalisca http://nullsecurity.net/tools/scanner.html
+APKAnalyzer (http://developer.sonymobile.com/2012/04/13/powerful-tool-to-analyse-your-apks-now-released-open-source/)
+
+# android webviews best practice
+https://labs.mwrinfosecurity.com/blog/2012/04/23/adventures-with-android-webviews/
+http://www.droidsec.org/news/2014/02/26/on-the-webview-addjsif-saga.html
+
+# debug ala gdb (not tested)
+https://appsec-labs.com/AppUse
+10:39 <michael> https://www.owasp.org/images/d/d6/OWASP_IL_2013_10_Erez_Metula_The_ReFrameworker_Android_runtime_manipulator.pdf
+
+# HIP talk
+http://www.youtube.com/watch?v=Tv5bmlPXyFU
+http://kaiyou.fr/files/2013/06/main.pdf
+https://github.com/sysdream/fino
+https://github.com/sysdream/gadget
+https://github.com/sysdream/gadget-client
+
+# http://blog.sglan/2013/05/02/dump-files-as-debuggable-app.html
+quick test:
+$ adb shell
+run-as com.boganbank.gr8app ls /data/data/com.boganbank.gr8app
+
+# local root on 4.4.2
+http://blog.cassidiancybersecurity.com/post/2014/06/Android-4.4.3%2C-or-fixing-an-old-local-root
+
+# tool which can extract and re-package backup files created with 'adb backup' so they an be restored with 'adb restore'
+https://github.com/nelenkov/android-backup-extractor
+
+# help with analyzing inter-app communication but requires to upload apk (so not suitable if app isn't public yet)
+http://comdroid.org
+
+# dex2jar replacements
+https://github.com/google/enjarify
+
+# sign apk
+* generate your own selfsigned cert
+keytool -genkey -v -keystore mykey.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000
+
+* use android ks
+jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore ~/.android/debug.keystore com.blah.apk androiddebugkey
+password: android
+
+* check signed cert
+openssl pkcs7 -inform DER -in META-INF/CERT.RSA -text -print_certs
+keytool -printcert -file CERT.RSA
+
+# gul
+http://www.securityaegis.com/notes-on-setting-up-an-android-pentest-lab/
+* Exemple
+E:\Tools\Android-sdk\tools\emulator.exe -avd Android_2.1_update_1 -http-proxy 1.2.3.4:8080 -scale 0.7
+
+* Faire fonctionner l'émulateur avec un proxy
+% Depuis le console :
+% tools\emulator.exe -avd <AVD> -http-proxy <ip:port>
+% Évidemment depuis le SDK Manager, ca ne fonctionne pas...
+
+% Depuis l'émulateur :
+% settings > Wireless & networks > Mobile network > Access Point Names > TelKila
+% > Proxy / Port
+
+* Interesting links
+http://code.google.com/p/android-apktool/wiki/FrameworkFiles
+http://code.google.com/p/android-apktool/wiki/ReportingIssues
+http://groups.google.com/group/apktool?pli=1
+http://stackoverflow.com/questions/28380/proxy-with-android-emulator
+http://developer.android.com/guide/developing/devices/emulator.html
+
+# genymotion
+burp: 10.0.3.2:8082
+adb push /opt/m/share/dist/burp_cacert.cer /sdcard/burp.cer
+
+install Google Play Services
+https://github.com/codepath/android_guides/wiki/Genymotion-2.0-Emulators-with-Google-Play-support
+
+# ida plugins
+https://github.com/techbliss/ADB_Helper_QT_Super_version
+https://www.youtube.com/watch?v=j6EwCC4mxNQ
+
+# lock screen (password/PINs)
+password.key, locksettings.db and device_policies.xml
+* android 5.x https://hashcat.net/forum/thread-2202-page-5.html
+hashcat -m 110 $(cat password.key|tr A-Z a-z|cut -b -40):$(printf "%x" $(sqlite3 locksettings.db "select value from locksettings where name='lockscreen.password_salt'"))
+* android < 5.x https://hashcat.net/forum/thread-2202.html
+hashcat -m 5800 
+
+# hooking (introspy)
+https://www.sensepost.com/blog/2016/android-hooking-with-introspy/

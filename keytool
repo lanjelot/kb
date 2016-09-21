@@ -1,0 +1,12 @@
+# keytool
+
+# generer un certificat auto-signé
+java sun.security.tools.KeyTool -genkeypair -keystore tomcat.jks -alias tomcat
+
+# afficher le contenu du keystore
+java sun.security.tools.KeyTool -list -v -keystore tomcat.jks -storepass password
+
+# creer un truststore et importer un certifcate racine
+java sun.security.tools.KeyTool -keystore /path/to/trust.jks -importcert -file cacert.pem
+System.setProperty("javax.net.ssl.trustStore","/path/to/trust.jks");
+System.setProperty("javax.net.ssl.trustStorePassword","changeit");

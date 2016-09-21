@@ -1,0 +1,39 @@
+# cvs
+
+# pour lister tous les modules
+mkdir tmp && cd tmp
+mkdir CVS
+echo '.' > CVS/Repository
+echo '' > CVS/Entries
+
+cvs update -dp
+
+# faire un checkout de tout
+/usr/bin/cvs co .
+
+# supprimer un fichier
+rm file.c
+cvs remove file.c
+# supprimer des fichiers
+rm *.c
+cvs remove
+
+# supprimer un repertoire
+cvs commit
+cd ..
+cvs remove mydir
+rm -fr mydir
+
+# recuperer une ancienne version
+cvs update -p -r 1.202 filename > filename
+
+# gentoo
+mkdir /tmp/oldff && cd /tmp/odlff
+rsync -r rsync://anonvcs.gentoo.org/vcs-public-cvsroot/gentoo-x86/www-client/mozilla-firefox-bin .
+export CVSROOT=/tmp/oldff
+cvs init
+mkdir /tmp/cvsco && /tmp/cvsco
+cvs checkout mozilla-firefox-bin
+cvs log
+cd mozilla-firefox-bin
+cvs up -Pd -D 2009-08-10

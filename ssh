@@ -1,0 +1,57 @@
+# ssh
+
+# weak dh
+http://blog.gdssecurity.com/labs/2015/8/3/ssh-weak-diffie-hellman-group-identification-tool.html
+
+# best ciphers
+https://stribika.github.io/2015/01/04/secure-secure-shell.html
+
+# batch mode, no pw prompt
+ssh -o BatchMode=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$i id
+
+# only one prompt
+-o NumberOfPasswordPrompts=1
+
+# only forward socks4
+ssh -nNT -D1234
+
+# environment
+http://www.opennet.ru/base/netsoft/1025195882_355.txt.html
+
+# "no who, no IP logged" (seen in phrack)
+ssh -o UserKnownHostsFile=/dev/null -T user@host /bin/bash -i
+
+# perf
+When you're pumping a lot of data over an SSH connection, it pays to tweak your ciphers. Blowfish and "arcfour" (RC4) are good contenders.
+scp -c blowfish myfile ryu@localhost:
+
+# output pubkey from private rsa key
+$ chmod 600 ./id_rsa
+$ ssh-keygen -y -f ./id_rsa
+ssh-rsa AAAAB3NzaC
+
+# ssh v1
+sshtrix
+
+# extract rsa keys from ssh-agent (https://www.netspi.com/blog/entryid/235/stealing-unencrypted-ssh-agent-keys-from-memory)
+https://github.com/NetSPI/sshkey-grab
+
+# chroot breakout / jail escape
+https://github.com/earthquake/chw00t
+http://pentestmonkey.net/blog/chroot-breakout-perl
+http://www.bpfh.net/simes/computing/chroot-break.html
+http://www.opennet.ru/base/netsoft/1025195882_355.txt.html
+
+# time based user enum
+http://www.0xdeadbeef.info/ CVE-2003-0190 and CVE-2006-5229 and tools sshtime
+http://cve.mitre.org/cgi-bin/cvename.cgi?name=2006-5229
+regularily “rediscovered” http://seclists.org/fulldisclosure/2013/Jul/88
+http://pentestmonkey.net/tools/timing-attack-checker (variant with pubkey)
+
+# hijack
+http://0xthem.blogspot.fr/2015/03/hijacking-ssh-to-inject-port-forwards.html
+https://github.com/seastorm/PuttyRider
+
+# bruteforcing hashed known_hosts
+oclHashcat -m 160 -a 1 hash.txt ips-left.txt ips-right.txt --hex-salt
+hashcat -a 3 -m 160 hash.txt ipv4.hcmask --hex-salt # wget 'http://pastebin.com/raw.php?i=4HQ6C8gG' -O ipv4.hcmask

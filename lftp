@@ -1,0 +1,12 @@
+# lftp
+
+# no SSL cert verification and setting the port range for active mode if passive mode does work then lftp falls back to active mode
+$ lftp -d 200.10.10.10
+lftp 200.10.10.10:~> user foo
+Password: 
+lftp foo@200.10.10.10:~> set ftp:port-range 60000:61000
+lftp foo@200.10.10.10:~> set ssl:verify-certificate no
+lftp foo@200.10.10.10:~> ls
+
+# active mode
+lftp -e 'set ftp:passive-mode off; set ftp:auto-passive-mode no;'

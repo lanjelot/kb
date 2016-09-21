@@ -1,0 +1,45 @@
+# realvnc
+
+# disable_blacklist.reg
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\SOFTWARE\RealVNC]
+
+[HKEY_CURRENT_USER\SOFTWARE\RealVNC\WinVNC4]
+"BlacklistTimeout"="0"
+
+# export
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\RealVNC]
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\RealVNC\WinVNC4]
+"Password"=hex:ee,5b,0e,48,c8,fe,97,71
+"SecurityTypes"="VncAuth"
+"ReverseSecurityTypes"="None"
+"QueryConnect"=dword:00000000
+"QueryOnlyIfLoggedOn"=dword:00000000
+"PortNumber"=dword:0000170c
+"IdleTimeout"=dword:00000e10
+"HTTPPortNumber"=dword:000016a8
+"LocalHost"=dword:00000000
+"Hosts"="+255.255.255.255/0.0.0.0,"
+"AcceptKeyEvents"=dword:00000001
+"AcceptPointerEvents"=dword:00000001
+"AcceptCutText"=dword:00000001
+"SendCutText"=dword:00000001
+"DisableLocalInputs"=dword:00000000
+"DisconnectClients"=dword:00000001
+"AlwaysShared"=dword:00000000
+"NeverShared"=dword:00000000
+"DisconnectAction"="None"
+"RemoveWallpaper"=dword:00000000
+"RemovePattern"=dword:00000000
+"DisableEffects"=dword:00000000
+"UpdateMethod"=dword:00000001
+"PollConsoleWindows"=dword:00000001
+"UseCaptureBlt"=dword:00000001
+"UseHooks"=dword:00000001
+"Protocol3.3"=dword:00000000
+"BlacklistTimeout"="2"
+

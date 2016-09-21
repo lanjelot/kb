@@ -1,0 +1,8 @@
+# tls renegotiation
+
+# tester manuellement
+http://blog.ivanristic.com/2009/12/testing-for-ssl-renegotiation.html
+
+# PoC
+http://www.redteam-pentesting.de/en/publications/tls-renegotiation/-tls-renegotiation-vulnerability-proof-of-concept-code
+

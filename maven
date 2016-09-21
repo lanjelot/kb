@@ -1,0 +1,4 @@
+# maven
+
+# skip unit tests
+mvn -Dmaven.test.skip=true clean install

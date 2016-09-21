@@ -1,0 +1,116 @@
+# ssl
+
+https://www.owasp.org/index.php/Transport_Layer_Protection_Cheat_Sheet
+http://blog.ivanristic.com/downloads/SSL_Threat_Model.png
+
+# manual testing
+http://www.contextis.com/resources/blog/manually-testing-ssltls-weaknesses/
+http://www.exploresecurity.com/wp-content/uploads/custom/SSL_manual_cheatsheet.html
+
+# insecure reneg (2009), BEAST (2011), CRIME (2012), Lucky 13, RC4, TIME, BREACH (2013)
+http://googleonlinesecurity.blogspot.com.au/2013/11/a-roster-of-tls-cipher-suites-weaknesses.html
+beast: cbc ciphers affected, we should prefer rc4 instead
+crime, breach: compression
+rc4: attacks still not practical (requires ~7TB of data over 3 months)
+tls1.0: rc4 preferred, then cbc ciphers accepted
+tls1.1+: cbc ciphers preferred, then rc4 cipher accepted
+
+# timeline
+https://www.feistyduck.com/ssl-tls-and-pki-timeline/
+
+# check cert verification on client implementation
+https://github.com/yymax/x509test
+
+# basicContraints
+https://www.trustwave.com/spiderlabs/advisories/TWSL2011-007.txt
+
+# to read
+http://commandlinefanatic.com/cgi-bin/showarticle.cgi?article=art027
+https://wiki.thc.org/ssl
+
+# cipher list
+http://op-co.de/blog/posts/android_ssl_downgrade/
+
+# breach
+http://breachattack.com/resources/BREACH%20-%20BH%202013%20-%20PRESENTATION.pdf
+
+# audit thick clients' ssl checking
+www.gremwell.com/sslcaudit
+
+# ssl v2
+http://www.unspecific.com/ssl/
+http://carnal0wnage.attackresearch.com/node/397
+
+# tester
+sslyze --regular www.blah.com
+https://www.ssllabs.com/ssldb/
+https://testssl.sh
+
+# post sur FD
+Attached is one of the null-prefix certificates [2] that he distributed during
+his "intercepting secure communication" training at Black Hat.  This one's for
+www.paypal.com, and since the Microsoft crypto api appears to remain unpatched,
+it works flawlessly with sslsniff [3] against all clients on Windows (IE,
+Chrome, Safari).  Also, because of Moxie's attacks against OCSP [4], I don't
+think this certificate can be revoked.
+
+Enjoy!
+
+[1]: http://www.linuxtoday.com/security/2009100102035NWNT
+[2]: http://www.thughtcrime.org/papers/null-prefix-attacks.pdf
+[3]: http://www.thoughtcrime.org/software/sslsniff/
+[4]: http://www.thoughtcrime.org/papers/ocsp-attack.pdf
+
+-----BEGIN CERTIFICATE-----
+MIIGRDCCBa2gAwIBAgIDAPCbMA0GCSqGSIb3DQEBBQUAMIIBEjELMAkGA1UEBhMC
+RVMxEjAQBgNVBAgTCUJhcmNlbG9uYTESMBAGA1UEBxMJQmFyY2Vsb25hMSkwJwYD
+VQQKEyBJUFMgQ2VydGlmaWNhdGlvbiBBdXRob3JpdHkgcy5sLjEuMCwGA1UEChQl
+Z2VuZXJhbEBpcHNjYS5jb20gQy5JLkYuICBCLUI2MjIxMDY5NTEuMCwGA1UECxMl
+aXBzQ0EgQ0xBU0VBMSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEuMCwGA1UEAxMl
+aXBzQ0EgQ0xBU0VBMSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEgMB4GCSqGSIb3
+DQEJARYRZ2VuZXJhbEBpcHNjYS5jb20wHhcNMDkwMjI0MjMwNDE3WhcNMTEwMjI0
+MjMwNDE3WjCBlDELMAkGA1UEBhMCVVMxEzARBgNVBAgTCkNhbGlmb3JuaWExFjAU
+BgNVBAcTDVNhbiBGcmFuY2lzY28xETAPBgNVBAoTCFNlY3VyaXR5MRQwEgYDVQQL
+EwtTZWN1cmUgVW5pdDEvMC0GA1UEAxMmd3d3LnBheXBhbC5jb20Ac3NsLnNlY3Vy
+ZWNvbm5lY3Rpb24uY2MwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBANJp+m86
+ALQhG8ixAtc/GbLEbbRU+IuKzNtywp48YLnGkT2Ct32Z/9EphMFzU5yC3fwkjHfV
+QfPoHkKhrS2e/1sQJs6dVxdzFiM4yNbxuqOWWxZnSk9zlzpNFKT04j+LBYNC0dDc
+L3rlthCyEcDcISqQ/66XcVpJgaxA8zu4WbJPAgMBAAGjggMhMIIDHTAJBgNVHRME
+AjAAMBEGCWCGSAGG+EIBAQQEAwIGQDALBgNVHQ8EBAMCA/gwEwYDVR0lBAwwCgYI
+KwYBBQUHAwEwHQYDVR0OBBYEFGGPYTRDVRR/JwnOTIvqm3sZJbxuMB8GA1UdIwQY
+MBaAFA4HYNQ5yRtbXZB7I8jSNJ1KmkY5MAkGA1UdEQQCMAAwHAYDVR0SBBUwE4ER
+Z2VuZXJhbEBpcHNjYS5jb20wcgYJYIZIAYb4QgENBGUWY09yZ2FuaXphdGlvbiBJ
+bmZvcm1hdGlvbiBOT1QgVkFMSURBVEVELiBDTEFTRUExIFNlcnZlciBDZXJ0aWZp
+Y2F0ZSBpc3N1ZWQgYnkgaHR0cHM6Ly93d3cuaXBzY2EuY29tLzAvBglghkgBhvhC
+AQIEIhYgaHR0cHM6Ly93d3cuaXBzY2EuY29tL2lwc2NhMjAwMi8wQwYJYIZIAYb4
+QgEEBDYWNGh0dHBzOi8vd3d3Lmlwc2NhLmNvbS9pcHNjYTIwMDIvaXBzY2EyMDAy
+Q0xBU0VBMS5jcmwwRgYJYIZIAYb4QgEDBDkWN2h0dHBzOi8vd3d3Lmlwc2NhLmNv
+bS9pcHNjYTIwMDIvcmV2b2NhdGlvbkNMQVNFQTEuaHRtbD8wQwYJYIZIAYb4QgEH
+BDYWNGh0dHBzOi8vd3d3Lmlwc2NhLmNvbS9pcHNjYTIwMDIvcmVuZXdhbENMQVNF
+QTEuaHRtbD8wQQYJYIZIAYb4QgEIBDQWMmh0dHBzOi8vd3d3Lmlwc2NhLmNvbS9p
+cHNjYTIwMDIvcG9saWN5Q0xBU0VBMS5odG1sMIGDBgNVHR8EfDB6MDmgN6A1hjNo
+dHRwOi8vd3d3Lmlwc2NhLmNvbS9pcHNjYTIwMDIvaXBzY2EyMDAyQ0xBU0VBMS5j
+cmwwPaA7oDmGN2h0dHA6Ly93d3diYWNrLmlwc2NhLmNvbS9pcHNjYTIwMDIvaXBz
+Y2EyMDAyQ0xBU0VBMS5jcmwwMgYIKwYBBQUHAQEEJjAkMCIGCCsGAQUFBzABhhZo
+dHRwOi8vb2NzcC5pcHNjYS5jb20vMA0GCSqGSIb3DQEBBQUAA4GBAGjueZeX3Tvv
+FmoG8hSabs2eEveqgxC90XyY+seu1A4snjgFnVJgqZkKgbSYkB2uu0rXudyInjd4
+QVv3gqXyukElWpAaHkU4oVJYdZQmRPsgB7pEzOVKLXI/mEf2JtwFRgUHYyGrRpuc
+eNVUWz0MHshkjLVQI4Jv27giHEOWB6i7
+-----END CERTIFICATE-----
+
+-----BEGIN RSA PRIVATE KEY-----
+MIICXQIBAAKBgQDSafpvOgC0IRvIsQLXPxmyxG20VPiLiszbcsKePGC5xpE9grd9
+mf/RKYTBc1Ocgt38JIx31UHz6B5Coa0tnv9bECbOnVcXcxYjOMjW8bqjllsWZ0pP
+c5c6TRSk9OI/iwWDQtHQ3C965bYQshHA3CEqkP+ul3FaSYGsQPM7uFmyTwIDAQAB
+AoGAcqDnnOaVcYxD7Z55NLgckOYv+bj8ulCAb+DiI4AzFaIWh9MJkXRvCAy9VQI1
+/6LPukhS+gmE55KBwb0AckUXSRC4DuPXOhgT6ywyEJGQp6IdaQmC4NoyC+G4GPnr
+h0YISVKTT1ppRgjF6tpaFvElGTse+yejtKAssduT45MoxGkCQQDx58UFfPCVwAho
+J7/4TXpEebYs/BuLKYwQKUuQe1B+dV2WtSaub+jbSSpRVScTpyfKRwN0w4UZzs/6
+4Zzs/erbAkEA3qx8uhMy7Dxu8zWx+C1b5LSh4Rf4sCvXug/nx3opvahO89iP5P6L
+MVplaVsVPwligUEaMsx9rJEJvt48sMEenQJBAOQlE6MOZ5TETOl2e84BvEuygodA
+qfWAlLF1UOgN9SefJ0oIxVeFAhc2lOuqJLWbU6KpgO/xqqlhbLOPbsHw5DsCQDj0
+j5acsIrCTnLBCjt7hqSyGzHTCtYs8KnzxYo9Ug3jzgYLH4soHHxMLeJL3NxZzytW
+dpgFvCN2mbKLb6SaUPUCQQCKjbXoN7DkBbk8wU0ZY5fGCtLEUHtEmT93nFgmUvQ3
+ZSB/EvhtWRPcWGdRC5tj0YxaUFevVhZA/Ng1d1JzbcKB
+-----END RSA PRIVATE KEY-----
+

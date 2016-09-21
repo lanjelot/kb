@@ -1,0 +1,12 @@
+# scraper
+
+https://xato.net/passwords/understanding-password-dumps/
+Dumpmon
+Pystemon
+
+# web crawler/spider
+wget
+httrack
+heritix (web gui)
+crawler4j (faut ecrire une classe java)
+nutch (prereq tomcat?)

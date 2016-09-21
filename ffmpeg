@@ -1,0 +1,4 @@
+# ffmpeg
+
+ffmpeg -i 01.mpc -acodec libvorbis -y -ab 192k 01.ogg
+

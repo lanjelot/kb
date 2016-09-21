@@ -1,0 +1,28 @@
+# selinux
+
+# good intro
+http://fedoraproject.org/wiki/SELinux/Troubleshooting
+
+# activer les logs
+# https://wiki.gentoo.org/wiki/SELinux/Tutorials/Where_to_find_SELinux_permission_denial_details
+# tl;dr:
+  denials are logged in the avc.log (no audit daemon running) or audit.log (audit daemon running) log files
+  denials might be obscured through dontaudit statements, which you can disable using semodule -DB and re-enable through semodule -B
+  the denial logging gives you great detail about who (process information, including security context) is trying to do what (permission) against something (target information, including security context)
+
+semodule -DB # Turn on all AVC Messages for which SELinux currently is "dontaudit"ing.
+sealert -a /var/log/audit/audit.log > /tmp/mylogfile.txt # human readable logs, sealert -> yum install setroubleshoot-server
+
+
+~# cat > portage_noatsecure.te << EOF
+module portage_noatsecure 1.0;
+require {
+  type portage_t;
+  type setfiles_t;
+  class process { noatsecure };
+}
+allow portage_t setfiles_t:process { noatsecure };
+EOF
+~# checkmodule -m -o portage_noatsecure.mod portage_noatsecure.te
+~# semodule_package -o portage_noatsecure.pp -m portage_noatsecure.mod
+~# semodule -i portage_noatsecure.pp

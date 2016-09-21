@@ -1,0 +1,6 @@
+# modem
+
+br2684ctl -b -c 1 -a 0.xx
+ifconfig eth0 down
+ifconfig nas1 up
+dhcpcd -T --vendorclassid=NEUFTVSTB_MA nas1

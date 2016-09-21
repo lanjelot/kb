@@ -1,0 +1,8 @@
+# mtu
+
+# pour faire ppp over FreeWifi, il faut diminuer le MTU de son interface wifi
+ifconfig <[ae]thX> mtu 1400
+
+# iproute2
+ip link set dev tun0 mtu 296
+

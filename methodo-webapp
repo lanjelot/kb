@@ -1,0 +1,42 @@
+# methodology for webapp testing
+
+# Map the Application's Content
+* Explore visible content
+browse the entire app, visit every link and URL, submit every form, proceed through all multi-step functions to completion.
+review the site map and identify any content or functionality that I have not walked through using my browser
+establish where each item was discovered (for exmample, check the Linked From details in Burp Spider)
+
+* Internet search
+archives (wayback)
+google site: and link:
+search on any names and email addresses discovered within the application's content
+perform news and groups searches regarding the target application and its supporting infrastructure
+
+* Discover hidden content
+common fil and directory names and common file extensions
+understand the nameing conventions (AddDocument.jsp and ViewDocument.jsp => EditDocument.jsp)
+review all client-side code to identify any clues about hidden server-side content (HTML comments, disabled forms ...)
+
+* Discover default content
+nikto etc.
+
+* Enumerate identified-specified functions
+/admin.jsp?action=editUser or /main.php?func=A21
+
+* Test for debug parameters
+debug,test,hide,source=true,yes,on,1
+for POST requests, supply in both query string and body
+
+# Analyze the application
+* Identify functionality
+identify the core security mechanisms employed by the application and the ways they work
+understand the key mechanisms that handle authentication, session management, access control, and the functions that support them, such as user registration and account recovery
+
+* Identify data entry points
+identify all of the different entry points that exist
+examine any customized data transmission or encoding mechanisms
+identify any out-of-band channels (eg. webmail that processes messages received via SMTP)
+
+* Identify the Technologies Used
+forms, scripts, cookies, Java applets, ActiveX controls, Flash objects
+

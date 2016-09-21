@@ -1,0 +1,28 @@
+# notify
+
+# nice popups
+cat .themes/Wesh/xfce-notify-4.0/gtkrc
+style "wesh-window"
+{
+    bg[NORMAL] = "#111111"
+    XfceNotifyWindow::border-color = "#ffff00"
+    XfceNotifyWindow::border-radius = 6.0
+    XfceNotifyWindow::border-width = 0.0
+}
+class "XfceNotifyWindow" style "wesh-window"
+
+style "wesh-text"
+{
+    fg[NORMAL] = "#ffffff"
+    GtkWidget::link-color = "#0000ff"
+}
+widget_class "XfceNotifyWindow.*.<GtkLabel>" style "wesh-text"
+
+style "wesh-btn"
+{
+    bg[NORMAL] = "#9400d3"
+    bg[PRELIGHT] = "#0077ff"
+}
+widget "XfceNotifyWindow.*.GtkButton" style "wesh-btn"
+
+run xfce4-notifyd-config to set Wesh as default

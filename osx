@@ -1,0 +1,13 @@
+# macosx
+
+http://randomthoughts.greyhats.it/2014/10/osx-local-privilege-escalation.html
+
+* rootpipe not fixed pre-yosemite, and unsufficient patch on yosemite (10.10.3)
+https://objective-see.com/blog.html
+
+* dyld
+https://www.sektioneins.de/en/blog/15-07-07-dyld_print_to_file_lpe.html
+https://luismiras.github.io/muymacho-exploiting_DYLD_ROOT_PATH/
+
+* local root < 10.11
+https://github.com/kpwn/tpwn

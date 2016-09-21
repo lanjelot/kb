@@ -1,0 +1,35 @@
+# joomla
+
+# sqli
+https://www.trustwave.com/Resources/SpiderLabs-Blog/Joomla-SQL-Injection-Vulnerability-Exploit-Results-in-Full-Administrative-Access/?page=1&year=0&month=0
+there are other sqlis in recent versions stfw
+
+# check vulnerable plugins/extensions
+http://vel.joomla.org/
+https://docs.joomla.org/Joomla_3.1_version_history
+
+# joomla = 1.5.12
+http://yehg.net/lab/pr0js/advisories/tinybrowser_1416_multiple_vulnerabilities
+
+# joomla <= 1.5.12
+http://www.securityfocus.com/archive/1/505231
+
+## extensions
+# RSForm!Pro
+https://www.rsjoomla.com/joomla-extensions/joomla-form.html
+https://www.rsjoomla.com/support/documentation/view-knowledgebase/125-changelog.html
+https://www.rsjoomla.com/forum/37-rsform-pro.html
+https://www.rsjoomla.com/blog/view/229-we-have-changed-the-way-we-keep-track-of-new-versions.html (Rev20==1.2.0, Rev30==1.3.0, Rev40==1.4.0, Rev49==1.49.0 and no more RevXX 1.49.1, 1.49.2 ...)
+
+# Pretty Photo, slprettyphoto (Starlite)
+* xss CVE-2013-6837 prettyPhoto 3.1.4 and earlier
+search for rel="pretty
+then exploit with adding: #prettyPhoto[ADAPTME]/2,<a onclick="alert(1);">/
+https://github.com/Duncaen/prettyphoto/commit/3ef0ddfefebbcc6bbe9245f9cea87e26838e9bbc # but there's a typo lol
+
+version 3.1.5 downloadable at http://www.no-margin-for-errors.com/projects/prettyPhoto-jquery-lightbox-clone/ fixes the vuln and is typo-free (according to http://www.saotn.org/prettyphoto-dom-based-xss/)
+source is at: https://github.com/scaron/prettyphoto (ref to no-margin-for-errors.com in README.md)
+
+# remember me cookies contain username + password XOR'ed with $secret from configuration.php
+http://seclists.org/fulldisclosure/2013/Jun/149
+however on 3.1.0 there is no option to submit remember=1 in POST

@@ -1,0 +1,44 @@
+# rpm
+
+# extract rpm
+mkdir blah && cd blah
+rpm2cpio path/to/pkg.rpm | cpio -idmv
+
+# download src, extract blah.src.rpm under ~/rpmbuild/SOURCES and build the binary pkg
+yum install yum-utils rpm-build
+
+install/enable the srpms repos
+yumdownloader --source <pkg>
+or
+rpmbuild --rebuild blah.src.rpm
+yum-builddep <./pkg.spec|./pkg.src.rpm> # will automatically install deps
+
+
+# pam
+rpm -vih ./pam-xx.src.rpm
+rpmbuild -bp SPECS/pam.spec
+(
+cd BUILD
+rm -fr Linux-PAM-1.1.8
+tar xf ../SOURCES/Linux-PAM-1.1.8.tar.bz2
+cp -r Linux-PAM-1.1.8{,-patch}
+cp -r Linux-PAM-1.1.8{,-orig}
+vi Linux-PAM-1.1.8-path/...
+diff -uNr Linux-PAM-1.1.8-orig/ Linux-PAM-1.1.8-patch/ > ~/rpmbuild/SOURCES/blah.patch 
+)
+vi SOURCES/pam.spec # add patch
+rpmbuild -bb SOURCES/pam.spec
+yum reinstall RPMS/x86_64/pam-1.1.8-17.el6.x86_64.rpm 
+
+# enable debug in pam
+yum install yum-utils rpm-build -y
+wget http://vault.centos.org/7.1.1503/os/Source/SPackages/pam-1.1.8-12.el7.src.rpm
+rpm -ivh ./pam-1.1.8-12.el7.src.rpm
+yum-builddep rpmbuild/SPECS/pam.spec
+sed -i -e 's,^%configure ,%configure --enable-debug ,' rpmbuild/SPECS/pam.spec
+rpmbuild -bb rpmbuild/SPECS/pam.spec
+rpm -Uvh rpmbuild/RPMS/x86_64/pam-1.1.8-12.el7.centos.x86_64.rpm
+echo 'touch /var/run/pam-debug.log; chmod 622 /var/run/pam-debug.log' >> /etc/rc.d/rc.local
+reboot
+# to reinstall official version
+yum downgrade pam

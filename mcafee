@@ -1,0 +1,10 @@
+# mcafee
+
+# privesc to DA with SiteList.xml
+https://www.reddit.com/r/netsec/comments/43mni7/mcafee_privileged_sitelistxml_leads_to_active/
+https://github.com/tfairane/HackStory/blob/master/McAfeePrivesc.md
+https://www.syss.de/fileadmin/dokumente/Publikationen/2011/SySS_2011_Deeg_Privilege_Escalation_via_Antivirus_Software.pdf from the reddit comments
+http://warchest.fusionx.com/mcafee-sitelist-xml-domain-credentials-disclosure/
+
+# ePO server / epolicy
+https://funoverip.net/2014/04/mcafee-epolicy-0wner-0-1-release/

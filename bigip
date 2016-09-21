@@ -1,0 +1,10 @@
+# bigip
+
+# cookie internal IP deobfuscation
+http://blog.whitehatsec.com/f5-networks-big-ip-cookie-decoded/
+http://www.tylerkrpata.com/2009/06/decode-f5-bigip-cookie-in-one-line-of.html
+import socket, struct
+cookie = "673059850.20480.0000"
+ip, port, _ = cookie.split(".")
+print "ip =", socket.inet_ntoa(struct.pack('<L', int(ip)))
+print "port =", socket.htons(int(port))

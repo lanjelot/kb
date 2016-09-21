@@ -1,0 +1,12 @@
+# rainbow crack
+
+## tables
+http://code.google.com/p/rainbowcrack-mc/
+http://code.google.com/p/linuxrainbowcrack/
+
+## rcrack
+# rainbow tables pour casser les empreintes NTLM
+rcracki -l ntlm_hashes /data3/rainbowtables_indexees/ntlm/ntlm_mixalpha-numeric#1-8_0/*rti
+
+# rcrack d'une empreinte MD5
+rcrack /data/rainbowtables/md5/md5_loweralpha-numeric-all-space_1-7/md5_loweralpha-numeric-all-space#1-7_* -h eb384f03fcf9cd0b5bfcefd79bfc7e50

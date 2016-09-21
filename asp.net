@@ -1,0 +1,93 @@
+# asp.net
+
+# howto decrypt encrypted password from web.config files
+https://www.netspi.com/blog/entryid/215/decrypting-iis-passwords-to-break-out-of-the-dmz-part-1
+copy "c:\inetpub\wwwroot\MyApp\web.config"  c:\temp
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\aspnet_regiis.exe -pdf "connectionStrings" C:\temp
+
+# the "if IsCallBack()" mistake
+__EVENTTARGET=&__EVENTARGUMENT=
+
+# .net decompiler
+dnSpy
+ILSpy
+http://www.telerik.com/download/justdecompile
+reflector (but need license)
+
+# .net assembly editor
+https://github.com/sailro/Reflexil
+
+# .net deobfuscator and unpacket
+https://github.com/0xd4d/de4dot 
+
+# .net deserialization
+https://blog.scrt.ch/2016/05/12/net-serialiception/
+
+# padding oracle
+http://eglasius.blogspot.fr/2010/09/aspnet-padding-oracle-how-it-relates-to.html (intro)
+papers/PaddingOraclesEverywhereEkoparty2010.pdf (original research)
+
+http://blog.mindedsecurity.com/2010/09/investigating-net-padding-oracle.html
+http://blog.mindedsecurity.com/2010/10/breaking-net-encryption-with-or-without.html
+
+http://blog.gdssecurity.com/labs/2010/9/14/automated-padding-oracle-attacks-with-padbuster.html
+http://blog.gdssecurity.com/labs/2010/10/4/padbuster-v03-and-the-net-padding-oracle-attack.html
+
+http://www.troyhunt.com/2010/09/fear-uncertainty-and-and-padding-oracle.html
+
+http://www.skullsecurity.org/blog/2013/padding-oracle-attacks-in-depth
+
+* tools
+PadBuster from gdssecurity
+http://netifera.com/research/ poet (not specific to asp.net)
+https://github.com/mwielgoszewski/python-paddingoracle
+https://github.com/escbar/pypadbuster
+https://github.com/szdavid92/padex
+
+Tom N does it with old padbuster and webconfig bruter
+
+the tool from fedon (mindedsecurity)
+perl padBusterdotnet.pl "http://172.16.37.137/SpamConsole/ScriptResource.axd?d=b9fx9D7i7Q3rV284cXCY7YX_QsG3ct3g43bFuFbYQIeCbW487OvJcTX54T2pI0BOf1-emeM2_C9O2MjMAgpFnQ2" b9fx9D7i7Q3rV284cXCY7YX_QsG3ct3g43bFuFbYQIeCbW487OvJcTX54T2pI0BOf1-emeM2_C9O2MjMAgpFnQ2 16 -plaintext "|||~/web.config"
+Start with -superverbose, and check SSL errors, eventually add the following env var:
+export PERL_LWP_SSL_VERIFY_HOSTNAME=0
+
+https://github.com/nccgroup/dotnetpaddingoracle
+
+# filetypes
+Web.Config # a la racine du website
+.aspx
+.asmx
+.ascx # controls
+
+# infoleak
+instant .net stack trace, ask for |.aspx
+
+# urlsafe base64
+def urltoken_decode(urltoken):
+  padding_size = urltoken[-1]
+  urlsafe_b64 = urltoken[:-1]
+  return '%s%s' % (urlsafe_b64.replace('_', '/').replace('-', '+'), '=' * int(padding_size))
+
+# decode viewstate
+viewstate hacker
+
+# support / life cycle
+http://support.microsoft.com/kb/2696944 # tl;dr .net 2.0 SP2 dies when 2008 R2 will be no longer supported
+http://support.microsoft.com/lifecycle/?c2=548
+http://blogs.msdn.com/b/jamesche/archive/2007/09/25/asp-net-version-madness.aspx # since .net 3.5 sits on top of 2.0, after installing 3.5 you still have X-AspNet-Version: 2.0.50727
+
+# tilde
+http://1.2.3.4/*~1*/.aspx -> 404 -> likely vuln
+http://1.2.3.4/z*~1*/.aspx -> 400 or 200 or != than 404 -> no such resource
+http://1.2.3.4/a*~1*/.aspx -> 404 -> found first letter
+...
+http://1.2.3.4/aspnet~1/.aspx -> 404 -> found aspnet_client
+
+# local privesc .NET remoting CVE-2014-1806 and CVE-2014-4149 
+http://tyranidslair.blogspot.co.uk/2014/11/stupid-is-as-stupid-does-when-it-comes.html (https://github.com/tyranid/ExploitRemotingService)
+
+# xss via unsigned viewstate
+https://www.trustwave.com/Resources/Security-Advisories/Advisories/TWSL2010-001/?fid=3765
+
+# error logging
+/elmah /elmah.axd/

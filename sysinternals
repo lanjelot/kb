@@ -1,0 +1,21 @@
+# sysinternals
+
+# description of every tools
+http://technet.microsoft.com/en-au/sysinternals/bb545027.aspx
+
+# secu
+PsLoggedOn
+RootkitRevealer
+
+# info systeme
+PendMoves
+
+# outils pour fichier et disque
+cacheset
+contig -s -v -a c:\
+diskview
+pagedefrag
+pendmoves
+
+# tous les outils sysinternals, valider automatiquement la popup
+procexp /accepteula

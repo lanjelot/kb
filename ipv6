@@ -1,0 +1,21 @@
+# ipv6
+
+# disable/enable
+sysctl -w net.ipv6.conf.all.disable_ipv6=1
+
+google-public-dns-a.google.com. 83236 IN AAAA   2001:4860:4860::8888
+
+# archilnux
+/boot/grub/grub.cfg: linux /boot/vmlinuz-linux root=UUID=de6e883e-0cd4-4a0a-8f26-12360f2c3ecf ro ipv6.disable=1
+
+# ipv4 to ipv6 tunnel
+www.tunnelbroker.net (l: lanjelot@gmail.com)
+modprobe ipv6 (module may be built in kernel)
+ip tunnel add he-ipv6 mode sit remote 216.66.84.46 local my.public.ip.v4 ttl 255
+ip link set he-ipv6 up
+ip addr add 2001:470:1f14:10a9::2/64 dev he-ipv6
+ip route add ::/0 dev he-ipv6
+ip -f inet6 addr
+
+# http proxy to ipv6
+http://maroueneboubakri.blogspot.com.au/2014/02/olympic-ctf-sochi-2014-curling100.html

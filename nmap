@@ -1,0 +1,68 @@
+# nmap
+
+# nse (Nmap Scripting Engine)
+hsc newsletter dec 2k8
+
+# psexec
+nmap 1.2.3.4 --script smb-psexec --script-args=config=network,smbuser=administrator,smbpass=Password1
+
+# fyodor talk at defon 16 (2008)
+== firewall ==
+best against stateful firewall: send a SYN probe
+$ nmap -sP -PS80 sun.com
+best against stateless firewall: send an ACK probe
+$ nmap -sP -PA80 sun.com
+
+== TCP and IP header options ==
+--ip-options "L 10.0.0.2" (source routing)
+
+== More effective host discovery ==
+- send both SYN and ACK probes!
+- send UDP probe, if port is closed => target is alive
+- when ping/echo is blocked, try an other ICMP probe
+
+-sP -PE -PP -PS21,22,23,... -PA80,113,... --source-port 53 (masquarade DNS)
+-PU 
+
+== Top ports ==
+nmap now scans the top 1000 ports for each protocol
+UDP scan much quicker (13 seconds): nmap -sUV -F -T4 --version-intensify 0
+--top-ports [...|500|1000|2000|...] (default is 1000) 
+  tcp: top 3674 ports is 100% effective
+  udp: top 1017 ports is 100% effective
+top 10 is:
+ tcp: 80, 23, 22, 443, 3389, 445, 139, 21, 135, 25
+ udp: 137 (netbios-ns) 161 (snmp) 1434 (ms-sql-m) 123 (ntp) 138 (netbios-dgm) 445 (ms-ds) 135 (msrpc) 67 (dhcps) 139 (netbios-ssn) 53 (domain)
+
+== Timing ==
+--min-rate --max-rate (packets per second: just go the speed i say, do not bother with probes being dropped)
+--max-scan-delay (solaris responds with 1 ICMP message per second)
+--min-hostgroup 
+--max_rtt_timeout --initial_rtt_timeout (traceroute)
+
+== helpers ==
+--reason (syn-ack or reset)
+-oA mylog-%T-%D (time & date)
+
+== ncat ==
+"netcat improved"
+connection brokerin? (bypassing NATs)
+
+# top ports
+grep -v '^#' /usr/share/nmap/nmap-services | awk -F' ' '{print $3" "$2" "$1}' | sort -nr | head -n 100
+
+# more effective ping scan
+-sn (formerly known as -sP) by default does: -PE -PS443 -PA80 -PP
+more advanced; 
+-PE # icmp echo
+-PS80,23,22,443,3389,445,139,21,135,25 # top 10 most common ports
+-PA80 # send ack
+-PP # icmp timestamp
+-PU # send udp packet to 40125/udp, machine is up if ICMP port unreachable
+
+# jdwp
+nmap -v -iL targets.txt -p8000,8787,8788,9009,7777,8453,5005,3999,5000,18000,9001 -Pn
+
+# ultimate cmd line
+nmap -v -iL targets.txt -PE -PS80,23,22,443,3389,445,139,21,135,25 -PA80 -PP -PU -T4 -sV --reason
+

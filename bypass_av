@@ -1,0 +1,58 @@
+# bypass antivirus av evasion
+
+* bypass static heuristic and dynamic analysis
+decrypt payload: http://www.sevagas.com/?Hide-meterpreter-shellcode-in
+fool sandbox: http://packetstorm.foofus.com/papers/virus/BypassAVDynamics.pdf
+hundred million increments or malloc 100mb
+know your enemy (write/read file in home user dir)
+what the fuck is NUMA
+what is my name
+first open a mutex
+
+https://github.com/govolution/avepoc
+http://www.securitysift.com/pecloak-py-an-experiment-in-av-evasion/
+https://samsclass.info/124/proj14/p8-av.htm
+
+* try ditto
+http://www.room362.com/blog/2012/10/8/compiling-and-release-of-ditto.html
+
+* python exe
+http://pen-testing.sans.org/blog/2011/10/13/tips-for-evading-anti-virus-during-pen-testing
+http://carnal0wnage.attackresearch.com/2011/07/process-injection-outside-of-metasploit.html
+https://www.trustedsec.com/august-2012/new-tool-pyinjector-released-python-shellcode-injection/ (ya meme l'option dans SET: http://www.hackingarticles.in/bypassing-antivirus-using-multi-pyinjector-shellcode-injection-in-set-toolkit/)
+http://pauldotcom.com/wiki/index.php/Episode333
+https://www.christophertruncer.com/veil-a-payload-generator-to-bypass-antivirus/ (http://www.reddit.com/r/netsec/comments/1fc2xp/veil_a_metasploit_payload_generator_for_bypassing/)
+http://pen-testing.sans.org/blog/pen-testing/2013/07/12/anti-virus-evasion-a-peek-under-the-veil
+
+* powershell to spawn meterpreter
+http://obscuresecurity.blogspot.fr/2013/03/powersploit-metasploit-shells.html
+
+* metastploit psexec_command (when AV blocks metasploit service)
+Doesnt upload a metasploit binary for the service but use the cmd.exe of the compromised server instead. Only allows to run a single Windows command
+
+* metasm
+http://www.pentestgeek.com/2012/01/25/using-metasm-to-avoid-antivirus-detection-ghost-writing-asm/
+
+* hyperion
+marche pas pour PE64
+wce32 marche pas sur windows x64
+donc utiliser hyperion.exe sur wce universal
+virustotal: detecte par symantec, kaspersky, panda, comodo, antivir // pas detecte par mcafee, sophos, trendmicro, microsoft, clamav, avg, avast
+
+* pescrambler
+les versions scrambled de wce64 ou de wceUni ne s'executent meme pas
+c'est probablement win32 only
+
+* veil
+powershell/VirtualAlloc + un payload de msfvenom
+
+* powershell
+utiliser PowerSploit/Invoke-Shellcode avec un payload meterpreter
+j'arrive pas a faire marcher Invoke-ReflectivePEInjection avec wce.exe (ou calc.exe) probablement pas encore entierement supporte
+Invoke-Mimikatz fonctionne mais c'est une vielle version de mimikatz modifiee et recompilee en dll, de plus la dll est probablement injectee dans lsass
+
+* packers
+MPRESS
+
+* excluded antivirus locations
+msf post/windows/gather/enum_av_excluded

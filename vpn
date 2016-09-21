@@ -1,0 +1,9 @@
+# vpn
+
+# bonne intro vpn
+http://www.symantec.com/connect/fr/articles/penetration-testing-ipsec-vpns
+
+# client
+vpnc (client Cisco) pour examiner les paquets en reçus (et trouver son IP interne dans le champ id.data)
+Et ainsi en deduire q toutes les IP aboutissent sur le meme serveur VPN
+

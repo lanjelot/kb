@@ -1,0 +1,35 @@
+# vmware
+
+# esx users par defaut
+root, dcuiuser, vpxuser
+dcuiuser ou dcui selon les versions
+normalement dcui est locké mais ca coute rien de tester
+
+# default passwords
+http://www.kendrickcoleman.com/index.php/Tech-Blog/list-of-vmware-default-usernames-and-passwords.html
+
+# old vuln
+https://www.trustwave.com/Resources/Security-Advisories/Advisories/TWSL2010-002/?fid=3766
+
+# pb 
+desc: au lancement de la console vmware (vmware-1.0.8.126538):
+$ vmware
+Xlib:  extension "RANDR" missing on display ":0.0".
+/opt/vmware/server/lib/bin/vmware: symbol lookup error: /usr/lib/libgio-2.0.so.0: undefined symbol: g_thread_gettime
+
+solution :
+export VMWARE_USE_SHIPPED_GTK=force
+export LIBXCB_ALLOW_SLOPPY_LOCK=1
+
+# pb
+desc: "host clock rate change request" dans les logs
+solution: ajouter host.useFastClock = FALSE dans /etc/vmware/config 
+
+# pour recuperer le clavier
+setxkbmap -layout fr
+
+# pour connaitre les versions
+http://www.vmware.com/patch/download/
+
+# convert multi vmdk files to a single raw file
+qemu-img convert -O raw -f vmdk SpiderLabs-VRPT.vmdk blah.raw

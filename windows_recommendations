@@ -1,0 +1,43 @@
+# windows recommendations
+
+https://dfirblog.wordpress.com/2015/11/08/protecting-windows-networks-defeating-pass-the-hash/
+http://passing-the-hash.blogspot.com.au/
+http://digital-forensics.sans.org/blog/2014/11/13/protecting-privileged-domain-accounts-restricted-admin-and-protected-users
+http://www.aorato.com/blog/remote-desktops-restricted-admin-cure-worse-disease/
+https://labs.portcullis.co.uk/blog/new-restricted-admin-feature-of-rdp-8-1-allows-pass-the-hash/
+
+* 8.1
+- No more plaintext creds in memory
+Microsoft introduced new security features in Windows 8.1; by default domain accounts no longer store plaintext passwords in memory on a system, should clean up the hash and kerberos tickets better on logout, and if the account is a Protected User, the hash will not be present either (although a Kerberos TGT will be).
+
+- Restricted Admin mode for Remote Desktop Connection
+Authenticates the user with a network logon and avoids storing the user credentials on the remote host.
+This is the only safe form of an interactive logon to an untrusted host. Used to be turned on by default before MS changed their mind in July 2014.
+This is particularly appropriate for systems administrators who need a desktop environment. Unfortunately the target system must be running Windows 8.1 or Server 2012R2, though the client can be Windows 7 or higher with KB2871997 applied.
+If the account logged in remotely via Restricted Admin Remote Desktop, no stealable credentials will be put on the remote system at all (the computer account will be in memory instead). The username & password are never sent to the compromised system, instead the client authenticates via network logon using either Kerberos or NTLM. However this means an attacker can pass-the-hash (NTLM) or pass-the-ticket to RDP in.
+
+* Protected Users (active directory group) 
+The Protected Users group provides a number of beneficial changes to protect its members, including disabling delegation, enforcing Kerberos with only AES encryption, and preventing the storage of cached domain credentials. It is highly recommended to take advantage of the protections provided by this new group. Keep in mind though that interactive logons with Protected User accounts still result in sensitive credential information being created in memory--in particular the user's Kerberos TGT--so Protected Users must still avoid interactive logons to untrusted hosts.
+
+Native feature to Windows 2012R2 domains. Most of its protections have recently been added to legacy domains (2008R2/2012) via update KB2871997.
+Members of this group have delegation disabled automatically (can't impersonate token anymore).
+Members of this group are forced to used Kerberos authentication. (Kerberos with AES only, not DES or RC4).
+Kerberos long-term keys are not kept in memory. User must manually re-authenticate when TGT expires (4 hours instead of the 10 hours default).
+Users og this group will not have their cached domain credentials stored.
+
+However if a domain admin was a Protected User and logged into a compromised server, the attacker who controls that server would have temporary access to that domain admin account via the TGT. By dumping the domain's hash database with that TGT, the attacker now has permanent access with full control over the domain. However, I still consider Protected Users an improvement since the exposure duration of kerberos tickets (a few hours) is vastly less than the exposure duration of hashes (good forever until password change).
+
+* silos
+Microsoft also introduced authentication silos, which restrict where an account can log in from. 
+allow login from admin workstations
+
+* domain admins
+http://www.irongeek.com/i.php?page=videos/circlecitycon2014/220-active-directory-real-defense-for-domain-admins-jason-lang
+
+* pass the hash mitigations "mimikatz KB" KB2871997 (http://www.pwnag3.com/2014/05/what-did-microsoft-just-break-with.html)
+local accounts can no longer be used to access remote systems, either via simple network logon or interactive login (PSEXEC or browsing C$ remotely)
+so you can't pth local accounts, but you still can pth RID 500 (unless disabled) and domain accounts member of the Administrators group
+it also will cause the OS to clear creds from memory when the user properly logs off (after ~30 seconds)
+
+* KB2928120
+prevents from storing passwords in GPO

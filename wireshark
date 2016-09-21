@@ -1,0 +1,9 @@
+# wireshark
+
+# decrypt SSL
+127.0.0.1,443,http,/path/to/wireshark_ssl/privkey.pem
+
+https://isc.sans.edu/forums/diary/Psst+Your+Browser+Knows+All+Your+Secrets+/16415
+
+# full stack packet editor
+https://wireedit.com/

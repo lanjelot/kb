@@ -1,0 +1,11 @@
+# tr
+
+# ignorer tout caractere non ascii autre que LF et ' ' -> '~'
+tr -cd '\12\40-\176'
+
+# translate (rot2)
+tr a-z c-za-b
+
+# caesar rot13
+tr a-zA-Z n-za-mN-ZA-M
+tr a-zA-Z0-45-9 n-za-mN-ZA-M5-90-4

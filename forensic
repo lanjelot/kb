@@ -1,0 +1,76 @@
+# forensic
+
+http://www.forensicswiki.org/
+http://computer-forensics.sans.org/blog/2012/04/25/cheat-sheet
+
+# recover deleted files from an ext[34] partition
+undelete (/usr/share/doc/extundelete/README)
+
+# http://blog.kiddaland.net/downloads/
+
+# linux mem dump with rekall
+https://isc.sans.edu/diary/Linux+Memory+Dump+with+Rekall/17775
+
+# differences between two virtual machine disk images
+http://libguestfs.org/virt-diff.1.html (via http://rwmj.wordpress.com/2013/12/19/new-in-virt-tools-virt-diff)
+
+# fuzzy tree diff
+https://github.com/bmaia/binwally
+
+# hashes db of known good/bad files
+NIST
+http://bin-test.shadowserver.org/
+
+# mactimes
+Unix ou NTFS, ctime: last time inode/MFT modified
+FAT, ctime: time file was created
+
+# checklist
+http://isc.sans.edu/diary.html?storyid=10339 voir les listes à la fin
+http://isc.sans.edu/diary.html?storyid=9325
+http://www.mandiant.com/services/emergency_incident_response/
+
+# volatility
+http://www.forensicswiki.org/wiki/List_of_Volatility_Plugins
+https://github.com/volatilityfoundation/volatility/wiki/Command%20Reference
+http://forensiczone.blogspot.com/2009/01/using-volatility-1.html (recuperer des passwords depuis une image en RAM)
+
+# dd.exe
+http://gmgsystemsinc.com/fau/
+
+# blackarch
+./vinetto/PKGBUILD:pkgdesc="A forensics tool to examine Thumbs.db files"
+./rifiuti/PKGBUILD:pkgdesc="Examine the contents of the INFO2 file from a MS Recycle Bin file (forensic purposes)."
+./galleta/PKGBUILD:pkgdesc="Examine the contents of the IE's cookie files for forensic purposes"
+./pasco/PKGBUILD:pkgdesc="Examines the contents of Internet Explorer's cache files for forensic purposes"
+
+# file carvers
+sorter
+foremost
+photorec
+binwalk
+scalpel
+
+# hidden protected are
+HPA: host protected area
+DCO: device configuration overlay
+
+# windows
+# http://www.youtube.com/watch?v=SVqiDdVS7Wo // DerbyCon 2013 Windows 0wn3d By Default Mark Baggett
+* reserved filenames
+copy putty.exe AUX
+can't delete unless using: del \\?\c:\TEMP\AUX
+
+alternate data streams invible to dir /r with \\?\c:\temp\LPT1:ads.txt
+unless using: dir /r \\?\c:\temp
+
+* space directory
+mkdir \\?\c:\temp\".. \"
+dir /x
+
+# lsb (detecter les bits de poids faibles)
+http://hack-and-fun.blogspot.fr/2011/02/detection-de-lsb.html
+https://tc.giboulees.net/blah/tools/lsb
+
+# parse .DS_Store
+http://ds-store.readthedocs.org/en/latest/

@@ -1,0 +1,6 @@
+# eDirectory sASLoginConfiguration
+http://ldapwiki.willeke.com/wiki/Universal%20Password
+http://ldapwiki.willeke.com/wiki/NovellS%20Challenge%20Response%20System
+
+# admin HTTP interface
+admin.o=asdf / password # ssl cert may disclose context

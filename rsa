@@ -1,0 +1,31 @@
+# rsa
+
+factordb.com may know the prime factors p and q for a given N
+
+* fermat's little theorem states that if p is a prime number
+a^(p-1) = 1 (mod p)
+so
+a^(p-2) * a = 1 (mod p)
+a^(p-2) = a^-1 (mod p)
+
+Q = M * P^A (mod B) we can find P^A with: Q * M^-1 and M^-1 = M^(B-2) (mod B)
+so P^A = Q * M^(B-2) % B and then we need P^-A = P^A^(B-2) (mod B)
+we can then decipher flag M2 with: Q * P^-A % B
+
+* good quick overview
+http://doctrina.org/How-RSA-Works-With-Examples.html
+
+* extract modulus and exponent
+cat pubkey.pem | grep -v -- ----- | tr -d '\r\n' | base64 -d | openssl asn1parse -inform DER -i -strparse 18
+
+* well known attacks
+known factors (factordb etc.)
+common modulus (2 keys with same modulus)
+twin prime (p & q are very close -> fermats)
+common factors (2 moduli with a common prime factor (can be p or q))
+big exponent -> small d -> wiener attack (or boneh burfee) possible when d < 1/3*N^(1/4)
+very small exponent (like e=3)
+moar at https://github.com/mimoo/RSA-and-LLL-attacks
+
+* Franklin-Reiter related-message attack (when e=3)
+https://en.wikipedia.org/wiki/Coppersmith%27s_attack#Franklin-Reiter_related-message_attack

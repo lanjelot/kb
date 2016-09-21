@@ -1,0 +1,7 @@
+# wget
+
+# ne pas essayer de telecharger robots.txt 
+-e robots=off
+
+# definir le nombre de retry
+-t 5

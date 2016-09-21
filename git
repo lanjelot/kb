@@ -1,0 +1,179 @@
+# git
+
+# crash course
+https://www.atlassian.com/git/tutorial/
+
+git diff --cached # show only changes not yet added to the index
+
+git log --oneline
+git log --stat --summary
+git log -p # see complete diff at each step
+git log --author="<pattern>"
+git log --grep="<pattern>"
+git log <file>
+git log --graph --decorate ﻿--oneline 
+git log 3157e..5ab91
+git log 3157e~1
+git log HEAD~3
+git reflog
+
+git checkout a138fb5 hello.py # see version from old commit
+git checkout HEAD hello.py # and back to recent version
+
+git branch -a # to list all existing branches, including remote branches, and see active one
+git checkout -b 1.3-stable origin/1.3-stable # create branch '1.3-stable' as a local copy of the remote branch 'origin/1.3-stable' and switch to it (to use a different branch than the default selected (master) then you need to create a local copy of the remote branch)
+
+git checkout master # back to master branch
+git merge hotfix # merge another branch
+git checkout new-feature
+git rebase master # always to do a fast-forward merge instead of a 3-way merge to keep a linear history (and no merge commit)
+git checkout master
+git merge new-feature # merge changes of new-feature into master
+git diff # to show conflicts
+git commit -a # commit result of merged conflicts
+
+git branch -d new-feature # to delete merged branch which is now useless
+git branch -D crazy-idea # if branch were not merged
+
+git branch -r # list remote branches
+
+gitk, qgit, tig # GUIs
+gitk HEAD..FETCH_HEAD  # visualize what bob did since his fork
+gitk HEAD...FETCH_HEAD # visualize what both of them did since they forked
+
+pull = fetch + merge + commit and always merges into the current branch
+
+git pull <remote> == git fetch <remote>; git merge origin/<current-branch>
+
+git checkout master
+git pull --rebase origin # keel local changes onto the top of what everybody else has already contributed
+
+git tag v2.5 1b2ae37b
+git push <remote> --tags # sends all local tags to remote repo
+
+git revert HEAD # revert the most recent commit
+
+revert: the safe way, reset: the dangerous way & permanent undo
+git reset # unstages all files without overwriting any changes
+git reset --hard # reset the staging area and the working directory to match the most recent commit
+git reset --hard <commit> # obliterates all commits after <commit>
+git reset --hard HEAD~2 # remove last 2 commits
+NB. never do reset on published commits
+
+git clean # removes untracked files from working directory
+
+git grep "hello" v2.5
+
+# delete last commit (assuming i am sitting on that commit)
+# warning you will loose your changes
+git reset --hard HEAD~1 or git reset --hard <sha1-commit-id>
+
+# forgot to add files or to make changes to files in commit?
+git add ./path/to/file
+git commit -a --amend -C HEAD
+
+# edit last commit message
+git commit --amend
+
+# undo last push
+git push -f origin HEAD^:master
+
+# google code new empty git project "Everything up-to-date" FAQ "If the remote repository is empty, nothing will be pushed, so you should explicitly specify a branch to push"
+git push origin master 
+
+# http://stackoverflow.com/questions/6406762/why-am-i-merging-remote-tracking-branch-origin-develop-into-develop
+do not use git pull --rebase, do below instead:
+* download the latest commits
+git remote update -p
+* update the local branch
+git merge --ff-only @{u}
+* if the above fails with a complaint that the local branch has diverged:
+git rebase -p @{u}
+
+or just create an alias: git config --global alias.up '!git remote update -p; git merge --ff-only @{u}' and then just do: git up
+
+# fork a project on github (https://gist.github.com/blackfalcon/8428401)
+click fork on web gui
+git clone
+git remote add upstream https://github.com/fixme/fixme.git
+git checkout -b blah master
+
+- sync the fork
+git fetch upstream
+git checkout master # checkout my fork's local master branch
+git merge upstream/master
+
+- create branch and push changes
+git checkout -b mynewfeat master
+git commit -m blah core.py
+git push origin mynewfeat
+
+- keep forked repo synced with main repo
+git checkout master
+git fetch upstream
+git rebase upstream/master
+git status # your branch is ahead of 'origin/master' with n commits
+git push origin master
+
+- once pull request merged
+git branch -d mynewfeat # delete branch from local repo
+git push origin --delete mynewfeat # delete branch from remote repo as well (optional)
+
+# master/develop/branches (newfeats/bugfixes/releases) http://nvie.com/posts/a-successful-git-branching-model/
+* new feature
+1. create branch
+git checkout -b newfeat develop
+
+2. incorporate feature on develop
+git checkout develop
+git merge --no-ff myfeat
+git branch -d myfeat
+git push origin develop
+
+3. create a release branch
+git checkout -b release-1.2 develop
+change version number
+git commit -a -m 'New release 1.2'
+
+4. finishing a release branch
+git checkout master
+git merge --no-ff release-1.2
+git tag -a 1.2
+git checkout develop
+git merge --no-ff release-1.2
+git branch -d release-1.2
+
+* new hotfix
+git checkout -b hotfix-1.2.1 master
+change version number
+git commit -a -m 'New bugfix version 1.2.1'
+fix bug
+git commit -m 'Fixed blah bug'
+
+git checkout master
+git merge --no-ff hotfix-1.2.1
+git tag -a 1.2.1
+
+git checkout develop
+git merge --no-ff hotfix-1.2.1
+
+git branch -d hotfix-1.2.1
+
+# stash
+git stash list
+git stash apply stash@{2}
+git stash show
+
+# making changes to pull request
+git fecth https://github.com/asolino/patator master
+git checkout FETCH_HEAD
+make changes
+git add patator.py
+git commit -a
+git checkout master
+git merge <commitid of my commit above>
+git push
+
+# rip .git
+http://www.slideshare.net/kost/ripping-web-accessible-git-files
+tools/exploit/dvcs-rippers

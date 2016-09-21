@@ -1,0 +1,17 @@
+# symantec
+
+nmap -p38292,12174,2967,8443/9090
+
+# Symantec System Center Alert Management System 
+
+38292/tcp ./modules/exploits/windows/antivirus/ams_hndlrsvc.rb ./modules/exploits/windows/antivirus/symantec_iao.rb
+12174/tcp ./modules/exploits/windows/antivirus/ams_xfr.rb
+2967/tcp ./modules/exploits/windows/antivirus/symantec_rtvscan.rb (buffer overflow)
+
+# SEP Manager
+8443/tcp & 9090/tcp
+http://codewhitesec.blogspot.nl/2015/07/symantec-endpoint-protection.html
+https://github.com/brandonprry/metasploit-framework/blob/sepm_bypass_rce/modules/exploits/windows/http/sepm_auth_bypass_rce.rb
+
+# signatures
+http://www.symantec.com/security_response/attacksignatures/

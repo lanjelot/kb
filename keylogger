@@ -1,0 +1,9 @@
+# keylogger
+
+# couvre tout du hardware, aux kl en kern/user mode 
+https://securelist.com/analysis/publications/36358/keyloggers-implementing-keyloggers-in-windows-part-two/
+
+https://github.com/guitarman0831/Onyx
+https://sourceware.org/systemtap/
+https://python-evdev.readthedocs.org/en/latest/
+https://govolution.wordpress.com/2015/07/14/a-basic-keylogger-for-windows/

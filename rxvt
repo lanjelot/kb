@@ -1,0 +1,7 @@
+# rxvt
+
+#printf '\e]710;%s\007' "xft:Terminus:pixelsize=22"
+printf '\e]710;%s\007' "xft:Monospace:pixelsize=22"
+printf '\e]39;%s\007' "black"
+printf '\e]49;%s\007' "white"
+http://www.usf.uni-osnabrueck.de/infoservice/doc/localhtml/rxvt/refer.html#Sequences mais vaut mieux lire le man qui est plus complet

@@ -1,0 +1,101 @@
+# ios
+
+https://github.com/tanprathan/MobileApp-Pentest-Cheatsheet/
+
+# michael crickeycon
+https://www.youtube.com/watch?v=jzIj8m7VBcM
+
+https://www.owasp.org/index.php/IOS_Developer_Cheat_Sheet
+
+http://eightbit.io/
+hijack data w/out knwoing the pin (after phone is pin-unlocked, or used to do it by loading custom boot rom, get enc keys and bf, but since ios 4 hasnt been any boot rom to do that)
+expl: fake charger
+ie. it's harder but not impossible
+
+apps can read certains files outside sandbox
+
+signature (ensure integrity of app):
+to run, an app must be signed by apple or cert issued by apple
+plus runtime checks to test the integrity (ios apple security pdf + bh 2012 talk)
+
+jailbreak the device to run unsigned code
+
+obj-c
+native apps are written in obj-c
+obj-c == c + smalltalk-stule messaging and object syntax
+ojb-c is a strict superset of c
+  - cancompile c w/ obj-c compile
+  - c code can be included in obj-c code
+
+class methods and instance methods
+
+automatic reference counting (optional but enabled by default) aka. ARC
+
+instance variables == properties + accessor methods generated auto at compile time
+property can be declared as readonly, assign, copy, retain
+
+cocoa = framework and APIs, UI functionality etc.
+
+xcode is apple's IDE (free to download from appstore)
+
+* pentest env.
+ssh over usb!
+
+all ios device will run ios6 or above
+
+jailbreak:
+as a dev you should assume that your app will run on a compromised device
+
+do not update test devices
+Cydia: .deb based software repo for jailbroken devices
+iphone-tunnel: ssh over usb
+mobilesubstrate: patching code at runtime
+
+to install AppCrack: need to add root repository to Cydia 
+AppCrack sometimes doesnt work, need to retry
+wont work if app has anti-debugging protections
+
+application id is random (GUID)
+
+pasteboard
+/var/mobile/Library/Caches/com.apple.UIKit.pboard/pasteboardDB
+
+request/response cache
+Library/Caches/com.flexteam/Cache.db*
+
+logging
+here until next reboot
+
+app always 1 binary
+binary can contain more than 1 arch like (arm6 and arm7)
+
+* cyscript
+
+UIApp.keyWindow # get the main window
+UIApp.keyWindow.rootViewController
+
+search for Delegate
+
+ps aux | grep goMoney
+cycript -p <pid>
+UIApp.delegate
+*UIApp.delegate
+[UIApp.delegate informUserOfJailbrokenDevice] # triggers the pop up
+
+[login fakeSignIn] # execute the method
+
+# reverse eng toolkit
+iRET
+
+# memory
+https://hexplo.it/introducing-memscan/
+
+# todo
+bh 2012 talk
+
+# hooking (cycript and substrate)
+https://www.sensepost.com/blog/2016/advanced-cycript-and-substrate/
+
+# misc
+CocoaPods is a depedency manager for Cocoa projects / used to install and manage dependencies in existing Xcode projects
+Carthage is a decentralised dependency manager for Cocoa application (i.e. alternative to CocoaPods)

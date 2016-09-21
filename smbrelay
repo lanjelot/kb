@@ -1,0 +1,20 @@
+# smb-relay smbrelay
+
+http://www.room362.com/blog/2014/05/21/effective-ntlm-slash-smb-relaying/
+http://www.josho.org/blog//blog/2014/06/20/snarf/ https://github.com/purpleteam/snarf # might not do http 
+http://pen-testing.sans.org/blog/pen-testing/2013/04/25/smb-relay-demystified-and-ntlmv2-pwnage-with-python
+
+impacket/smbrelayx.py supports NTLMv2 (msf smb_relay didnt in 04/2013)
+https://github.com/byt3bl33d3r/impacket/blob/master/examples/smbrelayx.py to exec commands on remote host
+
+can't relay to DCs due to SMB signing (turned on by default on DC)
+the .exe has to be a service exe, or a mof or a normal exe in Startup
+
+smbrelay3 (http://www.tarasco.org/security/smbrelay/ http://seclists.org/fulldisclosure/2008/Nov/302)
+  SMB  to SMB relay 
+  HTTP to SMB relay
+  SMTP to SMB relay
+  POP3 to SMB relay
+  IMAP to SMB relay
+http://squirtle.googlecode.com/
+zackattack

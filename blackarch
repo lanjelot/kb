@@ -1,0 +1,124 @@
+# password sniffer tools
+
+* poisoning
+netcommander
+
+* creds
+PCredz
+creds.py (FTP/POP/IMAP/HTTP/IRC)
+phoss (HTTP/FTP/LDAP/Telnet/IMAP4/VNC/POP3) but segfaults (1999)
+
+* ssl
+ssldump
+sslsniff
+
+* http
+CapTipper (https://github.com/omriher/CapTipper.git)
+katsnoop (http basic only)
+httpsniff (save files locally)
+
+* starttls
+starttls-mitm
+
+
+-- recon
+inguma
+darkbing
+gggooglescan
+seat
+dhcpig
+hasere (vhosts using google & bing)
+allthevhosts (vhost disco)
+googlesub
+quickrecon
+ripdc
+
+-- patator
+mssqlscan
+rlogin-scanner
+dns2geoip
+dnsspider
+dripper
+basedomainname
+dnspredict
+fernmelder
+subbrute
+ftp-scanner
+webrute
+dirs3arch
+snmpscan
+dirscanner
+fgscanner
+freaking-simple-fuzzer
+
+-- privesc
+fsnoop
+climber (linux)
+linenum
+
+-- ad
+ldapenum (Enumerate domain controllers using LDAP)
+sambascan
+enum-shares
+nmbscan
+nbtool
+passhunt
+
+* webapp fp
+wig
+vbrute (virtual host bf)
+mwebfp
+cansina
+whatweb
+blindelephant
+web-sorrow
+wappalyzer
+
+* webapp vuln scanner
+cmsmap
+secscan
+uniscan (lfi/rfi/rce)
+rawr
+webpwn3r
+eazy
+
+* wordpress
+vane
+flunym0us
+
+* drupal
+dpscan
+
+* xss
+xssya
+
+* vuln scanners
+x-scan
+paranoic
+
+* ssl scanner
+athena-ssl-scanner
+sslmap
+
+* ids/ips
+pytbull
+idswakeup
+
+* cisco
+cisco-scanner
+ocs (test default creds)
+cisco-auditing-tool
+cisco-torch
+
+* heartbleed
+hbad
+
+* proxy
+proxyscan (port scan thru proxy)
+
+* smtp
+smtptx
+relay-scanner
+
+* shellshock
+shocker

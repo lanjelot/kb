@@ -1,0 +1,47 @@
+# ctfs
+
+# defcon ctf
+https://github.com/legitbs/quals-2013
+https://github.com/legitbs/finals-2013
+http://fuzyll.com/2016/the-defcon-ctf-vm/
+
+# writes-ups & archives
+http://repo.shell-storm.org/CTF/
+
+# competitions
+https://github.com/isislab/Project-Ideas/wiki/Capture-The-Flag-Competitions
+
+# other ctfs
+http://map.ipviking.com/
+http://wargame.kr:8084/
+http://www.overthewire.org/wargames/
+http://io.smashthestack.org:84/
+http://pwnable.kr
+http://ringzer0team.com
+http://microcorruption.com/
+
+http://www.reddit.com/r/securityCTF
+https://ctftime.org/event/list/upcoming/
+
+http://captf.com/practice-ctf/
+http://ctf.forgottensec.com/wiki/index.php?title=Main_Page
+
+# pointers
+https://github.com/isislab/Project-Ideas/wiki/Capture-The-Flag-Competitions
+http://pentest.cryptocity.net/capture-the-flag/
+
+# complete list
+http://www.felipemartins.info/2011/05/pentesting-vulnerable-study-frameworks-complete-list/
+
+# bf pw of crackmes by counting numb of instructions
+https://github.com/wagiro/pintool
+
+# tools for CTFs
+https://github.com/apsdehal/awesome-ctf
+
+# platforms
+ctfd.io (csaw), mellivora (9447) and ictf
+picoCTF, EasyCTF, tinyctf-platform
+http://github.com/facebook/fbctf
+https://www.reddit.com/r/securityCTF/comments/3sgi52/looking_for_a_ctf_platformframework/
+TJCT (IceCTF improved it a lot, they will publish soon)

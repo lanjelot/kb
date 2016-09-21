@@ -1,0 +1,21 @@
+# XML RPC
+
+curl -d '<?xml version="1.0"?><methodCall><methodName>system.listMethods</methodName></methodCall>' http://.../api.php
+
+POST / HTTP/1.1
+Host: ...
+
+<?xml version="1.0"?><methodCall><methodName>system.methodHelp</methodName> <params>
+  <param><value>
+    <string>auth.logIn</string>
+    </value></param>
+  </params></methodCall>
+
+
+import xmlrpclib
+php_url = 'http://www.pythonchallenge.com/pc/phonebook.php'
+server = xmlrpclib.Server(php_url)
+
+server.system.listMethods()
+server.system.methodHelp('phone')
+server.phone('Bert')

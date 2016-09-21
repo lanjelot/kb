@@ -1,0 +1,6 @@
+# sleuthkit
+
+# timeline
+fls -r -m C: sd-cons_c.dd >> sd-cons.body
+fls -r -m D: sd-cons_d.dd >> sd-cons.body
+mactime -d -b sd-cons.body -z GMT+2 > sd-cons.mactime

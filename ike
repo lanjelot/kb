@@ -1,0 +1,39 @@
+# ike
+
+# tools
+* group name enumeration
+https://github.com/SpiderLabs/groupenum
+https://github.com/SpiderLabs/ikeforce
+
+* transform set enumeration
+https://labs.portcullis.co.uk/tools/iker/
+dk_ipsecenum.sh
+
+# Tunnel Group aka Group Authentication with pre-shared-key
+http://www.cisco.com/c/en/us/support/docs/security/vpn-3000-series-concentrators/14115-vpn-3000-auth.html
+dumb reminder: the password used for Group Authentication happens before the individual auth. User auth happens on the radius server.
+expl:
+tunnel-group itadmin ipsec-attributes
+pre-shared-key cisco123
+
+# group names or ID enumeration from vulnerable Cisco devices
+* by the presence of the Dead Peer Detection
+ike-scan -M -A --id=<need to guess valid groupname> 1.2.3.4
+
+First vuln was devices would only return HASH_R when id is correct
+
+Now devices always return a HASH_R wether id is correct or not (to prevent enumeration that used to be possible but older devices would only respond to a correct ID).
+However HASH_R can only be cracked if guessed ID is correct
+
+Another group name enumeration vulnerability exists for Cisco devices
+The presence of a 'Dead Peer Detection’ (DPD) payload with an unlikely correct groupname indicates a patched ASA firewall.
+With an unpatched ASA firewall, the DPD would be missing unless the groupname is valid.
+http://blog.spiderlabs.com/2013/03/cracking-ike-aggressive-mode-hashes-part-1.html
+
+* by differing responses to IKE negotiations (number of responses, see https://www3.trustwave.com/spiderlabs/advisories/TWSL2013-004.txt)
+http://blog.spiderlabs.com/2013/04/cracking-ike-missionimprobable-part-2.html
+
+# crack psk
+ike -M -A --id=yay 1.2.3.4 -P./yay.psk
+hashcat -m 5[34]00 yay.psk
+ikescan2john.py yay.psk > yay.psk.jtr

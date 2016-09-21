@@ -1,0 +1,16 @@
+# opensso
+
+# default users
+http://docs.oracle.com/cd/E19575-01/820-3885/gjred/index.html
+
+amadmin and dsameuser (UrlAccessAgent) 's passwords are set up during install
+
+# console admin
+https://host:port/<deploy_uri>/console
+
+otherwise try:
+/UI/Login/?module=DataStore
+
+# decrypt encrypted password in config
+http://idp.ssocircle.com/sso/toolbox/ossoPwEncrypt.jsp
+

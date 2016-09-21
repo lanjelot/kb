@@ -1,0 +1,19 @@
+# iptables
+
+# liste des codes icmp
+iptables -p icmp -h
+
+# nat
+# autoriser le VM a faire du DNS et rediriger ses requetes vers 80/TCP dans
+# burp avec :
+#   - cocher support invisible
+#   - decocher loopback only
+iptables -t nat -A PREROUTING -s 192.168.56.99/32 -i vboxnet0 -p udp -m udp --dport 53 -j DNAT --to-destination 8.8.8.8
+iptables -t nat -A PREROUTING -s 192.168.56.99/32 -i vboxnet0 -p tcp -m tcp --dport 80 -j REDIRECT --to-ports 8282
+iptables -t nat -A POSTROUTING -d 8.8.8.8/32 -j MASQUERADE
+
+# forward outsider to VM
+-t nat -A PREROUTING -i em1 -p tcp --dport 2222 -j DNAT --to-destination 192.168.122.48:22
+-t filter -A FORWARD -o virbr0 -d 192.168.122.0/24 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT # let through responses from internet back to VMs
+-t filter -A FORWARD -o virbr0 -d 192.168.122.48 -p tcp -m conntrack --ctstate NEW --dport 22 -j ACCEPT
+

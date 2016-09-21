@@ -1,0 +1,10 @@
+# xrandr
+
+# desactiver la sortie externe
+xrandr --output VGA-0 --off
+# activer la sortie externe en mode clone
+xrandr --output VGA-0 --auto
+
+# etendre le bureau sur 2 ecrans avec l'ecran externe sur la droite de l'ecran interne
+xrandr --output VGA-0 --right-of LVDS
+

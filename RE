@@ -1,0 +1,121 @@
+# reverse
+
+# p complete
+http://wiki.yobi.be/wiki/Reverse-Engineering
+
+# syscall dymanic tracer for Linux
+https://github.com/iovisor/ply
+
+# reversing network protocols
+https://github.com/netzob/netzob
+
+# static analysis tool for binaries. ELF/PE, x86/x64, IL RREIL, DBI PIN
+https://bitbucket.org/mihaila/bindead/overview
+
+# python for reverse engineering
+http://pythonarsenal.erpscan.com/
+
+# PE format
+# windows executable walkthrough
+https://code.google.com/p/corkami/wiki/PE?show=content
+
+# jumps
+Mnemonic        Condition tested  Description  
+
+jo              OF = 1            overflow 
+jno             OF = 0            not overflow 
+jc, jb, jnae    CF = 1            carry / below / not above nor equal
+jnc, jae, jnb   CF = 0            not carry / above or equal / not below
+je, jz          ZF = 1            equal / zero
+jne, jnz        ZF = 0            not equal / not zero
+jbe, jna        CF or ZF = 1      below or equal / not above
+ja, jnbe        CF or ZF = 0      above / not below or equal
+js              SF = 1            sign 
+jns             SF = 0            not sign 
+jp, jpe         PF = 1            parity / parity even 
+jnp, jpo        PF = 0            not parity / parity odd 
+jl, jnge        SF xor OF = 1     less / not greater nor equal
+jge, jnl        SF xor OF = 0     greater or equal / not less
+jle, jng    (SF xor OF) or ZF = 1 less or equal / not greater
+jg, jnle    (SF xor OF) or ZF = 0 greater / not less nor equal 
+
+# timeless
+qira
+rr-project
+Reven Axion https://www.youtube.com/watch?v=5WNRplDPf5s
+
+# emulate asm with unicorn (http://idabook.com/ctf/pwn2win_botnet.txt)
+def hook_syscall(mu, user_data):
+   mu.emu_stop()
+
+def do_milkshake(milkshake):
+   #milkshake is the fleebot provided machine code
+   mu = Uc(UC_ARCH_X86, UC_MODE_64)
+   mu.mem_map(0x1000000, 4096)
+   mu.mem_write(0x1000000, milkshake)
+   mu.reg_write(UC_X86_REG_RSP, 0x1000000 + 4096 - 16)
+   mu.hook_add(UC_HOOK_INSN, hook_syscall, None, 1, 0, UC_X86_INS_SYSCALL)
+   mu.emu_start(0x1000000, 0x1000000 + len(milkshake))
+   rsi = mu.reg_read(UC_X86_REG_RSI)
+   rdx = mu.reg_read(UC_X86_REG_RDX)
+   magic = mu.mem_read(rsi, rdx)
+   return magic
+
+# qa-based disassembly viewer based on radare2
+https://github.com/sapir/sonare
+
+# registers (AL, BL etc.)
+http://i.stack.imgur.com/rzuaP.jpg
+
+================ rax (64 bits)
+        ======== eax (32 bits)
+            ====  ax (16 bits)
+            ==    ah (8 bits)
+              ==  al (8 bits)
+
+# stack layout
+http://eli.thegreenplace.net/2011/09/06/stack-frame-layout-on-x86-64/
+http://eli.thegreenplace.net/2011/02/04/where-the-top-of-the-stack-is-on-x86/
+
+# remember
+system call number passed in the EAX register
+
+x86: 1st arg in EBX, 2nd arg in ECX, 3rd arg in EDX
+x64: 1st arg in RDI, 2nd arg in RSI
+
+eax=1, rdi=1: write to stdout
+eax=0, rdi=0: read from stdin
+
+[corelan] The CPU’s general purpose registers (Intel, x86) are :
+EAX : accumulator : used for performing calculations, and used to store return values from function calls. Basic operations such as add, subtract, compare use this general-purpose register
+EBX : base (does not have anything to do with base pointer). It has no general purpose and can be used to store data.
+ECX : counter : used for iterations. ECX counts downward.
+EDX : data : this is an extension of the EAX register. It allows for more complex calculations (multiply, divide) by allowing extra data to be stored to facilitate those calculations.
+ESP : stack pointer
+EBP : base pointer
+ESI : source index : holds location of input data
+EDI : destination index  : points to location of where result of data operation is stored
+EIP : instruction pointer
+
+lea eax,[ebp-0x4] // load effective address: eax recupere l'address
+
+mov BYTE PTR [ebx], 2   ; Move 2 into the single byte at the address stored in EBX.
+mov WORD PTR [ebx], 2   ; Move the 16-bit integer representation of 2 into the 2 bytes starting at the address in EBX.
+mov DWORD PTR [ebx], 2      ; Move the 32-bit integer representation of 2 into the 4 bytes starting at the address in EBX. 
+
+* prologue
+push ebp // increment esp de 4 bytes
+move ebp, esp // ebp prend la valeur de esp
+sub esp, 0x8
+
+* epilogue
+mov esp, ebp// esp prend la valeur de ebp
+pop ebp
+ret
+//ou 
+leave
+ret
+
+# x64
+1st arg: rdi (stores argc)
+2nd arg: rsi (stores argv)

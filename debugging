@@ -1,0 +1,9 @@
+# debugging
+
+# system calls
+strace -e trace=open -p $PID
+strace -f -s3000 -e trace=execve
+
+# dynamic library calls and signals
+ltrace
+

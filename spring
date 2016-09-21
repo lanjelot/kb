@@ -1,0 +1,55 @@
+# SpringSource Spring Framework
+
+# http://en.wikipedia.org/wiki/Spring_Framework
+Spring Framework includes Spring Security (formely Acegi Security System for Spring)
+
+# all vulns
+http://support.springsource.com/security/springsource-all
+
+# vulns
+* CVE-2010-1622 RCE
+http://blog.o0o.nu/2010/06/cve-2010-1622.html
+http://support.springsource.com/security/cve-2010-1622
+affected versions:
+- 3.0.0 to 3.0.2
+- 2.5.0 to 2.5.6.SEC01 (community releases)
+- 2.5.0 to 2.5.7 (subscription customers)
+- Earlier versions may also be affected
+
+* CVE-2011-2730 Info Disc
+http://support.springsource.com/security/cve-2011-2730
+fixed in 3.0.6
+
+* CVE-2011-2732
+header injection
+
+* CVE-2011-2894
+Spring Framework and Spring Security serialization-based remoting vulnerabilities
+http://support.springsource.com/security/cve-2011-2894 http://www.pwntester.com/blog/2013/12/16/cve-2011-2894-deserialization-spring-rce/
+affected version:
+- Spring Framework: 3.0.0 to 3.0.5
+- Spring Security: 3.0.0 to 3.0.5 and 2.0.0 to 2.0.6
+- Earlier, unsupported versions may also be affected
+
+* lots of vulns
+http://wouter.coekaerts.be/2011/spring-vulnerabilities
+
+* XXE (CVE-2013-4152 CVE-2013-6429 CVE-2013-7315)
+CVE-2013-4152: http://seclists.org/bugtraq/2013/Aug/154 http://www.gopivotal.com/security/cve-2013-4152 https://jira.spring.io/browse/SPR-10806
+affected versions:
+- 3.0.0 to 3.2.3 (Spring OXM & Spring MVC)
+- 4.0.0.M1 (Spring OXM)
+- 4.0.0.M1-4.0.0.M2 (Spring MVC)
+- Earlier unsupported versions may also be affected
+
+* Directory Traversal (CVE-2014-3578 and CVE-2014-3625 "incomplete fix")
+Spring Framework:
+- 3.0.4 to 3.2.11
+- 4.0.0 to 4.0.7
+- 4.1.0 to 4.1.1
+
+only exploitable if in web.xml:
+ - UrlResource
+<mvc:resources mapping="/css/**" location="file:webapps/springapp/WEB-INF/classes/theme/css/" />
+GET /springapp/css/file:/etc/passwd
+

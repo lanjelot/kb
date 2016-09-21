@@ -1,0 +1,3 @@
+# emerge
+
+qlist -IC | xargs qlop -CtH | grep minute | sort -rn -t' ' -k 2

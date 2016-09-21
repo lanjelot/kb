@@ -1,0 +1,43 @@
+# socat
+
+socat TCP4-LISTEN:8080,bind=192.168.122.1,reuseaddr,fork,su=nobody,range=192.168.122.1/32 OPENSSL:1.2.3.4:443,verify=0
+stunnel -c -d 127.0.0.2:80 -r 1.2.3.4:443 # fait peut etre la meme chose, à tester
+
+- reuseaddr
+allows immediate restart after master process's termination, even if some
+child sockets are not completely shut down
+- bind
+bind to a specific interface
+- fork
+fork a new process after each accept()
+- su
+provide a little security by su'ing to user nobody after forking
+- range=192.168.0.0/24
+only permits connections from a private network
+
+# forwarder
+socat -vv TCP4-LISTEN:9090,bind=192.168.122.1,reuseaddr,fork,range=192.168.122.0/32 PROXY:192.168.122.1:svn.apache.org:80,proxyport=8080
+
+# monter un reseau virtuel TUN 
+# ssl: http://www.dest-unreach.org/socat/doc/socat-openssltunnel.html
+root@server: socat -d -d TCP-L:11443,reuseaddr TUN:192.168.255.1/24,up
+root@client: socat -d -d TCP:192.168.0.13:11443 TUN:192.168.255.2/24,up
+
+# reutiliser la session SSL (et ne pas refaire le handshake)
+openssl s_client -connect 1.2.3.4:443 -ign_eof -quiet -sess_out ssl_session.ctx
+socat -d TCP4-L:9090,reuseaddr,fork exec:'openssl s_client -host 1.2.3.4 -port 443 -ign_eof -quiet -sess_in ssl_session.ctx' 2>/dev/null
+./wfuzz.py -c -z file -f ~/dico.txt --basic 'manager:FUZZ' --hc 401 http://127.0.0.1:9090/manager/html/
+
+# loggue les requetes HTTP et retourne une reponse HTTP statique
+socat TCP-LISTEN:80,fork,reuseaddr EXEC:'path/to/httplogger.py'
+socat openssl-listen:443,fork,reuseaddr,verify=0,cert=path/to/cert+key.pem EXEC:'path/to/httplogger.py' #verify=1 -> certificat client obligatoire
+
+# sslmitm
+socat -v openssl-listen:8081,fork,reuseaddr,cert=cert.pem,key=key.pem,verify=0 tcp:127.0.0.1:3306
+socat -v tcp-l:3306,reuseaddr,fork openssl:1.2.3.4:443,verify=0
+/etc/init.d/dnsmasq start && less +F /tmp/dnsmasq.log
+
+# reverse socat to bf local services
+clt: socat -d tcp:mabox:1234,fork,interval=1,forever tcp:127.0.0.1:445
+moi: socat -v tcp-l:5555,reuseaddr,fork tcp-l:1234,reuseaddr
+puis bf avec 1 seul thread

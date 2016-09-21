@@ -1,0 +1,67 @@
+# slowloris
+
+http://ha.ckers.org/blog/20090617/slowloris-http-dos/
+http://isc.sans.org/diary.html?storyid=6601
+http://isc.sans.org/diary.html?storyid=6613
+
+Post de Adrian Ilarion Ciobanu datant de debut 2007 qui décrit parfaitement
+cette attaque de DoS (http://pub.mud.ro/~cia/computing/apache-httpd-denial-of-service-example.html)
+Elle a aussi été décrite en 2005 dans la section "Programming Model Attacks" de
+Apache Security
+
+Permet de mettre à mal un seul site web sans envoyer abondament du traffic TCP
+ou HTTP comme dans une attaque DoS typique.
+
+Seuls certains serveur web sont impactés 
+lighttpd 1.4.20 - vulnerable
+apache 2.2.11 - vulnerable
+sun web server - vulnerable
+
+squid - NOT vulnerable
+nginx 0.8.3 - NOT vulnerable
+cherokee 0.99.17 - NOT vulnerable
+
+C'est vraiment un DoS au niveau HTTP, si on a un Apache et un IIS sur la meme
+machine, le IIS ne sera pas affecté par l'attaque.
+
+* Principe de la technique
+Le client envoie interminablement des entetes bidons dans sa requete GET, ce
+qui accapare le serveur qui reste en attente de la ligne vide (^\r\n) qui
+marque la fin de la requete.
+Une seule connection peut accaparer un processus pendant 5' (par defaut la
+directive TimeOut est à 300s), après cela il doit ouvrir une nouvelle connexion.
+
+GET / HTTP/1.1\r\n
+Host: host\r\n
+User-Agent: Mozilla/4.0
+Content-Length: 42\r\n
+
+entete bidon => X-a: b\r\n
+
+* Attenuations et contre-mesures
+- load balancers ou reverse proxies: il est possible qu'on ne soit pas affecté,
+il faut vérifier son installation
+Frank Breedijk atteste que Slowloris est impuissant contre un equilibreur de charge Cisco CSS (http://www.cupfighter.net/index.php/2009/06/slowloris-css/)
+- la directive TimeOut: combien de temps Apache attend de recevoir une requete
+GET ou POST
+Mais meme si on diminue à 5s, il suffit de generer plus de traffic (2MB/min) =
+~45kb/sec ce qui sifnifie q'un abonné ADSL 512k est capable
+- module mod_limitipconn qui limite le nombre de connections pour 1 meme
+adresse IP
+Mais pb des utilisateurs derriere un proxy d'entreprise
+Et de toute façon cela stoppera un script kiddie mais pas un attaquant
+chevronné ayant à sa disposition une 12 de machines
+
+* important à savoir
+default number of connections is 256
+default TimeOut: 300 (5 minutes)
+
+When using the mpm_prefork module, Apache does not spawn new threads, it forks new
+processes instead. This is a lot more CPU consuming (because of context
+switching) and memory-consuming as well. Thus, raising the MaxClients can be
+devastating, it could trigger oom kills and/or make the system unresponsible.
+
+* commentaire de adrian qui resume bien les trolls
+every flaw takes a long walk until one will properly make it public and eventually do some marketing around it for a small profit (or big, depends on the players - see "the john doe helping cisco/microsoft to cover dns flaw" case). the usual path is a set of exploit rediscoveries until in the hands of the "real" exploiter. it was anoctopus - guys fed up when faced with bad justice probably as i interpret your text, it was apkill - dude fed up with low-brains/high-marketing-skills antiddos businesses (see http://pub.mud.ro/~cia/computing/apache-httpd-deni ... ) and it seems slowloris is the end of the line (see http://ha.ckers.org/blog/20090617/slowloris-http-d ... )
+welcome to the real world of IT sharks :)
+

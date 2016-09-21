@@ -1,0 +1,48 @@
+# tomcat-connector mod_jk
+
+# compiler mod_jk
+$ unzip tomcat-connectors-1.2.21-src.zip
+$ cd tomcat-connectors-1.2.21-src/native
+$ ./configure --with-apxs=/opt/m/httpd/httpd-2.0.52/bin/apxs
+
+$ vi httpd-2.0.52/conf/httpd.conf
+[...]
+LoadModule jk_module modules/mod_jk.so
+[...]
+JkWorkersFile /opt/m/tomcat/workers.properties
+JkShmFile     /opt/m/tomcat/mod_jk.shm
+JkLogFile     /opt/m/tomcat/mod_jk.log
+JkLogLevel    info
+#JkLogStampFormat "[%a %b %d %H:%M:%S %Y] "
+JkMount /WebApplication2/ServletTest worker1
+
+$ cat > workes.properties
+# Define 1 real worker using ajp13
+worker.list=worker1
+# Set properties for worker1 (ajp13)
+worker.worker1.type=ajp13
+worker.worker1.host=localhost
+worker.worker1.port=8009
+
+# tomcat directory traversal
+https://www.sec-consult.com/files/20070314-0-apache_tomcat_directory_traversal.txt
+
+SEC Consult Security Advisory < 20070314-0 >
+=======================================================================
+               title: Apache HTTP Server / Tomcat directory traversal
+             program: Apache HTTP Server / Apache Tomcat
+  vulnerable version: Apache Tomcat 5.x:  < 5.5.22
+                      Apache Tomcat 6.x:  < 6.0.10
+                 CVE: CVE-2007-0450
+
+Vulnerability description:
+---------------
+
+ * The only character found to be accepted as directory separator 
+   from Apache is "/" (slash).
+ * On the other hand Tomcat allows characters including URI encoded 
+   characters like "/" (slash), "\" (backslash) or "%5C" (backslash 
+   URI encoded).
+
+http://www.example.com/WebApplication2/%252E%252E/manager/html
+http://www.example.com/WebApplication2/\../manager/html (marche pas si windows)

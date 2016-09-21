@@ -1,0 +1,5 @@
+# sqlmap
+
+python p0wnpr0xy.py -t 'example.com' -c '~/tools/scan/sqlmap/svn/sqlmap.py -u {url} --cookie {cookies} --proxy=http://127.0.0.1:8082'
+
+python ... -c 'wget --spider --force-html -r -e robots=off http://www.example.com'

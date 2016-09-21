@@ -1,0 +1,23 @@
+# citrix
+
+# Transferring files on isolated remote desktop environments using windows messages
+http://www.ampliasecurity.com/research/transferringfilesonisolatedRDenvironments-ampliasecurity.pdf
+tools/gtt (GUI Transfer Toolkit)
+
+# break out
+http://www.pentestpartners.com/Pen-Test-Partners_Breaking-Out-of-Citrix-and-other-Restricted-Desktop-Environments.pdf
+http://synjunkie.blogspot.co.uk/2009/03/abusing-citrix-part-1.html
+
+# http://www.netvoyager.co.uk/kb/?num=2
+Citrix ICA Clients use the following ports:
+
+Session TCP port 1494
+Session Reliability TCP port 2598
+Web Services TCP port 80 
+
+# enum apps
+./nmap --script citrix-enum-apps 10.0.0.1 -sU -p 1604 citrix-enum-apps-xml doesnt seem to work
+./nmap --script citrix-enum-servers 10.0.0.1 -sU -p 1604
+
+./nmap --script citrix-enum-apps-xml 10.0.0.1 -p8000 (need to modify .nse if Citrix Metaframe ICA Browser is on different port than the hard-coded 80,443,8080)
+./nmap --script citrix-enum-servers-xml 10.0.0.1 -p8000 

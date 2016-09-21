@@ -1,0 +1,27 @@
+# scapy
+
+ls() # list layers
+lsc() # high-level functions
+
+wireshark(pkts) 
+
+sr()
+sr1()
+
+fuzz()
+
+load_module("p0f")
+load_module("nmap")
+
+make_table # (comparer IPID, les routeurs traversés pour des machines voisines, etc)
+
+conf.checkIPaddr = False # don't check that replies come from the expected IP address
+multi=True # wait for more answer packets after the first response is received
+
+# TCP sequence number fingerprinting
+
+## afficher toutes les URL
+>>> raws = [r[Raw] for r in pkts if Raw in r]
+>>> urls = set([r.load.splitlines()[0].split(' ')[1] for r in raws if r.load.splitlines()[0].startswith('GET')])
+>>> print '\n'.join(urls)
+

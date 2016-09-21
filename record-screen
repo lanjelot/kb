@@ -1,0 +1,14 @@
+# record-screen
+
+# to .gif
+byzanz
+
+# mieux que recordmydesktop
+kazam
+
+# recordmydesktop
+recordmydesktop --no-sound --overwrite --pause-shortcut Control+p -o blah.ogv -x 2878 -y 8 --width 1049 --height 613
+ffmpeg -i blah.ogv -c:v libx264 -preset veryslow -qp 0 /tmp/woot.mp4
+
+# gif screencast of terminal
+https://github.com/KeyboardFire/mkcast

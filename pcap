@@ -1,0 +1,13 @@
+# pcap
+
+https://github.com/caesar0301/awesome-pcaptools
+
+fichiers pcap publiques
+http://sourceforge.net/apps/mediawiki/networkminer/index.php?title=Publicly_available_PCAP_files
+http://www.pcapr.net/
+
+# parser
+dpkt
+Impacket
+scapy
+

@@ -1,0 +1,65 @@
+# linux
+
+https://0xax.gitbooks.io/linux-insides/content/index.html
+
+# capabilities
+lsattr /bin/ping
+-------------e-- /bin/ping
+getcap /bin/ping
+/bin/ping = cap_net_admin,cap_net_raw+ep
+
+# disable ASLR
+echo 0 > /proc/sys/kernel/randomize_va_space
+
+# kaslr bypass
+kernel_text=$((0x80000000+0x`cat /proc/iomem|grep code|cut -d- -f1|tr -d ' '`))
+
+# coreutils
+rpm -ql coreutils | grep man1 | sed -e 's,^.\+/,,' -e 's,\.1\.gz$,,'
+
+# iproute2
+ip route change default via 192.168.99.113 dev eth0
+
+# monitoring / performance observability tools 
+http://www.brendangregg.com/Perf/linux_observability_tools.png
+http://xmodulo.com/useful-command-line-network-monitors-linux.html
+http://xmodulo.com/visualize-memory-usage-linux.html (smem)
+glances
+nmon
+iptraf
+bmon
+iftop
+nethogs
+pktstat
+tcptrack
+https://github.com/caesar0301/awesome-pcaptools
+
+# using the Lime LKM to dump memory
+http://blog.opensecurityresearch.com/2014/05/acquiring-linux-memory-from-server-far.html
+
+# sysctl
+recharge la conf avec sysctl -p
+
+# get rid of ipv6
+net.ipv6.conf.all.disable_ipv6 = 1
+net.ipv6.conf.default.disable_ipv6 = 1
+
+# mitm
+net.ipv4.ip_forward = 1
+net.ipv4.conf.all.send_redirects = 0
+net.ipv4.conf.default.send_redirects = 0
+
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+
+# systemd
+https://n0where.net/understanding-systemd/
+
+# kernel modules
+* modinfo
+$ sudo modinfo iwl3945 | grep srcversion
+srcversion: FDE2E62843DE3ED112A50C3
+
+# rootkits
+https://github.com/mncoppola/suterusu
+http://blackhatlibrary.net/Azazel

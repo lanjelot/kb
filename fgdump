@@ -1,0 +1,5 @@
+# password dump
+
+FGDUMP utilise injection DLL, injection possible uniquement si l'utilisateur possède le privilege SeDebugPrivilege (Administrateur local ou appartenir au groupe "Administrateurs du domaine")
+"les mots de passe utilisés par les stations pour s'authentifier dans le domaine, ..., ces mots de passe générés automatiquement sont très longs (+ de 20car)
+

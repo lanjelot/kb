@@ -1,0 +1,21 @@
+# snmp
+
+pentoo-portage-trunk/snmpenum
+onesixyone (http://labs.portcullis.co.uk/tools/onesixtyone/)
+braa
+http://www.nothink.org/codes/snmpcheck/index.php
+
+# attention
+j'ai deja eu un service snmp qui repondait en v1 avec "private"  mais pas en v2
+
+# bf avec dico
+msfcli auxiliary/scanner/snmp/snmp_login RHOSTS=192.168.56.0-255 E
+
+# lister les users du domaine sur un DC
+snmpwalk -v1 -c public 172.10.10.100 1
+
+# lister les users dun windows
+snmpwalk -v1 -c public 1.2.3.4 1.3.6.1.4.1.77.1.2.25
+
+# lister la version/banner d'un windows ou device divers
+... 10.0.0.1 1.3.6.1.2.1.1.1.0

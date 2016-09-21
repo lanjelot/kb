@@ -1,0 +1,4 @@
+# gcc
+
+# compiler en statique
+gcc -Bstatic

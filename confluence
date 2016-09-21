@@ -1,0 +1,3 @@
+# confluence
+
+is based on struts and therefore vuln to past OGNL vulns (http://www.slideshare.net/testpurposes/deep-inside-the-java-framework-apache-struts)
