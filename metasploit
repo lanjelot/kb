@@ -29,14 +29,11 @@ msfcli auxiliary/scanner/smb/smb_lookupsid RHOSTS=file:dcs.txt E
 msfcli modules/auxiliary/scanner/snmp/snmp_login RHOST=x.x.x.x E
 msfcli auxiliary/server/capture/smb JOHNPWFILE=/tmp/capture-smb.pw VERBOSE=true SRVHOST=127.0.0.1 SRVPORT=4445 E (and as root: socat tcp-l:445,fork,reuseaddr tcp:127.0.0.1:4445)
 
-# low hanging fruits
-auxiliary/scanner/smb/smb_version
-exploit/windows/smb/ms08_067_netapi
+auxiliary/scanner/misc/java_rmi_server
+auxiliary/scanner/lotus/lotus_domino_hashes
 auxiliary/scanner/smb/smb_enumusers
 auxiliary/scanner/smb/smb_lookupsid
 auxiliary/scanner/oracle/sid_enum
-auxiliary/scanner/misc/java_rmi_server
-auxiliary/scanner/lotus/lotus_domino_hashes
 
 # client side
 Office OLE multiple DLL https://vimeo.com/138840584

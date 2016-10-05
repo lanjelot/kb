@@ -1,0 +1,7 @@
+# png
+
+# apt-get install pngcheck
+pngcheck -vt ctf.png
+
+# apt-get install pngtools
+pngchunks ctf.png

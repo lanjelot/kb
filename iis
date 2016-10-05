@@ -13,11 +13,11 @@ http://unixwiz.net/techtips/ms971492-webdav-vuln.html
 
 => /private%c0%af/
 
-## IIS 5.x
-# hide the IIS server version from HTTP header (aka. banner)
+# IIS 5.x
+* hide the IIS server version from HTTP header (aka. banner)
 http://support.microsoft.com/?id=317741
 
-# disable webdav
+* disable webdav
 http://support.microsoft.com/?scid=KB;EN-US;Q241520
 
 # internal ip disclosure

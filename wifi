@@ -4,7 +4,7 @@ https://github.com/routerkeygen
 
 # harvest valuable info in wpa enterprise traffic
 Creap http://www.shellntel.com/blog/2015/9/23/assessing-enterprise-wireless-networks https://github.com/Shellntel/scripts.git
-https://github.com/securestate/eapeak
+EAPeak https://github.com/securestate/eapeak
 
 # WPS
 tshark -i wlan1mon -Y 'wps.wifi_protected_setup_state == 2' # check if wps is enabled

@@ -1,4 +1,4 @@
-# test credit card numbers
+# credit card numbers
 
 panhunt
 

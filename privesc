@@ -4,6 +4,7 @@ http://pwnwiki.io
 
 # windows
 https://docs.google.com/document/d/1U10isynOpQtrIK6ChuReu-K1WHTJm4fgG3joiuz43rw/edit
+http://www.networkpentest.net/p/windows-command-list.html
 
 date /t & time /t
 net time \\computername
@@ -52,6 +53,7 @@ net view /domain:dom # list hosts that exist on the domain
 net group "Domain Computers" /domain
 
 for /f %i in (hosts.txt) do @(net view \\%i >> shares.txt 2>nul) # list active shares
+index all avail shares with Recoll (docx, zip, etc.) (http://hackerforhire.com.au/post-exploitation-finding-passwords-in-haystacks/)
 
 qwinsta or query session /server:computername /counter # list RDP sessions
 reg query "[\\machine\]hklm\software\microsoft\windows nt\currentversion\profilelist" /s | findstr /i "profileimagepath" # view recent logons or even simpler: dir /od \users
@@ -99,8 +101,6 @@ type C:\sysprep\sysprep.xml
 %WINDIR%\Panther\Unattend
 msf auxiliary/dcerpc/windows_deployment_services
 
-index all avail shares with Recoll (docx, zip, etc.) (http://hackerforhire.com.au/post-exploitation-finding-passwords-in-haystacks/)
-
 accesschk.exe -uwqs users c:\ # sysinternals
 calcs "c:\Program Files" /T | findstr Users
 icacls \\hackmedc\docs # determine perms
@@ -140,9 +140,7 @@ xcopy srcdir dstdir /E # cp -r
 dir \\DC\C$
 at \\DC # list scheduled tasks
 
-* command lists
-http://www.networkpentest.net/p/windows-command-list.html
-
+* moar
 Network Intrusion Process https://scriptjunkie.us/files/networkintrusionpostermed.png
 Build a Secure Network by Matt Weeks @scriptjunkie http://www.irongeek.com/i.php?page=videos/derbycon3/4101-pigs-don-t-fly-why-owning-a-typical-network-is-so-easy-and-how-to-build-a-secure-one-matt-scriptjunkie-weeks (DerbyCon 2013)
 Encyclopedia of Windows Privilege Escalation by Brett Moore (Insomnia) http://www.youtube.com/watch?v=kMG8IsCohHA (Ruxcon 2011)
@@ -220,6 +218,7 @@ iptables-save or iptables -S
 ; setuid, setguid files
 find / -type f -perm -4000 \! -type l \! -type b \! -type c \! -type s -ls 2>/dev/null
 find / -type f -perm -2000 \! -type l \! -type b \! -type c \! -type s -ls 2>/dev/null
+
 ; world writable
 find / -type f -perm -002  \! -type l \! -type b \! -type c \! -type s -ls 2>/dev/null | grep -v ' /proc/'
 find / -type d -perm -002  -ls 2>/dev/null
@@ -230,6 +229,7 @@ find / \( -nouser -o -nogroup \) -ls 2>/dev/null
 
 ; find writeable libs called by setuid bins or not
 find / -type f -perm /6000 -exec ls -1 {} \; 2>/dev/null | xargs -i ldd {} | grep -oE '/[^ ]+' | sort -u | xargs ls -Ll | grep -iE '^(....w....|.......w.)'
+
 ; find libs with RPATH sections http://seclists.org/fulldisclosure/2010/Oct/257
 while read f; do readelf -d "$f"| grep RPATH && echo "$f" >> /tmp/libs_with_rpath.txt; done < <(find / -type f -perms /6000)
 while read f; do ldd "$f" 2>/dev/null | grep -f /tmp/libs_with_rpath.txt && echo "$f" >> /tmp/bins_with_rpath.txt; done < <(cat /tmp/libs_with_rpath.txt)

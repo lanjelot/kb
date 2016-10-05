@@ -1,4 +1,4 @@
-# recon
+# recon / info gathering
 
 # DNS lookup for all IPv4 PTR records
 https://scans.io/study/sonar.rdns
@@ -11,3 +11,9 @@ https://w3dt.net/
 
 # social media reconnaissance
 http://raidersec.blogspot.com.au/2012/12/automated-open-source-intelligence.html
+
+# check where a nickname is registered (on what websites)
+http://namechk.com/
+
+# twitter tinfoleak
+http://www.vicenteaguileradiaz.com/tools/

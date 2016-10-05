@@ -3,6 +3,13 @@
 # p complete
 http://wiki.yobi.be/wiki/Reverse-Engineering
 
+# system calls
+strace -e trace=open -p $PID
+strace -f -s3000 -e trace=execve
+
+# dynamic library calls and signals
+ltrace
+
 # syscall dymanic tracer for Linux
 https://github.com/iovisor/ply
 
@@ -77,11 +84,19 @@ http://i.stack.imgur.com/rzuaP.jpg
 http://eli.thegreenplace.net/2011/09/06/stack-frame-layout-on-x86-64/
 http://eli.thegreenplace.net/2011/02/04/where-the-top-of-the-stack-is-on-x86/
 
-# remember
+# 101
 system call number passed in the EAX register
 
-x86: 1st arg in EBX, 2nd arg in ECX, 3rd arg in EDX
-x64: 1st arg in RDI, 2nd arg in RSI
+x86 args
+1   2   3
+ebx ecx edx
+
+x64 args
+1    2    3   4   5  6
+rdi  rsi  rdx rcx r8 r9
+argc argv
+
+see http://wiki.osdev.org/Calling_Conventions
 
 eax=1, rdi=1: write to stdout
 eax=0, rdi=0: read from stdin
@@ -116,6 +131,3 @@ ret
 leave
 ret
 
-# x64
-1st arg: rdi (stores argc)
-2nd arg: rsi (stores argv)

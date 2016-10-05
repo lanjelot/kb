@@ -36,7 +36,7 @@ http://www.felipemartins.info/2011/05/pentesting-vulnerable-study-frameworks-com
 # bf pw of crackmes by counting numb of instructions
 https://github.com/wagiro/pintool
 
-# tools for CTFs
+# CTF frameworks, tools, libraries, resources, softwares and tutorials
 https://github.com/apsdehal/awesome-ctf
 
 # platforms
@@ -44,4 +44,6 @@ ctfd.io (csaw), mellivora (9447) and ictf
 picoCTF, EasyCTF, tinyctf-platform
 http://github.com/facebook/fbctf
 https://www.reddit.com/r/securityCTF/comments/3sgi52/looking_for_a_ctf_platformframework/
-TJCT (IceCTF improved it a lot, they will publish soon)
+https://github.com/mitre-cyber-academy/ctf-scoreboard
+TJCTF https://github.com/TJCSec/ctf-platform
+IceCTF improved TJCTF a lot https://github.com/IceCTF/ColdCore

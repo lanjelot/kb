@@ -1,6 +1,6 @@
 # symantec
 
-nmap -p38292,12174,2967,8443/9090
+nmap -p38292,12174,2967,8443,9090
 
 # Symantec System Center Alert Management System 
 

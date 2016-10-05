@@ -8,9 +8,6 @@ http://www.nothink.org/codes/snmpcheck/index.php
 # attention
 j'ai deja eu un service snmp qui repondait en v1 avec "private"  mais pas en v2
 
-# bf avec dico
-msfcli auxiliary/scanner/snmp/snmp_login RHOSTS=192.168.56.0-255 E
-
 # lister les users du domaine sur un DC
 snmpwalk -v1 -c public 172.10.10.100 1
 

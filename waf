@@ -6,5 +6,4 @@ http-waf-detect.nse
 # bypass waf
 http://translate.wooyun.io/2015/09/01/Bypass-WAF-Cookbook.html
 http://www.exploit-db.com/papers/17934/
-
 https://github.com/ironbee/waf-research

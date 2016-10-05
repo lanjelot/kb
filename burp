@@ -2,17 +2,6 @@
 
 http://skora.net/news/24-itsec-projects/26-the-burp-sessionauth-extension
 
-* command injection
-?p=c9a93d87355f61b30f84e390
-?p=adsfc9a93d873df55e41acdf9672
-?p=adsf%26echo%20kikoo%20lolol%26
-?p=adsf|echo%20kikoo%20lolol||a
-?p=adsf&ping%20-n%2020%20127.0.0.1&
-?p=adsf|ping%20-n%2020%20127.0.0.1||x
-?p=adsf`ping%20-c%2020%20127.0.0.1`
-?p=adsf|ping%20-c%2020%20127.0.0.1||x
-
-
 # plugins
 * xss
 https://github.com/nVisium/xssValidator

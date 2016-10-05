@@ -2,7 +2,7 @@
 
 jdk1.6
 
-alternatives to android's official emulator, such as genymotion) run x86 versions of Android and some applications that contain native code may not support this architecture. However, for exploring Android to understand how it works, they are useful and some may run quicker than the Google emulators. However, it is still the author’s preference to use the official Android emulator as it is always guaranteed to be unmodified.
+alternatives to android's official emulator, such as genymotion, run x86 versions of Android and some applications that contain native code may not support this architecture. However, for exploring Android to understand how it works, they are useful and some may run quicker than the Google emulators. However, it is still the author’s preference to use the official Android emulator as it is always guaranteed to be unmodified.
 
 * Dalvik VM hello world (need jdk1.6). Dalvik later replaced by ART (Android Runtime) in Android 4.4 to improve speed
 $ javac Test.java

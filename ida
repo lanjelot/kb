@@ -1,17 +1,17 @@
 # ida
 
 # cool plugins
-funcap
+https://github.com/deresz/funcap
 https://github.com/ynvb/DIE
+https://github.com/illera88/Ponce # symbolic execution
 
 # eye friendly skins & theme
 https://github.com/zyantific/IDASkins + https://github.com/eugeii/ida-consonance (https://twitter.com/gentilkiwi/status/714536542216314880)
 
 # remote debugging with ida
-Press F9 in IDA and select "Remote Linux Debugger", then configure the process options, below mine:
+Press F9 in IDA and select "Remote Linux Debugger", then configure the process options.
 
 The next step is to copy the your linux_server binary from "dbgsrv" folder in IDA to your backtrack machine and run it:
-
 root@bt:~/IDA# ./linux_server
 IDA Linux 32-bit remote debug server(ST) v1.17. Hex-Rays (c) 2004-2013
 Listening on port #23946...

@@ -157,7 +157,7 @@ dump in-memory creds -> offline with mimikatz (outbound SMB sessions), online wi
 dump passwords remembered in Credential Manager -> netpass
 dump passwords remembered in Protected Storage (IE, Outlook) -> pspv
 dump passwords remembered by third-party software -> NirSoft tools, carrot, msf post modules
-most at http://bernardodamele.blogspot.com.au/
+src: http://bernardodamele.blogspot.com.au/
 
 # authenticated code execution 
 http://www.scriptjunkie.us/2013/02/authenticated-remote-code-execution-methods-in-windows/
@@ -193,7 +193,7 @@ http://diablohorn.wordpress.com/2013/10/19/alternative-psexec-no-wmi-services-or
 winexe --netbiosname=<name of target host>
 
 # pass-the-hash
-dint seem to work on w2k12r2 during pt: xfreerdp /pth
+didnt seem to work on w2k12r2 during pt: xfreerdp /pth
 
 http://www.harmj0y.net/blog/penetesting/pass-the-hash-is-dead-long-live-pass-the-hash/
 
@@ -401,11 +401,6 @@ vuln: windows NT4 forever, Windows 2000 before SP5 or missing KB921883 which was
 vuln: windows 2000 before SP5 or missing KB958644
 http://technet.microsoft.com/en-us/security/bulletin/ms08-067
 http://support.microsoft.com/kb/958644
-
-* report template
-While the 1.2.3.4 system was actually compromised, a large amount (379) of additional systems appear to be missing the same security patch.  
-$client should investigate the rest of these systems (Systems.Missing.Service.Packs.txt file located in the Documents tab) to ensure they are receiving security patches.
-Any unsupported systems were listed (Server 2000), as well as XP with less than SP3 installed, and Server 2003 with less than SP2 installed.
 
 * ms14-066
 http://blog.beyondtrust.com/triggering-ms14-066 https://github.com/anexia-it/winshock-test

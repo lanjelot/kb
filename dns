@@ -1,0 +1,72 @@
+# dns / recon
+
+# free dns
+freedns.afraid.org/subdomain/
+duckdns.org
+
+# axfr
+dig @ns12.zoneedit.com zonetransfer.me axfr
+host -l -a blah.com. ns1.blah.com
+nslookup ; server ns12.zoneedit.com; ls -d zonetransfer.me
+
+# obtain hostname and version
+dig @ns1.blah.com hostname.bind ch txt
+dig @ns1.blah.com version.bind ch txt
+
+# recursif?
+dig @client_dns_srv www.blah.fr A
+Regarder aussi le TTL qui peut indiquer que 2 IP sont en fait le meme DNS
+if recusive, cache poisoning, tunneling
+DoS: if dns srv allows these recursive queries via UDP, then the host can be used to 'bounce' Denial of Service attacks against another network or system
+Restrict recursive queries to the hosts that should use this nameserver (such as those of the LAN connected to it).
+bind8: 'allow-recursion' in the 'options' section of your named.conf
+bind9: define a grouping of internal addresses using the 'acl' command
+Then, within the options block, you can explicitly state: 'allow-recursion { hosts_defined_in_acl }
+
+# tester kaminsky attack
+dig @217.109.14.165 +short porttest.dns-oarc.net TXT
+
+# dns poisoning
+http://shinobi.dempsky.org/~matthew/dnstrust/example.html
+
+# mdns poisoning
+http://www.gnucitizen.org/blog/name-mdns-poisoning-attacks-inside-the-lan/
+
+# hostmap a la mano
+http://www.bfk.de/bfk_dnslogger.html?query=$IP
+http://www.gigablast.com/search?n=100&q=ip:$IP
+http://www.bing.com/search?q=ip:$IP
+http://api.search.live.net/xml.aspx?Appid=$API_KEY&query=ip:$IP&sources=web&web.count=50&web.offset=$OFFSET //see hostmap
+http://dnshistory.org/browsedomains/$DOMAIN
+http://pgp.mit.edu:11371/pks/lookup?op=index&search=$DOMAIN
+http://searchdns.netcraft.com/?restriction=site+ends+with&host=$DOMAIN
+http://www.robtex.com/ip/$IP.html
+http://www.tomdns.net/get_hostonip.php?target=$IP
+http://tools.web-max.ca/websitesonip.php POST: ip=$IP byip=Search+by+specific+IP
+http://www.dnsdigger.com/
+http://domainsdb.net/
+
+# recon
+http://infond.blogspot.com/2010/05/tutoriel-footprinting-recherche-passive.html
+
+dnshistory.org
+www.domainsdb.net
+www.gigablast.com
+searchdns.netcraft.com
+www.robtex.com
+www.tomdns.net
+www.web-max.ca
+
+admins/whois
+subdomainer --> googlit
+metagoofil
+shodanhq.com !!
+robots.txt sitemap.xml
+maltego
+hostmap
+fierce
+moar tools in README of dnsmap (knock, reverseraider, fierce, ...)
+
+# tld enumeration
+dnsrecon.rb
+dnsmap

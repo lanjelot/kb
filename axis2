@@ -14,5 +14,5 @@ http://spl0it.org/files/talks/basc10/demo.txt
 # XML entity
 Old Axis2 installation are vulnerable to XML Entity injection stuff BUT you must set the content type to "application/xml"
 
-# cf nikto db
+# see nikto db
 @AXIS2=/ /axis2/ /imcws/ /WebServiceImpl/ /dswsbobje/ /ws/  

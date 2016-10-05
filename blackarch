@@ -20,8 +20,7 @@ httpsniff (save files locally)
 * starttls
 starttls-mitm
 
-
--- recon
+* recon
 inguma
 darkbing
 gggooglescan
@@ -33,7 +32,7 @@ googlesub
 quickrecon
 ripdc
 
--- patator
+* patator
 mssqlscan
 rlogin-scanner
 dns2geoip
@@ -51,12 +50,12 @@ dirscanner
 fgscanner
 freaking-simple-fuzzer
 
--- privesc
+* privesc
 fsnoop
 climber (linux)
 linenum
 
--- ad
+* active directory
 ldapenum (Enumerate domain controllers using LDAP)
 sambascan
 enum-shares

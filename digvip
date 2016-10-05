@@ -2,24 +2,25 @@
 
 How to hunt a domain account
 
-<h1>Overview</h1>
-"To impress a client, text him his password." --Steve D
-
+# Overview
 So you are domain admin on the corporate domain and you have dumped the password hashes of everyone, BUT your password cracking skills are not strong enough to recover the password of your point of contact.
 
 Your best bet is probably to track down the IP address of the workstation(s) where your VIP is currently logged-on, remotely connect to these machines with domain admin privileges and dump his password in clear-text from the Windows system's memory.
 
 As every logon events on the domain is recorded in the domain controller's event logs, the best way to identify this list of IPs is to directly ask the domain controller for it.
-<h1>Event Logs</h1>
-<pre><code>Version                       | Log Format | Default location
+## Event Logs
+```
+Version                       | Log Format | Default location
 ---------------------------------------------------------------------------------
 Windows 2003 and earlier      | EVT        | %windir%\system32\config\*.evt
 Windows Vista/2008 and later  | EVTX       | %windir%\system32\winevt\logs\*.evtx
-</code></pre>
+```
 Double check the actual settings though (location, max size ...), read HKLM\SYSTEM\CurrentControlSet\Services\EventLog\Security.
-<h1>Tools</h1>
+
+## Tools
 Non-exhaustive list of tools to query Windows event logs:
-<pre><code>* PsLogList
+```
+* PsLogList
 CLI
 By Sysinternals
 Can read EVT or EVTX event logs
@@ -63,9 +64,10 @@ Can read remote computers
 The WinRM service must be running to use remote powershell commands (it is by default)
 https://github.com/obscuresec/PowerShell/blob/master/Find-NTLMNetworkLogon works but firewall must allow access to the event log service (port 49153 ?) which does not seem to be the case after my default install of a w2k8 domain controller.
 To try
-</code></pre>
+```
 Non-exhaustive list of tools to parse Windows event logs:
-<pre><code>* python-evtx
+```
+* python-evtx
 http://www.williballenthin.com/evtx/
 Only supports the EVTX format
 
@@ -76,20 +78,22 @@ Only supports the EVT format
 * evtxexport
 http://code.google.com/p/libevtx/
 Only supports the EVTX format
-</code></pre>
-<h1>Demo</h1>
+```
+## Demo
 Logon events are recorded in the <em>Security</em> event log.
 
 Use PsLogList to remotely extract logon-related events from the domain controller's <em>Security</em> event log:
-<pre><code>c:\&gt; psloglist.exe \\dc1.corp.com -accepteula -u aaxadm -p Password123 -s -i 4624,4768,4769 security &gt; %TEMP%\extract.csv
-</code></pre>
+```
+c:\&gt; psloglist.exe \\dc1.corp.com -accepteula -u aaxadm -p Password123 -s -i 4624,4768,4769 security &gt; %TEMP%\extract.csv
+```
 The event IDs 4624, 4768 and 4769 are relevent to logons, but maybe more IDs could be added to the list.
 
-Use the <a href="http://deoxy.sglan/files/digvip.py">digvip.py</a> script to then parse the extract and dig up the "John Cissp" account:
-<pre><code>$ digvip.py /tmp/extract.csv jcissp
+Use the [digvip.py](https://github.com/lanjelot/pentest-tricks/digvip.py) script to then parse the extract and dig up the "John Cissp" account:
+```
+$ digvip.py /tmp/extract.csv jcissp
 [+] Parsing /tmp/extract.csv, looking for jcissp
             Logon time       Client IP Domain\account
   9/13/2013 6:39:07 AM  192.168.100.66 FRD\jcissp
   9/13/2013 6:36:53 AM  192.168.100.66 FRD.CORP.COM\jcissp@frd.corp.com
   9/13/2013 6:16:46 AM  192.168.100.66 FRD.CORP.COM\jcissp
-</code></pre>
+```

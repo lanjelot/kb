@@ -19,4 +19,6 @@ ssh-keyscan victim.domain.org | ssh-vulnkey
 # source
 http://itsecurity.net/ (debian_ssh_scan_v4.py)
 http://metasploit.com/users/hdm/tools/debian-openssl/ (weak keys generation)
+https://hdm.io/tools/debian-openssl/
+https://github.com/g0tmi1k/debian-ssh
 http://wiki.yobi.be/wiki/Debian_OpenSSL

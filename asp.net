@@ -17,7 +17,7 @@ reflector (but need license)
 # .net assembly editor
 https://github.com/sailro/Reflexil
 
-# .net deobfuscator and unpacket
+# .net deobfuscator and unpacker
 https://github.com/0xd4d/de4dot 
 
 # .net deserialization
@@ -61,12 +61,6 @@ Web.Config # a la racine du website
 
 # infoleak
 instant .net stack trace, ask for |.aspx
-
-# urlsafe base64
-def urltoken_decode(urltoken):
-  padding_size = urltoken[-1]
-  urlsafe_b64 = urltoken[:-1]
-  return '%s%s' % (urlsafe_b64.replace('_', '/').replace('-', '+'), '=' * int(padding_size))
 
 # decode viewstate
 viewstate hacker

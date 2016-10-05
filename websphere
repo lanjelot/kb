@@ -27,7 +27,7 @@ see vm_deploy.xml (based on template DeployPortlet.xml)
 pb if cluster setup, server will NOT start new portlet (error msg like "wait for synchronisation of all nodes to be done")
 ConfigEngine.sh activate-portlets (or xml-samples/ActivatePortlet.xml)
 
-maybe a solution is to update an existing portlet like Welcome (mais a tester)
+maybe a solution is to update an existing portlet like Welcome (need to test)
 
 # blog d'un fanboy
 http://codyburleson.com/2013/01/24/xmlaccess-samples-in-ibm-websphere-portal/
@@ -38,5 +38,5 @@ http://www.ibm.com/developerworks/websphere/zones/portal/proddoc/
 http://www-10.lotus.com/ldd/portalwiki.nsf/xpViewCategories.xsp?lookupName=Product%20Documentation
 http://www-10.lotus.com/ldd/portalwiki.nsf/xpDocViewer.xsp?lookupName=IBM+WebSphere+Portal+8+Product+Documentation#action=openDocument&content=catcontent&ct=prodDoc
 
-# Disable unused apps
+# disable unused apps
 http://www-01.ibm.com/support/docview.wss?uid=swg21472871

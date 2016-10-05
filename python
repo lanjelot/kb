@@ -8,8 +8,8 @@ PROTOCOL_SSLv3 error: easy_install --upgrade pip
 http://sebastianraschka.com/Articles/2014_deep_python.html
 
 # decompile
-http://acidshout.github.io/#challenge-3
 https://www.fireeye.com/blog/threat-research/2016/04/deobfuscating_python.html uncompyle2 or meta https://github.com/wibiti/uncompyle2 http://srossross.github.io/Meta/html/api/decompile.html
+https://github.com/alex/python-decompiler
 
 # sandox escape / breaking out of restricted environments
 http://tomforb.es/breaking-out-of-secured-python-environments
@@ -28,26 +28,9 @@ https://doar-e.github.io/blog/2014/04/17/deep-dive-into-pythons-vm-story-of-load
 http://www.rafekettler.com/magicmethods.html
 http://www.e-booksdirectory.com/programming.php#python
 
-# reduce
->>> def add(x,y): return x+y
->>> reduce(add, range(1, 11)) # a third argument can be passed to indicate the starting value (eg. return 0 instead of raising an exception when given sequence is empty)
-
 # dict
 >>> dict(sape=4139, guido=4127, jack=4098) # easier to specify pairs using keyword arguments
 {'sape': 4139, 'jack': 4098, 'guido': 4127}
-
-# boolean context
-0, '', [], (), {}, and None are false
-      + 0 is false; all other numbers are true.
-      + An empty string ("") is false, all other strings are true.
-      + An empty list ([]) is false; all other lists are true.
-      + An empty tuple (()) is false; all other tuples are true.
-      + An empty dictionary ({}) is false; all other dictionaries are true.
-
-# tuple : an immutable list
-t = ("a", "b", "mpilgrim", "z", "example")
-pas de methodes (eg. index(), ...)
-convertion: tuple(["blah"]) list(mytuple)
 
 # module __builtin__
 str() # convertit l'objet en une string
@@ -76,14 +59,8 @@ and: 'a' and 'b' and 'c' => 'c' # All values are true, so and returns the last v
 # os.path
 split, splitext, join, expanduser, isfile, isdir
 [f for f in os.listdir(dirname) if os.path.isfile(os.path.join(dirname, f))]
-
-def listDirectory(directory, fileExtList):
-    "get list of file info objects for files of particular extensions"
-    fileList = [os.path.normcase(f)
-                for f in os.listdir(directory)]            (1) (2)
-    fileList = [os.path.join(directory, f)
-               for f in fileList
-                if os.path.splitext(f)[1] in fileExtList]
+files = [os.path.normcase(f) for f in os.listdir(directory)]
+files = [os.path.join(directory, f) for f in files if os.path.splitext(f)[1] in exts]
 
 glob.glob('c:\\music\\*\\*.mp3')
 
@@ -94,11 +71,6 @@ la fonction ne peut etre appelée que par la fonction dans laquelle elle est dé
 r'\bROAD\b' # raw string pas besoin de faire \\b (word boundary) et r'\t' s'interpret '\t' et non tab
 
 re.VERBOSE
-
-# html
-(4) String comparisons like k=='href' are always case-sensitive, but that's
-    safe in this case, because SGMLParser converts attribute names to lowercase
-    while building attrs.
 
 # ipython
 #http://pages.physics.cornell.edu/~myers/teaching/ComputationalMethods/python/ipython.html

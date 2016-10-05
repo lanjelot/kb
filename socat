@@ -3,20 +3,11 @@
 socat TCP4-LISTEN:8080,bind=192.168.122.1,reuseaddr,fork,su=nobody,range=192.168.122.1/32 OPENSSL:1.2.3.4:443,verify=0
 stunnel -c -d 127.0.0.2:80 -r 1.2.3.4:443 # fait peut etre la meme chose, à tester
 
-- reuseaddr
-allows immediate restart after master process's termination, even if some
-child sockets are not completely shut down
-- bind
-bind to a specific interface
-- fork
-fork a new process after each accept()
-- su
-provide a little security by su'ing to user nobody after forking
-- range=192.168.0.0/24
-only permits connections from a private network
-
-# forwarder
-socat -vv TCP4-LISTEN:9090,bind=192.168.122.1,reuseaddr,fork,range=192.168.122.0/32 PROXY:192.168.122.1:svn.apache.org:80,proxyport=8080
+reuseaddr: allows immediate restart after master process's termination, even if some child sockets are not completely shut down
+bind: bind to a specific interface
+fork: fork a new process after each accept()
+su: su to user nobody after forking
+range=192.168.0.0/24: only permits connections from a private network
 
 # monter un reseau virtuel TUN 
 # ssl: http://www.dest-unreach.org/socat/doc/socat-openssltunnel.html
@@ -30,7 +21,7 @@ socat -d TCP4-L:9090,reuseaddr,fork exec:'openssl s_client -host 1.2.3.4 -port 4
 
 # loggue les requetes HTTP et retourne une reponse HTTP statique
 socat TCP-LISTEN:80,fork,reuseaddr EXEC:'path/to/httplogger.py'
-socat openssl-listen:443,fork,reuseaddr,verify=0,cert=path/to/cert+key.pem EXEC:'path/to/httplogger.py' #verify=1 -> certificat client obligatoire
+socat openssl-listen:443,fork,reuseaddr,verify=0,cert=path/to/cert+key.pem EXEC:'path/to/httplogger.py' (verify=1 -> certificat client obligatoire)
 
 # sslmitm
 socat -v openssl-listen:8081,fork,reuseaddr,cert=cert.pem,key=key.pem,verify=0 tcp:127.0.0.1:3306

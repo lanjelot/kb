@@ -1,7 +1,6 @@
 # fckeditor
 
 # no extension verification when Type=Media
-
 POST /Admin/fckeditor/editor/filemanager/upload/php/upload.php?Type=Media HTTP/1.1
 Host: www.foo.com
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:29.0) Gecko/20100101 Firefox/29.0

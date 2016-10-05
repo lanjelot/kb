@@ -1,6 +1,4 @@
-## tips
-
-http://fabiensanglard.net/git_code_review/index.php
+# vim
 
 # hex
 :%!xxd
@@ -11,20 +9,22 @@ editing
 # hexadecimal editors
 010editor (reset trial: rm "/home/seb/.config/SweetScape/010 Editor.ini")
 hte
+hexedit
+hexinator https://hexinator.com/
+HxD
 
-## buffers
-# horizontal
+# buffers
+* horizontal
 vim -oN
 :new C-W C-N
 :sp[lit]
 
-# vertical
+* vertical
 vim -ON
 :vnew 
 :vs[plit]
 C-W C-V
-# horizontal
-C-W C-O
+C-W C-O (close)
 
 # dictionnaire, spell, correction orthographe
 setlocal spell spelllang=fr
@@ -38,21 +38,18 @@ set expandtab # pour que les tabulations soient converties en espaces
 set tabstop=4 # pour que les tabulations soient affichés comme 4 espaces
 set shiftwidth=2 # pour que la touche TAB indente de 2 espaces
 
-# .vimrc
-une ligne qui commence par " est un commentaire
-
 # better than ctags+cscope
 http://ruben2020.github.io/codequery/
 
 # ctags
-# Creation du fichier tags avec chemins absolus (--links pour suivre les liens symboliques)
+* Creation du fichier tags avec chemins absolus (--links pour suivre les liens symboliques)
 $ ctags -R --languages=TCL --links=yes $PWD
 
 # cscope
-# Création du fichier cscope.out (-L pour suivre les liens symboliques) 
+* Création du fichier cscope.out (-L pour suivre les liens symboliques)
 find -L $PWD -name '*.tcl' | cscope -i- -b
 
-# Ajouter la section suivantes dans ~/.vimrc
+* Ajouter la section suivante dans ~/.vimrc
 if has("cscope")
   "set csprg=/usr/local/bin/cscope
   set csto=0
@@ -73,7 +70,6 @@ endif
 # savoir...)
 $ glimpseindex -E -o $PWD
 $ glimpse blah
-
 
 # vimdiff
 do -- Get changes from other window into the current window.

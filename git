@@ -11,7 +11,7 @@ git log -p # see complete diff at each step
 git log --author="<pattern>"
 git log --grep="<pattern>"
 git log <file>
-git log --graph --decorate ﻿--oneline 
+git log --graph --decorate --oneline
 git log 3157e..5ab91
 git log 3157e~1
 git log HEAD~3

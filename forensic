@@ -6,7 +6,8 @@ http://computer-forensics.sans.org/blog/2012/04/25/cheat-sheet
 # recover deleted files from an ext[34] partition
 undelete (/usr/share/doc/extundelete/README)
 
-# http://blog.kiddaland.net/downloads/
+# log2timeline + plaso
+http://blog.kiddaland.net/downloads/
 
 # linux mem dump with rekall
 https://isc.sans.edu/diary/Linux+Memory+Dump+with+Rekall/17775
@@ -44,6 +45,10 @@ http://gmgsystemsinc.com/fau/
 ./galleta/PKGBUILD:pkgdesc="Examine the contents of the IE's cookie files for forensic purposes"
 ./pasco/PKGBUILD:pkgdesc="Examines the contents of Internet Explorer's cache files for forensic purposes"
 
+# Thumb.db
+https://thumbsviewer.github.io/
+vinetto -s
+
 # file carvers
 sorter
 foremost
@@ -74,3 +79,15 @@ https://tc.giboulees.net/blah/tools/lsb
 
 # parse .DS_Store
 http://ds-store.readthedocs.org/en/latest/
+
+# network capture tools
+https://github.com/caesar0301/awesome-pcaptools
+
+* network visualizers
+http://www.xplico.org/
+http://www.netresec.com/?page=NetworkMiner
+
+* pcap parsers
+dpkt
+Impacket
+scapy

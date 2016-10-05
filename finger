@@ -1,5 +1,5 @@
 # finger
 
-Finger Recursive Request Arbitrary Site Redirection
+# Finger Recursive Request Arbitrary Site Redirection
 finger -l root@6.6.6.6@1.2.3.4
 
