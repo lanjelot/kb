@@ -148,7 +148,7 @@ http://sirdarckcat.blogspot.com.au/2007/12/bypassing-content-disposition.html
 # IE content sniffing / MIME-type confusion
 http://blog.detectify.com/post/53925159976/how-to-avoid-ie-content-sniffing-xss-attacks 
 upload test.qwefhj: <html><body><script>alert(document.cookie)</script></body></html>
-fix: "X-Content-Type-Options: nosniff" header (http://msdn.microsoft.com/en-us/library/ie/gg622941%28v=vs.85%29.aspx)
+fix: "X-Content-Type-Options: nosniff" header (http://msdn.microsoft.com/en-us/library/ie/gg622941%28v=vs.85%29.aspx) only supported since IE9
 http://msdn.microsoft.com/en-us/library/ms775147.aspx
 
 works in old IE or if compatibility view is turned on

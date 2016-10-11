@@ -14,10 +14,9 @@ http://seclists.org/oss-sec/2014/q1/702
 # info gath
 jboss.system:type=ServerConfig
 
-# jboss seam framework RCE CVE-2010-1871 (jboss admin console based on this framework, authentication form is vuln, Jboss 5.1 to 6.1.0 Final concerned) 
-http://cvedetails.com/cve/2010-1871/
-https://bugzilla.redhat.com/show_bug.cgi?id=615956
-http://blog.o0o.nu/2010/07/cve-2010-1871-jboss-seam-framework.html
+# RCE CVE-2010-1871
+jboss admin console vuln to auth bypass because based on the seam/jsf framework (Jboss 5.1 to 6.1.0 Final concerned)
+see ./java
 
 # RMI calls w/ twiddle
 ./bin/twiddle.sh -o localhost get "jboss.system:type=ServerInfo"

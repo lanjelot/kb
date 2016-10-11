@@ -1,5 +1,8 @@
 # pdf
 
+# basics
+https://gendignoux.com/blog/2016/10/04/pdf-basics.html
+
 # tools to analyze pdf
 PDF Dump Stream (http://sandsprite.com/blogs/index.php?uid=7&pid=57)
 
@@ -24,4 +27,3 @@ gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -dFirstPage=22 -dLastPage=36 -sOu
 # Learning the PDF basics, applying it to hide/reveal informations in documents
 http://media.ccc.de/browse/conferences/mrmcd/mrmcd14/MRMCD2014_-_6007_-_en_-_grossbaustelle_ber_-_201409051830_-_pdf_101_pdf_secrets_-_ange_albertini.html
 by one of the guys behind POC||GTFO (https://www.alchemistowl.org/pocorgtfo/)
-

