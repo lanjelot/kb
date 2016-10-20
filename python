@@ -11,6 +11,7 @@ http://sebastianraschka.com/Articles/2014_deep_python.html
 https://www.fireeye.com/blog/threat-research/2016/04/deobfuscating_python.html uncompyle2 or meta https://github.com/wibiti/uncompyle2 http://srossross.github.io/Meta/html/api/decompile.html
 https://github.com/alex/python-decompiler
 https://sourceforge.net/p/pyinstallerextractor/tickets/5/
+https://sourceforge.net/projects/easypythondecompiler/ used in http://security.szurek.pl/blazectf-2016-postboard-writeup.html
 
 # sandox escape / breaking out of restricted environments
 http://tomforb.es/breaking-out-of-secured-python-environments

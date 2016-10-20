@@ -14,9 +14,11 @@ https://docs.google.com/spreadsheets/d/1oWsmTvEZcfgc_1QkBczNGA3Gcffg_pmgKcak7iZl
 # magic hashes
 https://www.whitehatsec.com/blog/magic-hashes/
 
-# different arrays compare identical due to integer key truncation
+# integer key truncation
 https://www.sektioneins.de/blog/15-08-03-php_challenge_2015_solution.html
-http://3v4l.org/Sjdf8
+bug: converting 4294967296 (0x100000000) to 32-bit is 0 so different arrays compare identical: ["4294967296 "=>"5" , "1"=>"mypw"] === ["0"=>"5","1"=>"mypw"] => true
+and also changing POST json ["1234","seb","oldpw","newpw"] to {"4294967296":"1234","1":"seb","2":"oldpw","3":"newpw"} will update pw of uid account 0
+because "update users set pw='${input[3]}' where uid='${input[0]}'") => update ... where uid='' (same as uid=0) because $input[0] => NULL (on unpatched php versions)
 
 # configuration audit hardening
 https://www.sektioneins.de/en/blog/14-08-21-php-secure-configuration-checker.html

