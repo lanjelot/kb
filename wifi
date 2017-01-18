@@ -91,3 +91,10 @@ iwconfig wlan0 txpower 30
 
 # find connected ap on windows
 netsh wlan show all | more
+
+# 5gz
+airmon-ng start wlan1 36
+iwlist wlan1mon frequency
+
+airodump -b a ...
+

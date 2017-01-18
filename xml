@@ -26,3 +26,6 @@ server = xmlrpclib.Server(php_url)
 server.system.listMethods()
 server.system.methodHelp('phone')
 server.phone('Bert')
+
+# xtream (via dynamic proxies)
+vuln: Spring OXM, Sonatype, Nexus, Jenkins (Jenkins XML API uses XStream to deserialize input)

@@ -1,6 +1,7 @@
 # XML External Entity attacks
 
 # tools
+https://github.com/ssexxe/XXEBugFind # works on compilded java code
 https://github.com/BuffaloWill/oxml_xxe #docs, xlsx, pptx, odt, svg ...
 otori
 

@@ -177,3 +177,16 @@ git push
 # rip .git
 http://www.slideshare.net/kost/ripping-web-accessible-git-files
 tools/exploit/dvcs-rippers
+
+# skiddit
+git checkout -b release-0.3 master
+change version number
+git commit -a -m 'New release 0.3'
+git checkout master
+git merge --no-ff release-0.3
+git tag -a 0.3
+enter release-0.3
+git branch -d release-0.3
+git push origin --tags
+git push
+

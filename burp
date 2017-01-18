@@ -24,4 +24,6 @@ https://github.com/nccgroup/ has a lot of burp extensions
 copy ~/.java/.userPrefs/prefs.xml and provide same account username
 with: java -Duser.name=john -jar burpsuite_pro_v1.5.x.jar (worked with 1.5.17)
 
-
+# handshake alert: unrecognized_name
+stems from an update in Java 7, where Server Name Indication (SNI) support was enabled by default.
+fix: java -Djsse.enableSNIExtension=false -jar burpsuiteX.jar

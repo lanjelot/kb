@@ -1,0 +1,11 @@
+# windbg
+
+gflags /i iexplore.exe +hpa +ust
+gflags /p /enable iexplore.exe
+
+# must disable gflags before doing heap spray
+gflags /i iexplore.exe -hpa -ust
+gflags /p /disable iexplore.exe
+!peb
+!heap -stat -h
+s -a 0 L?7fffffff "woot"

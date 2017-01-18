@@ -83,8 +83,8 @@ smbclient -U '%' -L 1.2.3.4
 nmbscan
 
 * cifs
-mount -t cifs -o user=user,password=secret,domain=DADOM '//10.0.0.1/c$' /mnt/pwn
-use -o soft to "soft mount" smb shares then you won't get lockups, etc. if the share disappears.
+mount -t cifs -o user=user,password=secret,domain=DOM '//10.0.0.1/c$' /mnt/pwn
+use -o soft to "soft mount" smb shares then you won't get lockups, etc. if the share disappears, also see -o nolock
 not recommended for persistent shares, as you then want the kernel to do everything it can to restore the mount.
 
 * get mac from IP

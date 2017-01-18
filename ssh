@@ -5,6 +5,7 @@ http://blog.gdssecurity.com/labs/2015/8/3/ssh-weak-diffie-hellman-group-identifi
 
 # best ciphers
 https://stribika.github.io/2015/01/04/secure-secure-shell.html
+https://wiki.mozilla.org/Security/Guidelines/OpenSSH#Configuration
 
 # batch mode, no pw prompt
 ssh -o BatchMode=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$i id

@@ -239,7 +239,7 @@ vuln: in richfaces-impl-3.3.3.Final.jar:org.ajax4jsf.resource.ResourceBuilderImp
 test: GET /jboss-seam-jpa/a4j/g/3_3_3.Finalorg/richfaces/renderkit/html/scripts/skinning.js (jpa is an example app in Jboss seam 2.2.1Final
 exploit: http://localhost:8082/jboss-seam-jpa/a4j/g/3_3_3.Finalorg/richfaces/renderkit/html/scripts/skinning.js/DATA/xxxxxxxxx
 Tomcat (or JBoss) detects prefix /a4j and routes request to Richfaces
-Richfaces uses ResourceBuilderImple to parse g/3_3_3.Finlaorg/richfaces/renderkit/html/scripts/skinning.js/DATA/xxxxxxxxx
+Richfaces uses ResourceBuilderImple to parse g/3_3_3.Finalorg/richfaces/renderkit/html/scripts/skinning.js/DATA/xxxxxxxxx
 skips g/3.3.3.Final and grabs resource path org/richfaces/renderkit/html/scripts/skinning.js as well as descompress+deserialize the xxxxxxxxx after DATA/
 use ysoserial and compress+base64 encode to generate xxxxxxxxx
 
@@ -276,7 +276,7 @@ https://github.com/njfox/Java-Deserialization-Exploit
 https://github.com/GrrrDog/Java-Deserialization-Cheat-Sheet (reference *)
 
 # jrun
-vuln if http://1.2.3.4/a;.jsp or /a%253bjsp gives a 404 error by Jrun instead of Apache
+rce if http://1.2.3.4/a;.jsp or /a%253bjsp gives a 404 error by Jrun instead of Apache
 
 # jsp
 http://www.owasp.org/index.php?title=Category:OWASP_JSP_Testing_Tool_Project

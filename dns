@@ -4,6 +4,10 @@
 freedns.afraid.org/subdomain/
 duckdns.org
 
+# dnssec nsec/nsec3 walk
+https://github.com/anonion0/nsec3map
+etc.
+
 # axfr
 dig @ns12.zoneedit.com zonetransfer.me axfr
 host -l -a blah.com. ns1.blah.com

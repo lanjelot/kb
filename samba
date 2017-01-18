@@ -10,16 +10,18 @@ cat > /etc/samba/smb.conf <<EOF
     socket options = TCP_NODELAY
     workgroup = TEST
     os level = 20
-    security = share
-    preferred master = no
     max log size = 50
+    interfaces = lo virbr0 eth0
+    bind interfaces only = yes
+    map to guest = Bad User
 
-[pub]
-    guest account = nobody
+[l]
+    comment = L
+    path = /tmp/l
+    browseable = yes
     writeable = yes
-    public = yes
-    guest only = yes
-    path = /tmp/smbshare
+    create mask = 444
+    guest ok = yes
 EOF
 
 # symlink (http://marc.info/?l=full-disclosure&m=126538598820903&w=2)

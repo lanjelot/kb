@@ -12,3 +12,7 @@ ffmpeg -i blah.ogv -c:v libx264 -preset veryslow -qp 0 /tmp/woot.mp4
 
 # gif screencast of terminal
 https://github.com/KeyboardFire/mkcast
+
+# script
+script --timing=plop foo                                                                                                                                                                    │
+scriptreplay -t plop foo
