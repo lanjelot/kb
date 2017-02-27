@@ -3,6 +3,9 @@
 # p complete
 http://wiki.yobi.be/wiki/Reverse-Engineering
 
+# compiler explorer
+http://gcc.godbolt.org/
+
 # system calls
 strace -e trace=open -p $PID
 strace -f -s3000 -e trace=execve

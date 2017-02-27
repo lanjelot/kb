@@ -47,6 +47,7 @@ net config workstation or server # view the domain name of current machine
 reg query "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Group Policy\History" /v DCName # view the name of the domain controller
 
 net view # list computers
+net computers # list computers
 net view /domain # list all domains available to the host
 net view /domain:otherdom
 net view /domain:dom # list hosts that exist on the domain
@@ -65,6 +66,7 @@ reg add "HKLM\System\CurrentControlSet\Control\Terminal Server" /v fDenyTSConnec
 
 systeminfo # but doesnt list all KBs
 wmic qfe list # lists installed security patches
+wmic qfe get Caption,Description,HotFixID,InstalledOn
 reg save HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Updates updates.reg
 wusa /uninstall /kb:<kbnum> # uninstall patch
 msinfo32 (GUI) ou msinfo32 /report msinfo.txt (CLI) # used to be winmsd.exe
@@ -75,8 +77,10 @@ PsSid
 powershell -Command Get-ChildItem -Recurse Cert: | findstr -i Superfish 
 
 tasklist /svc
+tasklist /v /fo list
 taskkill /f /im "cmd.exe" # killall
 net start or sc query or sc queryex
+sc query state= all
 sc stop aZeI
 sc delete aZeI
 del /F c:\zbSJCelh.exe
@@ -92,16 +96,31 @@ dir /od # ls -ltr
 
 dir /a /s *assw* # find interesting files
 findstr /i /s password * # find interesting strings in files
+dir c:\*vnc.ini /s /b
+dir c:\*ultravnc.ini /s /b
+dir c:\ /s /b | findstr /si *vnc.ini
+findstr /si password *.txt | *.xml | *.ini
+findstr /si pass *.txt | *.xml | *.ini
+reg query HKLM /f password /t REG_SZ /s
+reg query HKCU /f password /t REG_SZ /s
+reg query HKLM\SYSTEM\Current\ControlSet\Services\SNMP
 passhunt.exe -r "domain.(foo|bar)" -x c:\windows
 passhunt.exe -r "/user:" -x c:\windows
 panhunt.exe
 
-type C:\sysprep.inf [clear]
-type C:\sysprep\sysprep.xml
+C:\unattend.xml / post/windows/gather/enum_unattend
+C:\sysprep.inf [clear]
+C:\sysprep\sysprep.xml
 %WINDIR%\Panther\Unattend
 msf auxiliary/dcerpc/windows_deployment_services
 
-accesschk.exe -uwqs users c:\ # sysinternals
+https://pentest.blog/windows-privilege-escalation-methods-for-pentesters/
+msf exploit/windows/local/trusted_service_path # unquoted service exes
+msf exploit/windows/local/service_permissions
+msf exploit/windows/local/always_install_elevated
+
+accesschk.exe -uwcqv "testuser" * # registry perms
+accesschk.exe -uwqs users c:\
 calcs "c:\Program Files" /T | findstr Users
 icacls \\hackmedc\docs # determine perms
 
@@ -109,15 +128,11 @@ gpresult /z /h outputfile.html # view GPOs that have been applied to a system
 gpresult /R
 gpresult /Z # verbose
 
-when local 500 is renamed and set a random password via a Group Policy Preferences, password can be decrypted by any authenticated domain users
-net use z: \\DC\SYSVOL and search for cpassword= in *.xml under like Groups.xml
 find machines with the gpp (http://www.harmj0y.net/blog/powershell/gpp-and-powerview/)
 
 netsh firewall show state
 netsh advfirewall show allprofiles
 netsh firewall set opmode disable|enable
-
-sc query state= all
 
 * list all *.msc progs
 dir c:\windows\system32 | findstr msc
@@ -126,9 +141,6 @@ gpedit.msc
 
 autoruns
 sigverif # verif des signatures
-
-tasklist /SVC # liste des services qui fonctionnent
-tasklist /v /fo list # quels processus une application est liee
 
 * bonus tips
 color 0a

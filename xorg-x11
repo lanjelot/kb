@@ -20,6 +20,9 @@ xdotool mousemove 50 50; sleep 1; xdotool click --window 232 3; sleep 1; xdotool
 ; bring mouse over window (window may need to be moved to +0+0 beforehand with xdotool windowmove 0xabcd), and type commands
 xdotool mousemove 110 160; sleep 1; xdotool key Return; sleep 1; xdotool type clear; sleep 1; xdotool key Return or xdotool type $'\nclear\ntouch /tmp/woot\n' # ^L + ^U didnt work with roxterm
 
+# graphical shell to exploit unauthenticated x11 sessions
+https://github.com/sensepost/xrdp
+
 # fake key generation
 http://op-co.de/blog/posts/hacking_the_nx300/
 http://bharathisubramanian.wordpress.com/2010/03/14/x11-fake-key-event-generation-using-xtest-ext/

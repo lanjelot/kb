@@ -11,6 +11,7 @@ try this with grep:
  |  (?:2131|1800|35\d{3})\d{11}      # JCB
 )$
 
+https://stripe.com/docs/testing
 http://www.paypalobjects.com/en_US/vhelp/paypalmanager_help/credit_card_numbers.htm
 http://creditcardjs.com/credit-card-type-detection
 https://github.com/NetSPI/PS_CC_Checker
