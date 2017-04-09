@@ -99,3 +99,11 @@ hashcat -m 5800
 
 # hooking (introspy)
 https://www.sensepost.com/blog/2016/android-hooking-with-introspy/
+
+# patch apk
+adb uninstall com.example.Test
+rm -f Test-patched.apk
+apktool b Test-22/ -o Test-patched.apk
+jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore ~/.android/debug.keystore -storepass android Test-patched.apk androiddebugkey
+adb install Test-patched.apk
+

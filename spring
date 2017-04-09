@@ -6,6 +6,9 @@ Spring Framework includes Spring Security (formely Acegi Security System for Spr
 # all vulns
 http://support.springsource.com/security/springsource-all
 
+# mass assignment / autobinding
+http://agrrrdog.blogspot.com.au/2017/03/autobinding-vulns-and-spring-mvc.html
+
 # vulns
 * CVE-2010-1622 RCE
 http://blog.o0o.nu/2010/06/cve-2010-1622.html

@@ -14,6 +14,7 @@ The installation process via the GTalkService was explored in an excellent blog 
 adb install actually calls /system/bin/pm
 
 * key tools
+pm disable <package_name> useful for disabling pesky applications that came with your device
 getprop This tool allows you to retrieve all system properties including verbose hardware and software information.
 dumpsys This tool displays information about the status of system services. If run without any arguments it iterates through all system services. You can also find these services by running service list.
 

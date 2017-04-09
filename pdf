@@ -12,8 +12,11 @@ http://reachtim.com/articles/PDF-Manipulation.html
 # comprehensive analysis
 http://hiddenillusion.blogspot.com.au/2013/12/analyzepdf-bringing-dirt-up-to-surface.html
 
-# merge *.jpg or *.pdf into one .pdf with imagemagick
+# merge *.jpg into one .pdf with imagemagick
 convert *.jpg blah.pdf
+
+# merge *.pdf into one
+pdfunit 1.pdf 2.pdf n.pdf all.pdf
 
 # extract pdf in jpg images
 convert blah.pdf %d.jpg

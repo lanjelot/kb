@@ -13,6 +13,10 @@ http://unixwiz.net/techtips/ms971492-webdav-vuln.html
 
 => /private%c0%af/
 
+# IIS 6.x
+* CVE-2017-7269 rce in PROPFIND
+https://github.com/edwardz246003/IIS_exploit
+
 # IIS 5.x
 * hide the IIS server version from HTTP header (aka. banner)
 http://support.microsoft.com/?id=317741

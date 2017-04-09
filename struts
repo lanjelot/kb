@@ -91,6 +91,8 @@ welcome.action?...
 Because struts1 was EOL'ed when this vuln was disclosed, a filter was provided for free (http://h30499.www3.hp.com/t5/HP-Security-Research-Blog/Protect-your-Struts1-applications/ba-p/6463188)
 however it could be bypassed by sending payload in body, so a v2 was provdided (http://h30499.www3.hp.com/t5/HP-Security-Research-Blog/Update-your-Struts-1-ClassLoader-manipulation-filters/ba-p/6639204) because
 the new extra-ordinary struts1 v1.3.11 which should completely fix this hasnt been released yet (https://issues.apache.org/jira/browse/STR/fixforversion/12327152/?selectedTab=com.atlassian.jira.jira-projects-plugin:version-summary-panel).
+struts team merged an actual fix instead of the filter workaround by HP, they didn't ship a release though, just merged the patch (see fork https://github.com/kawasima/struts1-forever)
+https://github.com/apache/struts1/pull/1/commits/09f92705bda6399b3885494b6e0e835bea477ac3  is the patch commit Red Hat backported to the versions they ship
 
 also might work: ?class['classLoader']['resources']['dirContext']['docBase']=/ or class['classLoader']['resources']['dirContext']['aliases']=/lol=/etc but it didnt for me on struts-1.3.10
 
@@ -147,3 +149,6 @@ http://drops.wooyun.org/papers/15430
 http://zone.wooyun.org/content/3880
 http://blog.wangzhan.360.cn/?p=222
 http://www.hljy.com.cn/elmah.axd/detail?id=a6bddf7c-868f-4c15-afaa-662621bf0ad4
+
+# CVE-2017-5638
+https://svn.nmap.org/nmap/scripts/http-vuln-cve2017-5638.nse

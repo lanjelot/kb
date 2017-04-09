@@ -18,3 +18,7 @@ smbrelay3 (http://www.tarasco.org/security/smbrelay/ http://seclists.org/fulldis
   IMAP to SMB relay
 http://squirtle.googlecode.com/
 zackattack
+
+ldaprelay
+https://github.com/CoreSecurity/impacket/issues/139 https://github.com/CoreSecurity/impacket/pull/163 https://github.com/CoreSecurity/impacket/blob/master/examples/ntlmrelayx.py#L125
+

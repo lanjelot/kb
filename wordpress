@@ -13,6 +13,11 @@ GET /readme.html
 # releases
 https://wordpress.org/news/category/releases/
 
+# unauth modification of blog posts < 4.7.2 due to type juggling
+https://blogs.akamai.com/2017/02/wordpress-web-api-vulnerability.html
+authorization checks can be bypassed by including an "id" parameter value in either the query_string or POST payload that contains any non-numeric character
+post('/index.php/wp-json/wp/v2/posts/1', json={"id":"1aha","title":"owned","content":"haha"})
+
 # xss in comments to rce (affected: 4.2, 4.1.2, 3.9.3 ...)
 http://klikki.fi/adv/wordpress2.html
 
@@ -30,7 +35,7 @@ http://www.securitysift.com/understanding-wordpress-auth-cookies/
 https://labs.mwrinfosecurity.com/blog/2014/04/11/wordpress-auth-cookie-forgery/
 
 # bf login creds via /xmlrpc.php when wp-login.php is filtered
-# also you can send 500 l/p in one request to bypass rate limiting
+# with wp < 4.4.1 you can send 500 l/p in one request to bypass rate limiting
 https://github.com/zendoctor/wpbrute-rpc
 https://blog.sucuri.net/2015/10/brute-force-amplification-attacks-against-wordpress-xmlrpc.html -> msf/auxiliary/scanner/http/wordpress_multicall_creds
 
