@@ -379,6 +379,12 @@ https://adsecurity.org/?p=1906
 # the DC machine account is DA
 http://room362.blogspot.co.nz/2015/09/using-domain-controller-account.html
 
+# DnsAdmins -> DA
+https://medium.com/@esnesenon/feature-not-bug-dnsadmin-to-dc-compromise-in-one-line-a0f779b8dc83
+
+# active directory delegation (dscals.exe "ou=offices,dc=nss,dc=local")
+https://www.notsosecure.com/active-directory-delegation-manual-analysis/
+
 # finding where GPP account is a local admin
 http://www.harmj0y.net/blog/redteaming/where-my-admins-at-gpo-edition/
 
@@ -387,6 +393,13 @@ https://adsecurity.org/?p=1684
 
 # lnk vuln
 ms10-046 Stuxnet, incomplete fix cve-2015-0096, patched again with ms15-020: http://h30499.www3.hp.com/t5/HP-Security-Research-Blog/Full-details-on-CVE-2015-0096-and-the-failed-MS10-046-Stuxnet/ba-p/6718459
+
+# retrieve kerberos arc4-hmac encrypted Tickets Granting Service (TGS) of accounts having a Service Principal Name (SPN) within an Active Directory
+https://github.com/Synacktiv/kerberom
+
+# hijack any RDP session with SYSTEM
+query user; sc create sesshijack binpath= "cmd.exe /k tscon 1 /dest:rdp-tcp#46"
+http://www.korznikov.com/2017/03/0-day-or-feature-privilege-escalation.html
 
 # RCEs
 # https://technet.microsoft.com/en-us/library/security/dn631937.aspx

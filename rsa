@@ -23,8 +23,10 @@ known factors (factordb etc.)
 common modulus (2 keys with same modulus)
 twin prime (p & q are very close -> fermats)
 common factors (2 moduli with a common prime factor (can be p or q))
+huge modulus -> pow(m, e) didnt wrap so simply decrypt with pow(c, 1/e)
 big exponent -> small d -> wiener attack (or boneh burfee) possible when d < 1/3*N^(1/4)
 very small exponent (like e=3)
+broadcast (same plaintext encrypted with different Ns without padding)
 moar at https://github.com/mimoo/RSA-and-LLL-attacks
 
 * Franklin-Reiter related-message attack (when e=3)

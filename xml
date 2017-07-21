@@ -5,6 +5,7 @@ rce http://blog.diniscruz.com/2013/08/using-xmldecoder-to-execute-server-side.ht
 
 # saml
 https://github.com/SAMLRaider/SAMLRaider
+http://research.aurainfosec.io/bypassing-saml20-SSO/
 
 # xmlprc
 curl -d '<?xml version="1.0"?><methodCall><methodName>system.listMethods</methodName></methodCall>' http://.../api.php

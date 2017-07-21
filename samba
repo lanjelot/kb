@@ -30,6 +30,9 @@ symlink ../../../../../../../ tst
 more tst/etc/passwd
 posix_unlink lol or mount -t cifs and rm tst
 
+# rce dlopen CVE-2017-7494
+msf
+
 # download directory
 lcd blah
 cd blah

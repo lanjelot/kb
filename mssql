@@ -184,6 +184,9 @@ On MSSQL 2000:
     return @result
 http://xd-blog.com.ar/descargas/manuales/bugs/full-mssql-injection-pwnage.html
 
+# command exec without xp_cmdshell with agent jobs
+https://www.optiv.com/blog/mssql-agent-jobs-for-command-execution
+
 # OPENROWSET 
 # http://codewhitesec.blogspot.com.au/2015/06/reading-and-writing-files-with-mssql-openrowset.html
 si on n'est pas sysadmin
@@ -220,8 +223,9 @@ https://www.netspi.com/blog/entryid/197/how-to-hack-database-links-in-sql-server
 https://www.netspi.com/blog/entryid/221/decrypting-mssql-database-link-server-passwords
 https://blog.netspi.com/decrypting-mssql-credential-passwords/
 
-# mitm downgrade to strip encryption
-https://gist.github.com/thinkst/db909e3a41c5cb07d43f (http://blog.thinkst.com/2015/11/stripping-encryption-from-microsoft-sql.html)
+# mitm
+https://gist.github.com/thinkst/db909e3a41c5cb07d43f (http://blog.thinkst.com/2015/11/stripping-encryption-from-microsoft-sql.html) # downgrade to strip encryption
+https://www.optiv.com/blog/mssql-agent-jobs-for-command-execution
 
 # sqlmap notes
 il fallait que j'enleve le cast(@@version AS NVARCHAR(4000)) de son payload pour que ca passe

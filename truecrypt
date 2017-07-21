@@ -1,0 +1,4 @@
+# truecrypt
+
+cryptsetup open --type tcrypt path/to/vol.tc blah
+mount /dev/mapper/blah /mnt/tc

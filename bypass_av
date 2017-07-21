@@ -56,3 +56,6 @@ MPRESS
 
 * excluded antivirus locations
 msf post/windows/gather/enum_av_excluded
+
+* Dr0p1t Framework
+https://github.com/D4Vinci/Dr0p1t-Framework

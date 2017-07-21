@@ -6,6 +6,7 @@ http://www.cem.me/pki/index.html
 # tools
 CrypTool
 CryptoCrack
+https://gchq.github.io/CyberChef/
 
 # great resources
 http://crypto.interactive-maths.com/
@@ -45,6 +46,7 @@ porta (13 alphabet instead of 26 like vigenere)
 ...
 anagram
 online cryptogram solver: http://quipqiup.com/
+google SCBSolver
 best results with tools/crypto/practicalcryptography.com/*.py (e.g. tools/crypto/pygenere's VigCrack.crack_codeword fails when ciphertext too small)
 
 # transposition cipher

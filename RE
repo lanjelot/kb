@@ -22,6 +22,9 @@ https://github.com/netzob/netzob
 # static analysis tool for binaries. ELF/PE, x86/x64, IL RREIL, DBI PIN
 https://bitbucket.org/mihaila/bindead/overview
 
+# symbolic execution
+https://github.com/trailofbits/manticore
+
 # python for reverse engineering
 http://pythonarsenal.erpscan.com/
 
@@ -134,3 +137,5 @@ ret
 leave
 ret
 
+# arm 101
+https://azeria-labs.com/writing-arm-assembly-part-1/

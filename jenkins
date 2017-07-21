@@ -1,4 +1,7 @@
 # jenkins
 
-service allows to run Groovy script through the Jenkins Script Console
+* rce - service allows to run Groovy script through the Jenkins Script Console
 http://blog.dewhurstsecurity.com/2014/12/09/how-i-hacked-facebook.html
+
+* rce - deserialization
+https://blogs.securiteam.com/index.php/archives/3171

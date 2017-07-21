@@ -7,6 +7,9 @@ wpscan --url blah.com -e u,vt,vp (based on https://wpvulndb.com/)
 GET /readme.html
 ./plecost/PKGBUILD:pkgdesc="Wordpress finger printer tool search and retrieve information about the plugins versions installed in Wordpress systems."
 
+# exploit framework
+http://pentestit.com/wpxf-wordpress-exploit-framework/
+
 # username enumeration
 ?author=1
 

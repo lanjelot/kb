@@ -71,6 +71,9 @@ reg save HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Updates updates.reg
 wusa /uninstall /kb:<kbnum> # uninstall patch
 msinfo32 (GUI) ou msinfo32 /report msinfo.txt (CLI) # used to be winmsd.exe
 
+wmic /node:ip /user:u /password:p product get name /value # list installed programs
+wmic /node:@ips.txt /user:u /password:p product where name="program" call uninstall /INTERACTIVE:OFF # uninstall program
+
 PsInfo # list of all hostfixes, uptime etc.
 PsSid
 
@@ -133,6 +136,8 @@ find machines with the gpp (http://www.harmj0y.net/blog/powershell/gpp-and-power
 netsh firewall show state
 netsh advfirewall show allprofiles
 netsh firewall set opmode disable|enable
+
+(gwmi -q 'select * from SoftwareLicensingService').OA3xOriginalProductKey # Windows OEM product key
 
 * list all *.msc progs
 dir c:\windows\system32 | findstr msc
@@ -269,7 +274,8 @@ http://www.blackhatlibrary.net/File_Inclusion
 .*rc
 .ssh / known_hosts, config, authorized_keys{,2}, id_rsa, id_dsa
 .vnc/passwd
-...
+
+https://github.com/b3rito/yodo
 
 grep .*_history for:
   rsh, rhost, rcp, ssh, scp, ...

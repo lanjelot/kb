@@ -2,6 +2,12 @@
 
 https://github.com/nccgroup/cisco-SNMP-enumeration
 
+# rce / vault7
+https://artkond.com/2017/04/10/cisco-catalyst-remote-code-execution/ https://github.com/artkond/cisco-rce/
+
+# EXTRABACON (CVE-2016-6366) + EPICBANANA (CVE-2016-6367) + BANAL* etc.
+https://www.ixiacom.com/company/blog/equation-groups-firewall-exploit-chain
+
 # heap overflow CVE-2016-1287
 https://blog.exodusintel.com/
 

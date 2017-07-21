@@ -1,5 +1,6 @@
 # gef
 https://gef.readthedocs.io/en/latest/
+https://azeria-labs.com/debugging-with-gdb-introduction/
 
 entry-break
 vmmap (mprotect to change +x stack)

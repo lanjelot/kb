@@ -14,6 +14,9 @@ http://yehg.net/lab/pr0js/advisories/tinybrowser_1416_multiple_vulnerabilities
 # joomla <= 1.5.12
 http://www.securityfocus.com/archive/1/505231
 
+# joomla < 3.6.4 admin-level account creation bypass
+https://medium.com/@showthread/joomla-3-6-4-account-creation-elevated-privileges-write-up-and-exploit-965d8fb46fa2
+
 ## extensions
 # RSForm!Pro
 https://www.rsjoomla.com/joomla-extensions/joomla-form.html

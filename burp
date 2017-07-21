@@ -9,6 +9,9 @@ https://github.com/nVisium/xssValidator
 * sqlmap plugin and others
 http://code.google.com/p/gason/
 
+* generates sitemap using wayback machine
+https://github.com/k4ch0w/PwnBack
+
 # compare
 http://blog.secureideas.com/2013/08/comparing-authorization-levels-with.html
 
