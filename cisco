@@ -11,6 +11,9 @@ https://www.ixiacom.com/company/blog/equation-groups-firewall-exploit-chain
 # heap overflow CVE-2016-1287
 https://blog.exodusintel.com/
 
+# Cisco Small Business 220 Series Smart Plus (Sx220) Switches
+snmp auth bypass due to hardcoded community string http://www.synacktiv.com/ressources/advisories_cisco_switch_sg220_default_snmp.pdf
+
 # get version of Cisco ASA OS
 /admin/exec/show+version
 

@@ -8,3 +8,6 @@ telnet -l"-froot"
 
 # sfw
 /opt/sfw/bin/wget,nc,ncat,netcat
+
+# public exploits
+https://github.com/0xdea/exploits/tree/master/solaris

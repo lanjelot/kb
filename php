@@ -13,6 +13,8 @@ https://docs.google.com/spreadsheets/d/1oWsmTvEZcfgc_1QkBczNGA3Gcffg_pmgKcak7iZl
 
 # magic hashes
 https://www.whitehatsec.com/blog/magic-hashes/
+https://md5db.net/explore/0E56
+https://github.com/spaze/hashes
 
 # integer key truncation
 https://www.sektioneins.de/blog/15-08-03-php_challenge_2015_solution.html

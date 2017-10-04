@@ -8,3 +8,7 @@ https://auth0.com/blog/2015/03/31/critical-vulnerabilities-in-json-web-token-lib
 # JSON Web Encryption (JWE) with Key Agreement with Elliptic Curve Diffie-Hellman Ephemeral Static (ECDH-ES)
 attacker can recover private key
 vuln: go-jose, node-jose, jose2go, Nimbus JOSE+JWT, jose4
+
+# automate tests
+https://github.com/ticarpi/jwt_tool
+https://github.com/andresriancho/jwt-fuzzer

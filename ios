@@ -87,6 +87,9 @@ UIApp.delegate
 # reverse eng toolkit
 iRET
 
+# security testing framework
+https://github.com/mwrlabs/needle
+
 # memory
 https://hexplo.it/introducing-memscan/
 

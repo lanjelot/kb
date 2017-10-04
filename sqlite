@@ -20,3 +20,6 @@ https://www.sqlite.org/lang_corefunc.html#load_extension (can have extension on 
 
 # check integrity
 sqlite3 blah.sqlite "PRAGMA integrity_check"
+
+# sqli
+union select sql from sqlite_master where type = 'table' -- -

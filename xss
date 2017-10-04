@@ -181,6 +181,7 @@ http://www.thespanner.co.uk/2015/02/19/another-xss-auditor-bypass/
 # CSP tricks
 https://github.com/cure53/XSSChallengeWiki/wiki/H5SC-Minichallenge-3:-%22Sh*t,-it%27s-CSP!%22
 http://blog.portswigger.net/2016/12/bypassing-csp-using-polyglot-jpegs.html
+https://conference.hitb.org/hitbsecconf2016ams/materials/D1T2%20-%20Michele%20Spagnuolo%20and%20Lukas%20Weichselbaum%20-%20CSP%20Oddities.pdf
 
 # length restriction bypasses
 convert to domxss: <script>eval(location.hash.substr(1))</script>

@@ -12,6 +12,10 @@ http://blog.kiddaland.net/downloads/
 # linux mem dump with rekall
 https://isc.sans.edu/diary/Linux+Memory+Dump+with+Rekall/17775
 
+# recover passwords from swap (unix accounts' etc.)
+https://github.com/sevagas/swap_digger
+https://github.com/huntergregal/mimipenguin
+
 # differences between two virtual machine disk images
 http://libguestfs.org/virt-diff.1.html (via http://rwmj.wordpress.com/2013/12/19/new-in-virt-tools-virt-diff)
 

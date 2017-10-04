@@ -167,6 +167,7 @@ Pwn .bat admin scripts that expand %CD% in a directory under our control http://
 
 * summary
 http://www.r00tsec.com/2014/10/howto-summary-privilege-escalation.html
+https://www.sock-raw.org/wiki/doku.php/windows_priv_esc
 
 * extract passwords
 http://www.nirsoft.net/utils/bullets_password_view.html

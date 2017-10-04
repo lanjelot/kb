@@ -8,6 +8,7 @@ https://www.attackdebris.com/?p=143
 rundll32 meterpreter.dll, blah
 
 # bypassing application whitelisting
+https://github.com/GreatSCT/GreatSCT
 https://github.com/subTee/ApplicationWhitelistBypassTechniques/blob/master/TheList.txt
 https://khr0x40sh.wordpress.com/2015/05/27/whitelist-evasion-revisited/
 
