@@ -38,7 +38,7 @@ https://github.com/iagox86/hash_extender
 
 # substitution ciphers
 * monoalphabetic
-caesar: for i in {0..25}; do echo "Ackkmaa" |  /usr/games/bin/caesar $i ; done 
+caesar/rot: for i in {0..25}; do echo "Ackkmaa" |  /usr/games/bin/caesar $i ; done
 * polyalphabetic
 vigenere
 autokey

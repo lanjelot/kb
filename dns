@@ -37,6 +37,7 @@ http://shinobi.dempsky.org/~matthew/dnstrust/example.html
 http://www.gnucitizen.org/blog/name-mdns-poisoning-attacks-inside-the-lan/
 
 # hostmap a la mano
+http://dnstrails.com/
 http://www.bfk.de/bfk_dnslogger.html?query=$IP
 http://www.gigablast.com/search?n=100&q=ip:$IP
 http://www.bing.com/search?q=ip:$IP
@@ -53,6 +54,7 @@ http://domainsdb.net/
 # recon
 http://infond.blogspot.com/2010/05/tutoriel-footprinting-recherche-passive.html
 
+dnstrails.com
 dnshistory.org
 www.domainsdb.net
 www.gigablast.com

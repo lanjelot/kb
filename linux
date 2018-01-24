@@ -25,11 +25,11 @@ http://www.brendangregg.com/Perf/linux_observability_tools.png
 http://xmodulo.com/useful-command-line-network-monitors-linux.html
 http://xmodulo.com/visualize-memory-usage-linux.html (smem)
 glances
-nmon
-iptraf
-bmon
-iftop
 nethogs
+iptraf
+iftop
+nmon
+bmon
 pktstat
 tcptrack
 https://github.com/caesar0301/awesome-pcaptools
@@ -48,7 +48,6 @@ net.ipv6.conf.default.disable_ipv6 = 1
 net.ipv4.ip_forward = 1
 net.ipv4.conf.all.send_redirects = 0
 net.ipv4.conf.default.send_redirects = 0
-
 net.ipv4.conf.all.accept_redirects = 0
 net.ipv4.conf.default.accept_redirects = 0
 
@@ -63,3 +62,4 @@ srcversion: FDE2E62843DE3ED112A50C3
 # rootkits
 https://github.com/mncoppola/suterusu
 http://blackhatlibrary.net/Azazel
+https://github.com/f0rb1dd3n/Reptile

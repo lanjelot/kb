@@ -1,4 +1,5 @@
 # prssi (Path-Relative Stylesheet Import) / pro (Relative Path Overwrite)
 
+http://www.thespanner.co.uk/2014/03/21/rpo/
 http://blog.portswigger.net/2015/02/prssi.html real life RPO bug in phpBB
 http://blog.innerht.ml/rpo-gadgets/ bug bounty on google using @import to exfil page contents

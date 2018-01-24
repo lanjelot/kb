@@ -190,3 +190,5 @@ git branch -d release-0.3
 git push origin --tags
 git push
 
+# cat all objects to grep for flag
+for i in .git/objects/*/*; do j=${i#.git/objects/}; j=$(echo $j | tr -d /); echo $j; git cat-file -p $j; done | grep flag

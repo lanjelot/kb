@@ -13,3 +13,6 @@ http://packetstormsecurity.com/files/122738/Apache-suEXEC-Privilege-Escalation-I
 
 # list enabled modules
 apache2ctl -M
+
+# create let's encrypt ssl server certs
+certbot --apache

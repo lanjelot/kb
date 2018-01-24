@@ -17,3 +17,6 @@ tshark -o "ssl.keys_list:192.168.105.160,443,http,privkey.pem" -Y frame.number==
 * mitm
 tshark -t u -i eth0 -lnn -F libpcap -w spoof.pcap -f "not tcp.analysis.duplicate_ack and not tcp.analysis.retransmission and not arp and host $VICTIM"
 gui: !tcp.analysis.retransmission && !tcp.analysis.duplicate_ack
+
+* extract data
+tshark -r blah.pcap -Y data -T fields -e data.data
