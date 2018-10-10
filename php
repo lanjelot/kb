@@ -58,6 +58,9 @@ http://securitycafe.ro/2015/01/05/understanding-php-object-injection/
 http://www.slideshare.net/_s_n_t/php-unserialization-vulnerabilities-what-are-we-missing
 https://websec.wordpress.com/2014/12/08/magento-1-9-0-1-poi/ (the guy who makes RIPS) and http://ebrietas0.blogspot.fr/2015/08/magento-bug-bounty-1-2-csrf-to-code.html
 
+# php object instantiation
+https://blog.ripstech.com/2017/shopware-php-object-instantiation-to-blind-xxe/
+
 # lulz
 PCRE_REPLACE_EVAL has been deprecated as of PHP 5.5.0
 NULL byte poisoning was fixed as of PHP 5.3.4

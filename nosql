@@ -6,6 +6,8 @@ As opposed to SQL databases who almost all support the same syntax, NoSQL databa
 https://www.reddit.com/r/netsec/comments/3g4mr2/nosql_exploitation_framework_v20/
 
 # MongoDB
+JSON structure with _id -> ObjectId https://docs.mongodb.com/manual/reference/method/ObjectId/
+
                   SQL   |  NoSQL
 true condition: or 1=1  | || 1==1
 comment:                | NULL BYTE, //, <!--

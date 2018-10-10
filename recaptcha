@@ -1,5 +1,9 @@
 # recaptcha
 
+# Defeating Google's audio reCaptcha with 85% accuracy. http://uncaptcha.cs.umd.edu
+https://github.com/ecthros/uncaptcha
+
+# old
 02:19 < lanjelot> hi guys, i'm looking into stiltwakler v2 because the audio recaptcha used by the website i am pentesting gives 3 groups of 3 digits
 02:20 < lanjelot> and sometimes, 1 group of 4 digits and 2 groups of 3 digits
 02:29 < lanjelot> stiltwalkerv2 fails at guessing the 9 digits

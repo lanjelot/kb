@@ -1,5 +1,8 @@
 # reverse-shells
 
+# exfil framework
+https://github.com/earthquake/XFLTReaT/
+
 # find an outbound port
 http://portquiz.net/
 http://letmeoutofyour.net/

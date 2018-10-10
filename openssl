@@ -1,13 +1,11 @@
 # openssl
 
+xca (great alternative to tinyca)
 openssl ciphers -v HIGH:MEDIUM:-SSLv2
 
 # generer un certificat auto-signé
-openssl req -x509 -newkey rsa:1024 -keyout cakey.pem -out cacert.pem -nodes
-
 openssl req -new -newkey rsa:1024 -keyout key.pem -out csr.pem -nodes
 openssl x509 -req -in csr.pem -out cert.pem -CA cacert.pem -CAkey cakey.pem -CAcreateserial
-
 #openssl x509 -req -in req.pem -extfile openssl.cnf -extensions v3_usr -CA ca.crt -CAkey ca.key -CAcreateserial
 
 # pfx
@@ -25,4 +23,3 @@ openssl req -noout -modulus -in CSR.csr | openssl md5
 CVE-2014-0224 (https://www.openssl.org/news/secadv_20140605.txt)
 https://www.imperialviolet.org/2014/06/05/earlyccs.html
 http://www.tripwire.com/state-of-security/incident-detection/detection-script-for-cve-2014-0224-openssl-cipher-change-spec-injection/
-

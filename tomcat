@@ -33,6 +33,9 @@ prereqs:
   - ya pas de fichier listé comme welcome-file dans /WebApplication2/
 exploit: GET /WebApplication2/;index.html ou ;help.do ou ;index.jsp
 
+== CVE-2017-12617 rce if readonly set to false
+https://www.alphabot.com/security/blog/2017/java/Apache-Tomcat-RCE-CVE-2017-12617.html
+
 
 ## HTTPS
 # marche tres bien avec tomcat-4.1.31

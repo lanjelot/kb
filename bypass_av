@@ -1,5 +1,8 @@
 # bypass antivirus av evasion
 
+* msf
+https://www.rapid7.com/globalassets/_pdfs/whitepaperguide/rapid7-whitepaper-metasploit-framework-encapsulating-av-techniques.pdf
+
 * bypass static heuristic and dynamic analysis
 decrypt payload: http://www.sevagas.com/?Hide-meterpreter-shellcode-in
 fool sandbox: http://packetstorm.foofus.com/papers/virus/BypassAVDynamics.pdf

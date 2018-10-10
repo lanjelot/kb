@@ -111,3 +111,5 @@ apktool b Test-22/ -o Test-patched.apk
 jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore ~/.android/debug.keystore -storepass android Test-patched.apk androiddebugkey
 adb install Test-patched.apk
 
+# bypass cert pinning
+https://blog.it-securityguard.com/the-stony-path-of-android-%F0%9F%A4%96-bug-bounty-bypassing-certificate-pinning/

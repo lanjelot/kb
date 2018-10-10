@@ -1,5 +1,9 @@
 # recon / info gathering / OSINT
 
+# tools to try out
+https://github.com/caffix/amass
+https://github.com/Moham3dRiahi/Th3inspector
+
 # DNS lookup for all IPv4 PTR records
 https://scans.io/study/sonar.rdns
 

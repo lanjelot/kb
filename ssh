@@ -31,6 +31,9 @@ $ chmod 600 ./id_rsa
 $ ssh-keygen -y -f ./id_rsa
 ssh-rsa AAAAB3NzaC
 
+# output modulus from public key
+https://security.stackexchange.com/questions/42268/how-do-i-get-the-rsa-bit-length-with-the-pubkey-and-openssl
+
 # ssh v1
 sshtrix
 

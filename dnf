@@ -1,0 +1,9 @@
+# dnf
+
+# find orphans/leaves
+dnf list --extras # installed packages that are not available in any known repository
+dnf history blah # find out which package pulled blah
+dnf history info 42 # install transaction details
+
+# missing a library?
+dnf provides /path/to/library will tell you which package to install

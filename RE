@@ -6,6 +6,9 @@ http://wiki.yobi.be/wiki/Reverse-Engineering
 # compiler explorer
 http://gcc.godbolt.org/
 
+# x64 c++ decompiler
+Snowman https://derevenets.com/
+
 # system calls
 strace -e trace=open -p $PID
 strace -f -s3000 -e trace=execve

