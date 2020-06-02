@@ -165,7 +165,7 @@ git stash apply stash@{2}
 git stash show
 
 # making changes to pull request
-git fecth https://github.com/asolino/patator master
+git fetch https://github.com/asolino/patator master
 git checkout FETCH_HEAD
 make changes
 git add patator.py

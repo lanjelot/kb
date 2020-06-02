@@ -1,5 +1,9 @@
 # android
 
+# from https://github.com/sindresorhus/awesome
+https://github.com/JStumpp/awesome-android#readme
+https://github.com/ashishb/android-security-awesome#readme
+
 # quick analysis
 https://github.com/1N3/ReverseAPK
 
@@ -47,18 +51,11 @@ https://github.com/nelenkov/android-backup-extractor
 # help with analyzing inter-app communication but requires to upload apk (so not suitable if app isn't public yet)
 http://comdroid.org
 
-# dex2jar replacements
-https://github.com/google/enjarify
+# jadx > procyon > CRF > jd-gui https://stackoverflow.com/questions/1249973/decompiling-dex-into-java-sourcecode
+jadx blah.apk # then export as gradle project and open in android studio / netbeans / intellij
+enjarify -o blah.jar blah.apk; jadx blah.jar # enjarify > dex2jar
 
-# sign apk
-* generate your own selfsigned cert
-keytool -genkey -v -keystore mykey.keystore -alias alias_name -keyalg RSA -keysize 2048 -validity 10000
-
-* use android ks
-jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore ~/.android/debug.keystore com.blah.apk androiddebugkey
-password: android
-
-* check signed cert
+# check signed cert
 openssl pkcs7 -inform DER -in META-INF/CERT.RSA -text -print_certs
 keytool -printcert -file CERT.RSA
 
@@ -85,10 +82,7 @@ http://developer.android.com/guide/developing/devices/emulator.html
 
 # genymotion
 burp: 10.0.3.2:8082
-adb push /opt/m/share/dist/burp_cacert.cer /sdcard/burp.cer
-
-install Google Play Services
-https://github.com/codepath/android_guides/wiki/Genymotion-2.0-Emulators-with-Google-Play-support
+adb push path/to/burp_cacert.cer /sdcard/burp.cer
 
 # ida plugins
 https://github.com/techbliss/ADB_Helper_QT_Super_version
@@ -105,10 +99,13 @@ hashcat -m 5800
 https://www.sensepost.com/blog/2016/android-hooking-with-introspy/
 
 # patch apk
-adb uninstall com.example.Test
+apktool d -r Test.apk
+..make changes..
 rm -f Test-patched.apk
-apktool b Test-22/ -o Test-patched.apk
-jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore ~/.android/debug.keystore -storepass android Test-patched.apk androiddebugkey
+apktool b -o Test-patched.apk Test-22/
+keytool -genkey -v -keystore ./debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
+jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore ./debug.keystore -storepass android Test-patched.apk androiddebugkey
+adb uninstall com.example.Test
 adb install Test-patched.apk
 
 # bypass cert pinning

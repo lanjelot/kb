@@ -6,11 +6,11 @@ alternatives to android's official emulator, such as genymotion, run x86 version
 
 * Dalvik VM hello world (need jdk1.6). Dalvik later replaced by ART (Android Runtime) in Android 4.4 to improve speed
 $ javac Test.java
-$ dx –dex –output=test.jar Test.class
+$ dx –dex –output=test.dex Test.class
+$ java -jar baksmali-2.4.0.jar d test.dex
 
 * app installation process
-The installation process via the GTalkService was explored in an excellent blog post by Jon Oberheide at https://jon.oberheide.org/blog/2010/06/28/a‐peek‐ inside‐the‐gtalkservice‐connection/. The 
-
+The installation process via the GTalkService was explored in an excellent blog post by Jon Oberheide at https://jon.oberheide.org/blog/2010/06/28/a-peek-inside-the-gtalkservice-connection/
 adb install actually calls /system/bin/pm
 
 * key tools
@@ -58,21 +58,17 @@ ODEX file can be converted to .dex using baksmali+smali
 OAT file still contains the original classes.dex file (use oat2dex), useful if original .apk is no longer avail on device.
 content providers exported by default on API<17 == <android 4.2
 
-# tools
-Jadx (dex to java decompiler)
-JEB (trial)
-
 # methodo
 * signature
 Third‐party applications that do not have any intention of sharing data or
 functionality with applications from other developers should always define
 permissions with the signature protection level. This ensures that another
 developer cannot write an application that requests your permission and
-gains access to your exported components. T
+gains access to your exported components.
 
 * permissions
 by default /data/data/com.blah is o+x so make sure com.blah/* are all o-r
-requesting some permissions may get your application put in a certain group. For instance, inet when requesting android.permission .INTERNET. This means that accessing the network from an application would be governed by the OS’s native security checks and not binder.
+requesting some permissions may get your application put in a certain group. For instance, inet when requesting android.permission.INTERNET. This means that accessing the network from an application would be governed by the OS’s native security checks and not binder.
 
 * review manifest
 aapt dump xmltree /path/to/agent.apk AndroidManifest.xml or aapt l -a /path/to/agent.apk

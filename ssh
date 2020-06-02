@@ -8,7 +8,7 @@ https://stribika.github.io/2015/01/04/secure-secure-shell.html
 https://wiki.mozilla.org/Security/Guidelines/OpenSSH#Configuration
 
 # batch mode, no pw prompt
-ssh -o BatchMode=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no root@$i id
+ssh -o BatchMode=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no -o LogLevel=ERROR root@$i id
 
 # only one prompt
 -o NumberOfPasswordPrompts=1

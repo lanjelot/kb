@@ -1,17 +1,14 @@
 # ctfs
 
+https://github.com/apsdehal/awesome-ctf
+https://github.com/JohnHammond/katana https://github.com/JohnHammond/ctf-katana # solver / checklist
+
 # defcon ctf
 https://github.com/legitbs/quals-2013
 https://github.com/legitbs/finals-2013
 http://fuzyll.com/2016/the-defcon-ctf-vm/
 
-# writes-ups & archives
-http://repo.shell-storm.org/CTF/
-
-# competitions
-https://github.com/isislab/Project-Ideas/wiki/Capture-The-Flag-Competitions
-
-# other ctfs
+# moar ctfs
 http://map.ipviking.com/
 http://wargame.kr:8084/
 http://www.overthewire.org/wargames/
@@ -22,26 +19,17 @@ http://ringzer0team.com
 http://microcorruption.com/
 
 http://www.reddit.com/r/securityCTF
-https://ctftime.org/event/list/upcoming/
 
 http://captf.com/practice-ctf/
+https://github.com/osirislab/Project-Ideas/wiki/Capture-The-Flag-Competitions
+https://trailofbits.github.io/ctf/
 http://ctf.forgottensec.com/wiki/index.php?title=Main_Page
 
 # crypto
 http://ae27ff.meme.tips/about.php
 
-# pointers
-https://github.com/isislab/Project-Ideas/wiki/Capture-The-Flag-Competitions
-http://pentest.cryptocity.net/capture-the-flag/
-
-# complete list
-http://www.felipemartins.info/2011/05/pentesting-vulnerable-study-frameworks-complete-list/
-
 # bf pw of crackmes by counting numb of instructions
 https://github.com/wagiro/pintool
-
-# CTF frameworks, tools, libraries, resources, softwares and tutorials
-https://github.com/apsdehal/awesome-ctf
 
 # platforms
 ctfd.io (csaw), mellivora (9447) and ictf

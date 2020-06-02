@@ -269,6 +269,7 @@ find -type f -print0 | xargs -0 sed -i -e 's,^[[:space:]]*/\*[^*]\+\*/ ,,'
 https://bitbucket.org/ilmila/j2eescan/
 
 # deserialization
+https://github.com/NickstaDB/SerializationDumper # dump and rebuild serialization streams and RMI packet contents in a more human readable form
 http://blog.cr0.org/2009/05/write-once-own-everyone.html
 http://foxglovesecurity.com/2015/11/06/what-do-weblogic-websphere-jboss-jenkins-opennms-and-your-application-have-in-common-this-vulnerability/
 https://tersesystems.com/2015/11/08/closing-the-open-door-of-java-object-serialization/
