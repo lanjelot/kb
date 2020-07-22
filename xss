@@ -8,6 +8,9 @@ http://www.xss-payloads.com/ # keylogger, screenshot ...
 https://github.com/jackmasa/XSS.png # mind map
 https://html5sec.org/ https://github.com/cure53/H5SC https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml
 
+# DNS rebinding
+https://github.com/mpgn/ByP-SOP
+
 # blind
 https://github.com/mandatoryprogrammer/xsshunter
 https://github.com/Netflix/sleepy-puppy
@@ -31,6 +34,8 @@ https://labs.mwrinfosecurity.com/blog/popping-alert1-in-flash/
 http://web.archive.org/web/20130808104241/http:/appsec.ws/FlashExploitDatabase.php
 
 # misc tricks / filter evasion
+https://github.com/terjanq/Tiny-XSS-Payloads
+
 <svg/onload=alert(document.domain)>;
 <svg/onload=window.onerror=alert;throw/XSS/;//
 <iframe/onload=action=/confir/.source+'m';eval(action)(1)> 

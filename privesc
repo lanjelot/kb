@@ -176,6 +176,9 @@ http://aluigi.altervista.org/pwdrec.htm
 * EoP
 https://github.com/koczkatamas/CVE-2016-0051
 
+* automation
+https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/blob/master/winPEAS/winPEASbat/winPEAS.bat
+
 # linux
 id
 uname -a

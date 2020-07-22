@@ -10,6 +10,10 @@ https://github.com/apsdehal/awesome-ctf#crypto
 https://cryptii.com/
 https://gchq.github.io/CyberChef/ Magic mode
 
+# identification (https://www.youtube.com/watch?v=9Q5Q1Nn5Vss)
+https://bionsgadgets.appspot.com/gadget_forms/refscore_extended.html
+https://www.dcode.fr/index-coincidence (language is >0.06, random is <0.04) then find period (key length)
+
 # great resources
 http://crypto.interactive-maths.com/
 http://practicalcryptography.com/cryptanalysis/
@@ -45,18 +49,17 @@ caesar/rot: for i in {0..25}; do echo "Ackkmaa" |  /usr/games/bin/caesar $i ; do
 vigenere
 autokey
 porta (13 alphabet instead of 26 like vigenere)
-...
 anagram
-online cryptogram solver: http://quipqiup.com/
 google SCBSolver
-
-best results with tools/crypto/practicalcryptography.com/*.py (e.g. tools/crypto/pygenere's VigCrack.crack_codeword fails when ciphertext too small)
+best results with tools/crypto/practicalcryptography.com/*.py (eg. tools/crypto/pygenere's VigCrack.crack_codeword fails when ciphertext too small)
+online solver: http://quipqiup.com/
 
 # transposition cipher
 scytale
 rail fence
 route
 columnar transposition (break_coltrans.py) unlikely if there are no many vowels
+online solver: http://tholman.com/other/transposition/
 
 # xortool
 github.com/hellman/xortool: use -c 00 for encrypted binaries, -c ' ' for texts (sometimes fails to find correct xor key)

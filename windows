@@ -160,6 +160,7 @@ dump passwords remembered by third-party software -> NirSoft tools, carrot, msf 
 src: http://bernardodamele.blogspot.com.au/
 
 # authenticated code execution 
+https://github.com/Hackplayers/evil-winrm
 http://www.scriptjunkie.us/2013/02/authenticated-remote-code-execution-methods-in-windows/
 https://community.rapid7.com/community/metasploit/blog/2012/11/08/abusing-windows-remote-management-winrm-with-metasploit // use winrm to get a shell
 https://code.google.com/p/impacket/source/browse/trunk/examples/wmiexec.py
@@ -220,6 +221,9 @@ list users who used mstsc and where they connected to
 with what tools?
 
 # enum users
+* crack TGTs
+https://github.com/SecureAuthCorp/impacket/blob/master/examples/GetNPUsers.py
+
 * nmap/smb-enum-users.nse
 ./nmap -p U:137,T:139 --script smb-enum-users --script smb-enum-groups --script-args=smbusername=blah,smbpassword/smbhash=...,smbdomain=FOO,samronly=1 -vv 192.168.122.196
 
