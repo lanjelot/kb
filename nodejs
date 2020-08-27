@@ -1,5 +1,17 @@
 # nodejs
 
+# hello world
+npm init -y
+and install deps with:
+npm install auto-install --save
+./node_modules/.bin/auto-install
+or
+add every dep to package.json and then
+npm install --save
+and run with:
+npm install --save nodemon
+./node_modules/.bin/nodemon blah.js
+
 # rce in mathjs
 https://capacitorset.github.io/mathjs/
 
