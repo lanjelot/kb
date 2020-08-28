@@ -15,15 +15,20 @@ https://code-spotter.com/
 # download old versions from archive
 http://www.oracle.com/technetwork/java/javase/archive-139210.html
 
-# java class file version
-major  minor Java platform version 
-45       3           1.0
-45       3           1.1
-46       0           1.2
-47       0           1.3
-48       0           1.4
-49       0           1.5
-50       0           1.6
+# java class file version https://en.wikipedia.org/wiki/Java_class_file#General_layout
+major.minor version
+45.3  1.0
+45.3  1.1
+46    1.2
+47    1.3
+48    1.4
+49    1.5
+50    1.6
+51    1.7
+52    1.8
+53    9
+55    11
+58    14
 
 # hibernate
 http://blog.h3xstream.com/2014/02/hql-for-pentesters.html

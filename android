@@ -110,3 +110,6 @@ adb install Test-patched.apk
 
 # bypass cert pinning
 https://blog.it-securityguard.com/the-stony-path-of-android-%F0%9F%A4%96-bug-bounty-bypassing-certificate-pinning/
+
+# certificate pinning based on its public key sha256 fingerprint
+openssl s_client -connect blah.com:443 | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
