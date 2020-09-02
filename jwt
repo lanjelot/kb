@@ -12,3 +12,6 @@ vuln: go-jose, node-jose, jose2go, Nimbus JOSE+JWT, jose4
 # automate tests
 https://github.com/ticarpi/jwt_tool
 https://github.com/andresriancho/jwt-fuzzer
+
+# best practices
+https://tools.ietf.org/html/draft-ietf-oauth-jwt-bcp-07
