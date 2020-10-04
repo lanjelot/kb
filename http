@@ -1,5 +1,8 @@
 # http
 
+# google csp evaluator
+https://csp-evaluator.withgoogle.com/
+
 # http://guides.rubyonrails.org/security.html https://www.cyber.gov.au/acsc/view-all-content/publications/protecting-web-applications-and-users
 X-Frame-Options 'SAMEORIGIN' - allow framing on same domain. Set it to 'DENY' to deny framing at all or 'ALLOWALL' or ALLOW-FROM to allows all, one or more origins (wildcards are not permitted)
 X-XSS-Protection '1; mode=block' - use XSS Auditor and block page if XSS attack is detected. Set it to '0;' if you want to switch XSS Auditor off (useful if response contents scripts from request parameters)

