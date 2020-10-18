@@ -1,5 +1,8 @@
 # vpn
 
+# auto openvpn on a vps
+wget https://git.io/vpn | bash -
+
 # bonne intro vpn
 http://www.symantec.com/connect/fr/articles/penetration-testing-ipsec-vpns
 
