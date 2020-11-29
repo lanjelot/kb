@@ -2,26 +2,20 @@
 
 http://skora.net/news/24-itsec-projects/26-the-burp-sessionauth-extension
 
-# plugins
-* xss
+# quick extension
+https://tipi-hack.github.io/2018/04/01/quals-NDH-18-Wawacoin.html
+
+# moar extensions
+https://github.com/nccgroup/
 https://github.com/nVisium/xssValidator
+https://github.com/k4ch0w/PwnBack # generates sitemap using wayback machine
 
-* sqlmap plugin and others
-http://code.google.com/p/gason/
-
-* generates sitemap using wayback machine
-https://github.com/k4ch0w/PwnBack
-
-# compare
+# authz (old)
+https://patzke.org/the-burp-sessionauth-extension.html
 http://blog.secureideas.com/2013/08/comparing-authorization-levels-with.html
 
 # java serialisation
 Attacking java serialisation (java thick clients / applets -> java web service): DSer / BurpDSer plugin for burp
-
-# extensions
-www.burpextensions.com
-https://pro.portswigger.net/bappstore/
-https://github.com/nccgroup/ has a lot of burp extensions
 
 # license check bypass
 copy ~/.java/.userPrefs/prefs.xml and provide same account username

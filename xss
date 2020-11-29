@@ -173,3 +173,9 @@ https://conference.hitb.org/hitbsecconf2016ams/materials/D1T2%20-%20Michele%20Sp
 convert to domxss: <script>eval(location.hash.substr(1))</script>
 span an attack payload across multiple fields (twahh p.412)
 
+# sop for file: URIs
+https://developer.mozilla.org/en-US/docs/Archive/Misc_top_level/Same-origin_policy_for_file:_URIs
+https://juplo.de/bypassing-the-same-origin-policiy-for-loal-files-during-development/
+
+# pdf export functionality
+https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting/server-side-xss-dynamic-pdf
