@@ -52,14 +52,11 @@ git push -f origin HEAD^:master
 
 # http://stackoverflow.com/questions/6406762/why-am-i-merging-remote-tracking-branch-origin-develop-into-develop
 do not use git pull --rebase, do below instead:
-* download the latest commits
-git remote update -p
-* update the local branch
-git merge --ff-only @{u}
-* if the above fails with a complaint that the local branch has diverged:
-git rebase -p @{u}
+git remote update -p #  download the latest commits
+git merge --ff-only @{u} # update the local branch
+git rebase -p @{u} # if the above fails with a complaint that the local branch has diverged:
 
-or just create an alias: git config --global alias.up '!git remote update -p; git merge --ff-only @{u}' and then just do: git up
+create an alias: git config --global alias.up '!git remote update -p; git merge --ff-only @{u}' and then just do: git up
 
 # fork a project on github (https://gist.github.com/blackfalcon/8428401)
 click fork on web gui

@@ -26,12 +26,13 @@ https://trailofbits.github.io/ctf/
 http://ctf.forgottensec.com/wiki/index.php?title=Main_Page
 
 # crypto
+https://cryptohack.org/
 http://ae27ff.meme.tips/about.php
 
 # bf pw of crackmes by counting numb of instructions
 https://github.com/wagiro/pintool
 
-# platforms
+# scoreboards
 ctfd.io (csaw), mellivora (9447) and ictf
 picoCTF, EasyCTF, tinyctf-platform
 http://github.com/facebook/fbctf
@@ -39,3 +40,8 @@ https://www.reddit.com/r/securityCTF/comments/3sgi52/looking_for_a_ctf_platformf
 https://github.com/mitre-cyber-academy/ctf-scoreboard
 TJCTF https://github.com/TJCSec/ctf-platform
 IceCTF improved TJCTF a lot https://github.com/IceCTF/ColdCore
+
+# note sharing
+https://github.com/TFNS/CTFNote
+https://github.com/StratumAuhuur/CTFPad
+https://github.com/hugsy/ctfpad

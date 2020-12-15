@@ -17,6 +17,9 @@ http://www.terrencemiao.com/Webmail/msg00022.html
 # if on windows and has powershell, use PowerSploit (bonus: will bypass AV)
 http://www.pentestgeek.com/2013/07/19/invoke-shellcode/
 
+# pivoting
+https://blog.raw.pm/en/state-of-the-art-of-network-pivoting-in-2019/
+
 # sources
 https://highon.coffee/blog/reverse-shell-cheat-sheet/
 http://www.hsc-news.com/archives/2011/000082.html

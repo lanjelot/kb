@@ -1,0 +1,6 @@
+# docker
+
+# x11 apps
+xhost +si:localuser:root
+docker run .. -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=DISPLAY xeyes # apt-get install -y x11-apps
+xhost -si:localuser:root

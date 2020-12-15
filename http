@@ -59,7 +59,7 @@ https://www.notsosecure.com/blog/2014/11/27/how-cross-site-websocket-hijacking-c
 # http request smuggling
 http://projects.webappsec.org/w/page/13246928/HTTP%20Request%20Smuggling
 
-# <a target=_blank https://mathiasbynens.github.io/rel-noopener/ https://css-tricks.com/use-target_blank/
+# tabnabbing <a target=_blank https://mathiasbynens.github.io/rel-noopener/ https://css-tricks.com/use-target_blank/
 do not use target="_blank" without rel="noopener noreferrer"
 or this could get ugly esp. with <a links in user-generated content
 
