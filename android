@@ -7,7 +7,8 @@ https://github.com/ashishb/android-security-awesome#readme
 # quick analysis
 https://github.com/1N3/ReverseAPK
 
-# good reference
+# checklist / cheatsheet
+https://github.com/randorisec/MobileHackingCheatSheet
 https://github.com/tanprathan/MobileApp-Pentest-Cheatsheet/
 https://www.owasp.org/index.php/Projects/OWASP_Mobile_Security_Project_-_Top_Ten_Mobile_Risks
 
@@ -59,27 +60,6 @@ enjarify -o blah.jar blah.apk; jadx blah.jar # enjarify > dex2jar
 openssl pkcs7 -inform DER -in META-INF/CERT.RSA -text -print_certs
 keytool -printcert -file CERT.RSA
 
-# gul
-http://www.securityaegis.com/notes-on-setting-up-an-android-pentest-lab/
-* Exemple
-E:\Tools\Android-sdk\tools\emulator.exe -avd Android_2.1_update_1 -http-proxy 1.2.3.4:8080 -scale 0.7
-
-* Faire fonctionner l'émulateur avec un proxy
-% Depuis le console :
-% tools\emulator.exe -avd <AVD> -http-proxy <ip:port>
-% Évidemment depuis le SDK Manager, ca ne fonctionne pas...
-
-% Depuis l'émulateur :
-% settings > Wireless & networks > Mobile network > Access Point Names > TelKila
-% > Proxy / Port
-
-* Interesting links
-http://code.google.com/p/android-apktool/wiki/FrameworkFiles
-http://code.google.com/p/android-apktool/wiki/ReportingIssues
-http://groups.google.com/group/apktool?pli=1
-http://stackoverflow.com/questions/28380/proxy-with-android-emulator
-http://developer.android.com/guide/developing/devices/emulator.html
-
 # genymotion
 burp: 10.0.3.2:8082
 adb push path/to/burp_cacert.cer /sdcard/burp.cer
@@ -95,18 +75,15 @@ hashcat -m 110 $(cat password.key|tr A-Z a-z|cut -b -40):$(printf "%x" $(sqlite3
 * android < 5.x https://hashcat.net/forum/thread-2202.html
 hashcat -m 5800 
 
-# hooking (introspy)
-https://www.sensepost.com/blog/2016/android-hooking-with-introspy/
-
 # patch apk
-apktool d -r Test.apk
+apktool d -r Test.apk and rm META-INF/BNDLTOOL.*
 ..make changes..
 rm -f Test-patched.apk
 apktool b -o Test-patched.apk Test-22/
 keytool -genkey -v -keystore ./debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
 jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore ./debug.keystore -storepass android Test-patched.apk androiddebugkey
 adb uninstall com.example.Test
-adb install Test-patched.apk
+adb install Test-patched.apk or adb install-multiple base.apk split_config.*.apk
 
 # bypass cert pinning
 https://blog.it-securityguard.com/the-stony-path-of-android-%F0%9F%A4%96-bug-bounty-bypassing-certificate-pinning/
@@ -117,3 +94,5 @@ openssl s_client -connect blah.com:443 | openssl x509 -pubkey -noout | openssl p
 # android instrumentation tools
 frida
 ARTist
+introspy (hooking) https://www.sensepost.com/blog/2016/android-hooking-with-introspy/
+

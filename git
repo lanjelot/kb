@@ -1,33 +1,14 @@
 # git
 
-git diff --cached # show only changes not yet added to the index
-
 git log --oneline
 git log --stat --summary
 git log -p # see complete diff at each step
 git log --author="<pattern>"
 git log --grep="<pattern>"
-git log <file>
-git log --graph --decorate --oneline
-git log 3157e..5ab91
-git log 3157e~1
-git log HEAD~3
-git reflog
-
-git checkout a138fb5 hello.py # see version from old commit
-git checkout HEAD hello.py # and back to recent version
-
-git branch -a # to list all existing branches, including remote branches, and see active one
-git branch -r # list remote branches
-git checkout -b 1.3-stable origin/1.3-stable # switch to a local copy of a remote branch
 
 git pull <remote> == git fetch <remote>; git merge origin/<current-branch>
-git pull --rebase origin # keel local changes onto the top of what everybody else has already contributed
-
-git tag v2.5 1b2ae37b
-git push <remote> --tags # sends all local tags to remote repo
-
 git clean # removes untracked files from working directory
+git tag v2.5 1b2ae37b
 git grep "hello" v2.5
 
 # revert: the safe way, reset: the dangerous way & permanent undo
@@ -40,49 +21,35 @@ git reset --hard HEAD~2 # remove last 2 commits
 # delete last commit (assuming i am sitting on that commit) warning you will loose your changes
 git reset --hard HEAD~1 or git reset --hard <sha1-commit-id>
 
-# forgot to add files or to make changes to files in commit?
+# forgot to add files or to make some changes
 git add ./path/to/file
 git commit -a --amend -C HEAD
-
-# edit last commit message
-git commit --amend
 
 # undo last push
 git push -f origin HEAD^:master
 
-# http://stackoverflow.com/questions/6406762/why-am-i-merging-remote-tracking-branch-origin-develop-into-develop
-do not use git pull --rebase, do below instead:
-git remote update -p #  download the latest commits
-git merge --ff-only @{u} # update the local branch
-git rebase -p @{u} # if the above fails with a complaint that the local branch has diverged:
-
-create an alias: git config --global alias.up '!git remote update -p; git merge --ff-only @{u}' and then just do: git up
-
-# fork a project on github (https://gist.github.com/blackfalcon/8428401)
-click fork on web gui
-git clone
+# fork on github
+- sync
 git remote add upstream https://github.com/original/project.git
-
-- sync the fork
 git fetch upstream
-git checkout master # checkout my fork's local master branch
+git checkout master
 git merge upstream/master
 
 - create branch and push changes
 git checkout -b fix-blah master
-git commit -m Fix\ blah core.py
+git commit -m Fix... core.py
 git push origin fix-blah
 
-- keep forked repo synced with main repo
+- keep forked repo synced with upstream
 git checkout master
 git fetch upstream
+git merge --ff-only upstream/master
 git rebase upstream/master
-git status # your branch is ahead of 'origin/master' with n commits
 git push origin master
 
-- once pull request merged
-git branch -d mynewfeat # delete branch from local repo
-git push origin --delete mynewfeat # delete branch from remote repo as well (optional)
+- delete branch
+git branch -d fix-blah
+git push -d origin fix-blah
 
 # master/develop/branches (newfeats/bugfixes/releases) http://nvie.com/posts/a-successful-git-branching-model/
 * new feature
@@ -139,13 +106,6 @@ git checkout master
 git merge <commitid of my commit above>
 git push
 
-# rip .git
-http://www.slideshare.net/kost/ripping-web-accessible-git-files
-tools/exploit/dvcs-rippers
-
-# gui
-gitk, qgit, tig
-
 # skiddit
 git checkout -b release-0.3 master
 change version number
@@ -160,3 +120,10 @@ git push
 
 # cat all objects to grep for flag
 for i in .git/objects/*/*; do j=${i#.git/objects/}; j=$(echo $j | tr -d /); echo $j; git cat-file -p $j; done | grep flag
+
+# rip .git
+http://www.slideshare.net/kost/ripping-web-accessible-git-files
+tools/exploit/dvcs-rippers
+
+# gui
+gitk, qgit, tig

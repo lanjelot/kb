@@ -16,7 +16,7 @@ see ./bypass_av
 http://www.labofapenetrationtester.com/2016/09/amsi.html
 
 # recon
-* obtain list of Windows XP
+https://www.volexity.com/blog/2020/12/14/dark-halo-leverages-solarwinds-compromise-to-breach-organizations/
 Get-ADComputer -filter {OperatingSystem -like "*XP*"}
 
 # port scan
@@ -24,7 +24,6 @@ http://webstersprodigy.net/2013/07/01/powershell-portscanner/
 
 # learn
 http://mohd-akram.github.io/2013/05/16/a-python-developers-guide-to-powershell
-
 get-command or gcm (alias) # list all cmdlets
 
 # PowerSploit

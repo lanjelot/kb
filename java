@@ -261,6 +261,7 @@ turned off by default since Spring Framework 3.1 onwards when running on Servlet
 download jar files from a jnlp file: https://code.google.com/p/jnlpdownloader/
 
 # rmi
+https://labs.bishopfox.com/tech-blog/rmiscout
 https://www.makeuseof.com/tag/java-rmi-registry/
 http://www.accuvant.com/blog/exploiting-jmx-rmi
 https://github.com/mogwaisec/mjet

