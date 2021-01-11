@@ -57,7 +57,7 @@ language=fr%0d%0aContent-Length:%200%0d%0a%0d%0aHTTP/1.1%20200%20OK%0d%0aContent
 # websockets
 https://www.notsosecure.com/blog/2014/11/27/how-cross-site-websocket-hijacking-could-lead-to-full-session-compromise/
 
-# http request smuggling
+# http request smuggling / http desync
 https://zonduu.me/posts/http-smuggling-writeup
 https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn
 http://projects.webappsec.org/w/page/13246928/HTTP%20Request%20Smuggling

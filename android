@@ -10,6 +10,7 @@ https://github.com/1N3/ReverseAPK
 # checklist / cheatsheet
 https://github.com/randorisec/MobileHackingCheatSheet
 https://github.com/tanprathan/MobileApp-Pentest-Cheatsheet/
+https://github.com/carlospolop/hacktricks/tree/master/mobile-apps-pentesting
 https://www.owasp.org/index.php/Projects/OWASP_Mobile_Security_Project_-_Top_Ten_Mobile_Risks
 
 # great blog about android security (michael)
@@ -76,14 +77,15 @@ hashcat -m 110 $(cat password.key|tr A-Z a-z|cut -b -40):$(printf "%x" $(sqlite3
 hashcat -m 5800 
 
 # patch apk
-apktool d -r Test.apk and rm META-INF/BNDLTOOL.*
+apktool d base.apk -o base
 ..make changes..
-rm -f Test-patched.apk
-apktool b -o Test-patched.apk Test-22/
-keytool -genkey -v -keystore ./debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
-jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore ./debug.keystore -storepass android Test-patched.apk androiddebugkey
+apktool b -o base.apk base/
+zip -d base.apk 'META-INF/BNDLTOOL.*'
+keytool -genkey -v -keystore ~/.debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000
+jarsigner -sigalg SHA1withRSA -digestalg SHA1 -keystore ~/.debug.keystore -storepass android base.apk androiddebugkey
+zipalign -p 4 base.apk base.apk.ok && mv base.apk.ok base.apk
 adb uninstall com.example.Test
-adb install Test-patched.apk or adb install-multiple base.apk split_config.*.apk
+adb install base.apk or adb install-multiple -r base.apk split_config.*.apk
 
 # bypass cert pinning
 https://blog.it-securityguard.com/the-stony-path-of-android-%F0%9F%A4%96-bug-bounty-bypassing-certificate-pinning/
@@ -92,7 +94,7 @@ https://blog.it-securityguard.com/the-stony-path-of-android-%F0%9F%A4%96-bug-bou
 openssl s_client -connect blah.com:443 | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
 
 # android instrumentation tools
-frida
+frida // fridalab https://www.shielder.it/blog/2019/02/fridalab-writeup/ https://github.com/mahmutyazici/android-frida
 ARTist
 introspy (hooking) https://www.sensepost.com/blog/2016/android-hooking-with-introspy/
 

