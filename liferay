@@ -2,6 +2,10 @@
 
 http://www.insinuator.net/2011/12/liferay-portlet-shell/
 
+# RCE in Liferay Portal version 6.x
+using JNDI Injection with gadget com.sun.rowset.JdbcRowSetImpl because c3p0 library isn't in the classpath of this version
+https://twitter.com/marcioalm/status/1337439880436183052
+
 # admin / deballer la guerre
 default account: test@liferay.com / test 
 

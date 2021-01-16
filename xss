@@ -183,7 +183,11 @@ https://developer.mozilla.org/en-US/docs/Archive/Misc_top_level/Same-origin_poli
 https://juplo.de/bypassing-the-same-origin-policiy-for-loal-files-during-development/
 
 # pdf export functionality
+https://portswigger.net/research/portable-data-exfiltration
 https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting/server-side-xss-dynamic-pdf
 
 # xs leaks / xs search
-https://xsleaks.com/
+https://xsleaks.dev/ https://github.com/xsleaks/wiki
+
+# samesite cookie attribute
+https://twitter.com/hackerscrolls/status/1343255733413027843

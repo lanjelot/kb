@@ -4,6 +4,7 @@
 http://www.javadecompilers.com/
 https://github.com/Storyyeller/Krakatau
 https://github.com/Konloch/bytecode-viewer.git
+https://github.com/Col-E/Recaf
 http://jode.sourceforge.net/
 
 # coverity source code java audit

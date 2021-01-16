@@ -1,4 +1,6 @@
-# load balancer
+# load balancer / cdn
+
+https://zdresearch.com/finding-the-origin-ip-behind-cdns/
 
 Client-Date: pour detecter plusieurs srv derriere un Load Balancer
 

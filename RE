@@ -1,7 +1,11 @@
 # reverse
 
-# p complete
+# learn
+https://github.com/mytechnotalent/Reverse-Engineering-Tutorial
 http://wiki.yobi.be/wiki/Reverse-Engineering
+
+# ghidra tuto
+https://ringzer0.training/reverse-engineering-with-ghidra.html
 
 # compiler explorer
 http://gcc.godbolt.org/

