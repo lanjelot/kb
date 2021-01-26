@@ -30,10 +30,10 @@ git push -f origin HEAD^:master
 
 # fork on github
 - sync
-git remote add upstream https://github.com/original/project.git
+git remote add upstream https://github.com/some/project.git
 git fetch upstream
 git checkout master
-git merge upstream/master
+git merge --ff-only upstream/master
 
 - create branch and push changes
 git checkout -b fix-blah master

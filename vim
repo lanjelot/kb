@@ -7,7 +7,7 @@ editing
 :wq
 
 # hexadecimal editors
-010editor (reset trial: rm "/home/seb/.config/SweetScape/010 Editor.ini")
+010editor (reset trial: rm "$HOME/.config/SweetScape/010 Editor.ini")
 hte
 hexedit
 hexinator https://hexinator.com/
