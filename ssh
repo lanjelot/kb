@@ -16,6 +16,9 @@ ssh -o BatchMode=yes -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no
 # only forward socks4
 ssh -nNT -D1234
 
+# sftp
+ssh -NT -L 3306:/var/run/mysql.sock sftp@vuln.com -s sftp
+
 # environment
 http://www.opennet.ru/base/netsoft/1025195882_355.txt.html
 

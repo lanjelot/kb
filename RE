@@ -17,9 +17,6 @@ Snowman https://derevenets.com/
 strace -e trace=open -p $PID
 strace -f -s3000 -e trace=execve
 
-# dynamic library calls and signals
-ltrace
-
 # syscall dymanic tracer for Linux
 https://github.com/iovisor/ply
 
@@ -146,3 +143,6 @@ ret
 
 # arm 101
 https://azeria-labs.com/writing-arm-assembly-part-1/
+
+# intel opcode reference
+http://ref.x86asm.net/coder32.html

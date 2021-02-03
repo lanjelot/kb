@@ -47,6 +47,9 @@ git merge --ff-only upstream/master
 git rebase upstream/master
 git push origin master
 
+- keep pr on top of upstream
+https://www.digitalocean.com/community/tutorials/how-to-rebase-and-update-a-pull-request
+
 - delete branch
 git branch -d fix-blah
 git push -d origin fix-blah

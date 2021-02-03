@@ -1,24 +1,22 @@
 # debian openssl
-http://wiki.debian.org/SSLkeys
-
-# if a good DSA key was used on a bad machine, the key is compromised
 
 # http://wiki.debian.org/SSLkeys
 "the vulnerability is fixed in version 0.9.8c-4etch3 for etch and version 0.9.8g-9 for lenny/sid"
+"if a good DSA key was used on a bad machine, the key is compromised"
 
 # applications/protocols impacted
 pwsafe, debian based PKI, etc
 
 # tools to detect weak keys
+https://github.com/g0tmi1k/debian-ssh
+http://itsecurity.net/ (debian_ssh_scan_v4.py)
+http://metasploit.com/users/hdm/tools/debian-openssl/ (weak keys generation)
+https://hdm.io/tools/debian-openssl/
+http://wiki.yobi.be/wiki/Debian_OpenSSL
+
+# usage
 ./debian_ssh_scan_v4.py 1.2.3.4
 cat ip_list.txt | ./debian_ssh_scan_v4.py
 dowkb.pl
 {ssl,openvpn,ssh}-vulnkey
 ssh-keyscan victim.domain.org | ssh-vulnkey
-
-# source
-http://itsecurity.net/ (debian_ssh_scan_v4.py)
-http://metasploit.com/users/hdm/tools/debian-openssl/ (weak keys generation)
-https://hdm.io/tools/debian-openssl/
-https://github.com/g0tmi1k/debian-ssh
-http://wiki.yobi.be/wiki/Debian_OpenSSL
