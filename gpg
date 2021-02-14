@@ -3,4 +3,5 @@
 gpg --keyserver pool.sks-keyservers.net --recv-keys 9B65F087
 gpg --keyserver subkeys.pgp.net --recv-keys 9B65F087
 gpg --keyserver pgp.mit.edu --recv-keys 9B65F087
+gpg --keyserver keys.gnupg.net --recv-keys 9B65F087
 

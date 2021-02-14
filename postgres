@@ -31,6 +31,9 @@ psql -l -U postgres
 * pour se connecter depuis localhost, il faut soit etre dans le groupe postgres soit etre l'utilisateur postgres ou root
 psql -U postgres
 
+* lister les extensions
+\dx or `SELECT * FROM pg_extension`
+
 * creer une bdd "test"
 createdb -U postgres -W test
 

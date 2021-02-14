@@ -67,9 +67,11 @@ https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf
 # web cache poisoning
 https://portswigger.net/research/practical-web-cache-poisoning
 
-# tabnabbing <a target=_blank https://mathiasbynens.github.io/rel-noopener/ https://css-tricks.com/use-target_blank/
-do not use target="_blank" without rel="noopener noreferrer"
-or this could get ugly esp. with <a links in user-generated content
+# tabnabbing https://mathiasbynens.github.io/rel-noopener/ https://css-tricks.com/use-target_blank/
+search for <a target="_blank" without rel="noopener noreferrer"
 
 # browser security
 https://github.com/cure53/browser-sec-whitepaper
+
+# prototype pollution
+https://github.com/BlackFan/client-side-prototype-pollution

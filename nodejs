@@ -1,12 +1,10 @@
 # nodejs
 
-# hello world
+# install index.js deps automatically
+* automatically add deps to package.json
 npm init -y
-and install deps with:
-npm install auto-install --save
-./node_modules/.bin/auto-install
-or
-add every dep to package.json and then
+npm install auto-install --save && ./node_modules/.bin/auto-install --dont-uninstall
+* if deps already listed in package.json
 npm install --save
 and run with:
 npm install --save nodemon

@@ -1,12 +1,12 @@
 # xss
 
 https://github.com/s0md3v/AwesomeXSS # ./Database/jackmasa-mind-map.png
-
+https://netsec.expert/posts/xss-in-2021/
 https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
 http://www.xss-payloads.com/ # keylogger, screenshot ...
 https://html5sec.org/ https://github.com/cure53/H5SC https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml
 
-# DNS rebinding
+# dns rebinding
 https://github.com/mpgn/ByP-SOP
 https://bookgin.tw/2019/01/05/abusing-dns-browser-based-port-scanning-and-dns-rebinding/
 https://lock.cmpxchg8b.com/rebinder.html
@@ -15,8 +15,9 @@ https://lock.cmpxchg8b.com/rebinder.html
 https://github.com/mandatoryprogrammer/xsshunter
 https://github.com/Netflix/sleepy-puppy
 
-# test your payloads with
-http://jsfiddle.net/njx5B/3/
+# test code online
+http://jsfiddle.net/
+https://codepen.io/
 
 # evasion
 https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
