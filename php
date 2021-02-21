@@ -52,9 +52,13 @@ preg_replace('/' . $_GET['find'] . '/i', $_GET['replace'], $unknown) -> ?find=bl
 
 PHP since 7.0 doesn't allow code execution in preg_replace at all
 
-# unserialize RCEs
+# php object injection / unserialize
 http://vagosec.org/2013/09/wordpress-php-object-injection/
 http://blog.checkpoint.com/2015/11/05/check-point-discovers-critical-vbulletin-0-day/
+
+# phar deserialization
+https://blogs.keysight.com/blogs/tech/nwvs.entry.html/2019/06/26/exploiting_php_phar-PRD7.html
+https://blog.ripstech.com/2018/new-php-exploitation-technique/
 
 # unserialize / object injection 101
 http://securitycafe.ro/2015/01/05/understanding-php-object-injection/

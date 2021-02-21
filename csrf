@@ -3,29 +3,11 @@
 # multi-post csrf trick
 http://www.lanmaster53.com/2013/07/multi-post-csrf/
 
-# for easy Proof of concept
+# automate attacks
 https://github.com/PaulSec/CSRFT
-http://homakov.github.io
 
-# simple post avec javascript
-http://inj3ct0r.com/exploits/5999
-
-# basic or digest auth
-# pour que l'utilisateur ne remarque pas de popup d'erreur si le csrf echoue
-http://ha.ckers.org/blog/20090630/csrf-and-ignoring-basicdigest-auth/
-
-# xmlhttprequest (l'instanciation n'est pas la meme sous FF ou IE)
-http://www.openjs.com/articles/ajax_xmlhttp_using_post.php
-
-# harmless
-<a href="http://www.harmless.com/" onclick="
-  var f = document.createElement('form');
-  f.style.display = 'none';
-  this.parentNode.appendChild(f);
-  f.method = 'POST';
-  f.action = 'http://www.example.com/account/destroy';
-  f.submit();
-  return false;">To the harmless survey</a>
-
-# sonar (automatic scanning and fingerprint of internal hosts and delivering csrf exploits)
+# sonar - automatic scanning and fingerprint of internal hosts and delivering csrf exploits
 http://thehackerblog.com/sonar-a-framework-for-scanning-and-exploiting-internal-hosts-with-a-webpage/
+
+# webrtc STUN
+https://diafygi.github.io/webrtc-ips/

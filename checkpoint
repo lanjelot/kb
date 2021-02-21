@@ -8,4 +8,4 @@ http://www.nta-monitor.com/wiki/index.php/Check_Point_Firewall-1
 
 # port 264/tcp recuperation de la topologie
 http://www.securiteam.com/securitynews/5HP0D2A4UC.html (/usr/share/exploits/packetstormexploits/0107-exploits/sr.pl)
-perl ~/Documents/private/checkpoint-fw1-topology.pl fw.example.com
+perl checkpoint-fw1-topology.pl fw.example.com

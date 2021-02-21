@@ -1,0 +1,23 @@
+# saml
+
+https://github.com/swisskyrepo/PayloadsAllTheThings/tree/master/SAML%20Injection
+http://sso-attacks.org
+https://users.dcc.uchile.cl/~pcamacho/tutorial/web/xmlsec/xmlsec.html
+https://samltool.io/ # online parser
+
+# checks
+signature verification: flip a bit or remove the signature in the <ds:SignatureValue> tag
+signer verification: re-sign with another certificate
+issuer verification: other issuer/IdP trusted?
+certificate cloning: only the modulus and signature differ
+comment injection
+signature stripping
+publicly known key
+no audience verification http://blog.intothesymmetry.com/2017/10/slack-saml-authentication-bypass.html
+SAMLResponse forwarding
+signature wrapping XSW1-8 https://epi052.gitlab.io/notes-to-self/blog/2019-03-13-how-to-test-saml-a-methodology-part-two/
+expiration time: too long? NotOnOrAfter checked? IsPassive? https://infosec.mozilla.org/guidelines/iam/saml.html
+xxe, xslt
+recipient confusion: SAMLResponse from another SP serviced by the same IdP accepted?
+dupe key confusion CVE-2019-1006
+..

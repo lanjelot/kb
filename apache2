@@ -1,18 +1,14 @@
 # apache2
 
-# add below line to httpd.conf to suppress the statup warning "Could not reliably determine the server's fully qualified domain name"
+# suppress statup warning "Could not reliably determine the server's fully qualified domain name"
 ServerName mysrvname
 
 # hide version info
 ServerTokens Prod
 ServerSignature Off
-=> et consulter la kb de HSC (eg. cvs)
 
 # suEXEC read file bypass
 http://packetstormsecurity.com/files/122738/Apache-suEXEC-Privilege-Escalation-Information-Disclosure.html
 
 # list enabled modules
 apache2ctl -M
-
-# create let's encrypt ssl server certs
-certbot --apache

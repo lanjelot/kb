@@ -128,7 +128,7 @@ Some important notes:
 http://carnal0wnage.attackresearch.com/2015/02/cisco-asa-version-grabber-cve-2014-3398.html
 curl -ssl -k  -v "https://1.2.3.4/CSCOSSLC/config-auth"
 
-# Decrypt Cisco Secure Access Control System repository passwords
+# decrypt Cisco Secure Access Control System repository passwords
 http://www.synacktiv.com/ressources/cisco_acs_repo_decrypt.py
 
 # cisco pix password hash format

@@ -10,6 +10,7 @@ CryptoCrack
 https://github.com/apsdehal/awesome-ctf#crypto
 https://cryptii.com/
 https://gchq.github.io/CyberChef/ Magic mode
+https://www.boxentriq.com/ auto solver
 
 # identification (https://www.youtube.com/watch?v=9Q5Q1Nn5Vss)
 https://bionsgadgets.appspot.com/gadget_forms/refscore_extended.html
@@ -21,8 +22,8 @@ http://practicalcryptography.com/cryptanalysis/
 http://rumkin.com/tools/cipher/
 http://www.moserware.com/2009/09/stick-figure-guide-to-advanced.html (aes well explained)
 
-# Forward Secrecy.
-With this feature enabled, each connection uses separate encryption keys, which means that the encrypted data remains safe if the server private key is compromised.
+# eddsa fail
+https://monocypher.org/quality-assurance/disclosures
 
 # wordpress cookie
 cookie: $username|$expiry|$hmac
