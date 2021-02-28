@@ -5,6 +5,7 @@ https://www.synacktiv.com/ressources/modern_php_security_sec4dev.pdf
 
 # badass past vulns
 https://github.com/80vul/phpcodz
+https://blog.orange.tw/2021/02/a-journey-combining-web-and-binary-exploitation.html
 
 # simple php standalone web server
 php -S localhost:8000 -t public_html/

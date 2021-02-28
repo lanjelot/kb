@@ -10,7 +10,7 @@ http://support.springsource.com/security/springsource-all
 http://agrrrdog.blogspot.com.au/2017/03/autobinding-vulns-and-spring-mvc.html
 
 # vulns
-* 2020 Spring View with Thymeleaf RCE
+* Thymeleaf RCE
 https://github.com/veracode-research/spring-view-manipulation/
 
 * CVE-2010-1622 RCE

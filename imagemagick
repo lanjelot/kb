@@ -4,4 +4,4 @@ https://imagetragick.com/ https://www.exploit-db.com/exploits/39767
 https://www.openwall.com/lists/oss-security/2016/05/03/18
 https://www.openwall.com/lists/oss-security/2016/09/29/3
 https://www.openwall.com/lists/oss-security/2018/08/21/2
-https://insert-script.blogspot.com/2020/11/imagemagick-shell-injection-via-pdf.html
+https://insert-script.blogspot.com/2020/11/imagemagick-shell-injection-via-pdf.html # rce with svg + pdf
