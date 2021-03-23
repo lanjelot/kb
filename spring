@@ -10,6 +10,10 @@ http://support.springsource.com/security/springsource-all
 http://agrrrdog.blogspot.com.au/2017/03/autobinding-vulns-and-spring-mvc.html
 
 # vulns
+
+* Spring Boot 2 RCE
+https://spaceraccoon.dev/remote-code-execution-in-three-acts-chaining-exposed-actuators-and-h2-database
+
 * Thymeleaf RCE
 https://github.com/veracode-research/spring-view-manipulation/
 

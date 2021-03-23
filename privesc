@@ -289,7 +289,8 @@ prettier: strace -p 13909 2>&1 | awk '/^write\(.*1\)/ {gsub(/\"/, "");gsub(/\,/,
 or python script skl.py from netspi
 sysdig strace systemtab
 
-local root exploit suggesters: LinEnum, LinuxPrivChecker, http://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/ etc.
+local root exploit suggesters: LinPEAS, linux-smart-enumeration, LinEnum, LinuxPrivChecker, http://blog.g0tmi1k.com/2011/08/basic-linux-privilege-escalation/ etc.
+https://github.com/lucyoa/kernel-exploits
 https://github.com/CISOfy/lynis
 https://github.com/b3rito/yodo
 https://github.com/GTFOBins/GTFOBins.github.io

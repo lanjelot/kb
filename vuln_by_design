@@ -3,34 +3,18 @@
 https://www.felipemartins.info/pentesting-vulnerable-study-frameworks-complete-list/
 http://www.irongeek.com/i.php?page=security/deliberately-insecure-web-applications-for-learning-web-app-security
 https://securitythoughts.wordpress.com/2010/03/22/vulnerable-web-applications-for-learning/
-
 http://www.amanhardikar.com/mindmaps/Practice.html
 https://github.com/OWASP/OWASP-VWAD
 https://github.com/google/firing-range
-
+https://github.com/cr0hn/vulnerable-node (NodeJS website)
 https://hack.me/
 http://vulnhub.com/
 
 http://testasp.vulnweb.com/
 http://testphp.vulnweb.com/
-
 http://php.testsparker.com
 http://aspnet.testsparker.com
-
-demo.testfire.net
-zero.webappsecurity.com (msaccess!)
-https://github.com/cr0hn/vulnerable-node (NodeJS website)
-
+http://demo.testfire.net/
+http://zero.webappsecurity.com/ (msaccess!)
 http://code.google.com/p/wavsep/ (to eval scanners)
-damn vulnerable web app
-webgoat
-bodgeit
-jarlsberg
-wackopicko
-mutillidae # no svn
-vicnum (online version: http://vicnum.ciphertechs.com/)
-moth
-hacmebank https://www.owasp.org/index.php/HacmeBank http://code.google.com/p/owasp-hacmebank/
-pwn-me https://github.com/lnxg33k/pwn-me
-puzzlemall http://code.google.com/p/puzzlemall/
 

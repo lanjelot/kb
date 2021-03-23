@@ -22,9 +22,6 @@ http://practicalcryptography.com/cryptanalysis/
 http://rumkin.com/tools/cipher/
 http://www.moserware.com/2009/09/stick-figure-guide-to-advanced.html (aes well explained)
 
-# eddsa fail
-https://monocypher.org/quality-assurance/disclosures
-
 # wordpress cookie
 cookie: $username|$expiry|$hmac
 key = wp_hash($username . $expiration) # based on wordpress SECRET_KEY
@@ -53,7 +50,6 @@ autokey
 porta (13 alphabet instead of 26 like vigenere)
 anagram
 google SCBSolver
-best results with tools/crypto/practicalcryptography.com/*.py (eg. tools/crypto/pygenere's VigCrack.crack_codeword fails when ciphertext too small)
 online solver: http://quipqiup.com/
 
 # transposition cipher

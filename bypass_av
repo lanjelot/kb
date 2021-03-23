@@ -52,11 +52,6 @@ c'est probablement win32 only
 * veil
 powershell/VirtualAlloc + un payload de msfvenom
 
-* powershell
-utiliser PowerSploit/Invoke-Shellcode avec un payload meterpreter
-j'arrive pas a faire marcher Invoke-ReflectivePEInjection avec wce.exe (ou calc.exe) probablement pas encore entierement supporte
-Invoke-Mimikatz fonctionne mais c'est une vielle version de mimikatz modifiee et recompilee en dll, de plus la dll est probablement injectee dans lsass
-
 * packers
 MPRESS
 

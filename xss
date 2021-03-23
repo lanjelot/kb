@@ -2,14 +2,17 @@
 
 https://github.com/s0md3v/AwesomeXSS # ./Database/jackmasa-mind-map.png
 https://netsec.expert/posts/xss-in-2021/
+https://blog.cm2.pw/exploiting-post-based-xssi/
 https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
 http://www.xss-payloads.com/ # keylogger, screenshot ...
 https://html5sec.org/ https://github.com/cure53/H5SC https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml
 
 # dns rebinding
 https://github.com/mpgn/ByP-SOP
+https://github.com/nccgroup/singularity
 https://bookgin.tw/2019/01/05/abusing-dns-browser-based-port-scanning-and-dns-rebinding/
 https://lock.cmpxchg8b.com/rebinder.html
+https://github.com/daeken/httprebind
 
 # blind
 https://github.com/mandatoryprogrammer/xsshunter
@@ -186,9 +189,21 @@ https://juplo.de/bypassing-the-same-origin-policiy-for-loal-files-during-develop
 # pdf export functionality
 https://portswigger.net/research/portable-data-exfiltration
 https://book.hacktricks.xyz/pentesting-web/xss-cross-site-scripting/server-side-xss-dynamic-pdf
+https://media.defcon.org/DEF%20CON%2027/DEF%20CON%2027%20presentations/DEFCON-27-Ben-Sadeghipour-Owning-the-clout-through-SSRF-and-PDF-generators.pdf
+
+<link rel="attachment" href="file:///etc/passwd">
+<script type="text/plain" src="file:/etc/passwd"></script>
 
 # xs leaks / xs search
 https://xsleaks.dev/ https://github.com/xsleaks/wiki
 
 # samesite cookie attribute
 https://twitter.com/hackerscrolls/status/1343255733413027843
+https://jub0bs.com/posts/2021-01-29-great-samesite-confusion/
+
+# redos & side channel exfil
+https://speakerdeck.com/lmt_swallow/revisiting-redos-a-rough-idea-of-data-exfiltration-by-redos-and-side-channel-techniques
+
+# postMessage
+https://github.com/EdOverflow/bugbountywiki/wiki/postMessage-issues
+https://labs.detectify.com/2016/12/15/postmessage-xss-on-a-million-sites/

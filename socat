@@ -32,3 +32,6 @@ socat -v tcp-l:3306,reuseaddr,fork openssl:1.2.3.4:443,verify=0
 clt: socat -d tcp:mabox:1234,fork,interval=1,forever tcp:127.0.0.1:445
 moi: socat -v tcp-l:5555,reuseaddr,fork tcp-l:1234,reuseaddr
 puis bf avec 1 seul thread
+
+# lots of examples
+https://github.com/craSH/socat/blob/master/EXAMPLES

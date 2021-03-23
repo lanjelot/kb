@@ -2,6 +2,9 @@
 
 Todd C. Miller is the main dev
 
+# sudo baron samedit CVE-2021-3156
+https://github.com/worawit/CVE-2021-3156
+
 # sudoedit path not verified in sudo <= 1.7.2p5
 need local user with permission to run sudoedit
 

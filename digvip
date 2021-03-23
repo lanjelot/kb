@@ -3,11 +3,19 @@
 How to hunt a domain account
 
 # Overview
-So you are domain admin on the corporate domain and you have dumped the password hashes of everyone, BUT your password cracking skills are not strong enough to recover the password of your point of contact.
+So you are domain admin on the corporate domain and you have dumped the
+password hashes of everyone, BUT your password cracking skills are not strong
+enough to recover the password of your point of contact.
 
-Your best bet is probably to track down the IP address of the workstation(s) where your VIP is currently logged-on, remotely connect to these machines with domain admin privileges and dump his password in clear-text from the Windows system's memory.
+Your best bet is probably to track down the IP address of the workstation(s)
+where your VIP is currently logged-on, remotely connect to these machines with
+domain admin privileges and dump his password in clear-text from the Windows
+system's memory.
 
-As every logon events on the domain is recorded in the domain controller's event logs, the best way to identify this list of IPs is to directly ask the domain controller for it.
+As every logon events on the domain is recorded in the domain controller's
+event logs, the best way to identify this list of IPs is to directly ask the
+domain controller for it.
+
 ## Event Logs
 ```
 Version                       | Log Format | Default location

@@ -94,6 +94,7 @@ https://blog.it-securityguard.com/the-stony-path-of-android-%F0%9F%A4%96-bug-bou
 openssl s_client -connect blah.com:443 | openssl x509 -pubkey -noout | openssl pkey -pubin -outform der | openssl dgst -sha256 -binary | openssl enc -base64
 
 # android instrumentation tools
+https://github.com/FrenchYeti/dexcalibur # powered by frida
 https://www.shielder.it/blog/2019/02/fridalab-writeup/ https://github.com/mahmutyazici/android-frida # frida, fridalab
 https://github.com/nccgroup/house # frida script generator
 https://github.com/Project-ARTist/ARTist

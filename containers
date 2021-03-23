@@ -1,0 +1,16 @@
+# containers
+
+## docker
+# extract Dockerfile from image
+docker history --no-trunc --format 'RUN {{.CreatedBy}}' $image
+
+# x11 apps
+xhost +si:localuser:root
+docker run .. -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=DISPLAY xeyes # apt-get install -y x11-apps
+xhost -si:localuser:root
+
+## kubernetes
+https://medium.com/swlh/kubernetes-attack-path-part-2-post-initial-access-1e27aabda36d
+https://medium.com/swlh/kubernetes-takeover-exit-the-box-44a2514f0988
+https://hackernoon.com/capturing-all-the-flags-in-bsidessf-ctf-by-pwning-our-infrastructure-3570b99b4dd0
+https://katanasec.com/kubernetes-security-101-best-practices-to-secure-your-cluster/
