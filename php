@@ -16,6 +16,7 @@ http://gynvael.coldwind.pl/?id=492
 https://docs.google.com/spreadsheets/d/1oWsmTvEZcfgc_1QkBczNGA3Gcffg_pmgKcak7iZldUw/pub?output=html
 
 # magic hashes
+https://offsec.almond.consulting/super-magic-hash.html
 https://www.whitehatsec.com/blog/magic-hashes/
 https://md5db.net/explore/0E56
 https://github.com/spaze/hashes

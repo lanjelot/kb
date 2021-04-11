@@ -8,7 +8,7 @@ npm install auto-install --save && ./node_modules/.bin/auto-install --dont-unins
 npm install --save
 and run with:
 npm install --save nodemon
-./node_modules/.bin/nodemon blah.js
+./node_modules/.bin/nodemon index.js
 
 # rce in mathjs
 https://capacitorset.github.io/mathjs/

@@ -22,7 +22,7 @@ cat pubkey.pem | grep -v -- ----- | tr -d '\r\n' | base64 -d | openssl asn1parse
 known factors (factordb etc.)
 common modulus (2 keys with same modulus)
 twin prime (p & q are very close -> fermats)
-common factors (2 moduli with a common prime factor (can be p or q))
+common factors (2 moduli share a common prime factor (can be p or q))
 huge modulus -> pow(m, e) didnt wrap so simply decrypt with pow(c, 1/e)
 big exponent -> small d -> wiener attack (or boneh burfee) possible when d < 1/3*N^(1/4)
 very small exponent (like e=3)

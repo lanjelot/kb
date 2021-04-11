@@ -21,3 +21,5 @@ xxe, xslt
 recipient confusion: SAMLResponse from another SP serviced by the same IdP accepted?
 dupe key confusion CVE-2019-1006
 ..
+
+https://research.nccgroup.com/2021/03/29/saml-xml-injection/

