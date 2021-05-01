@@ -1,7 +1,7 @@
 # vpn
 
 # auto openvpn on a vps
-wget https://git.io/vpn | bash -
+wget https://git.io/vpn; sudo bash vpn
 
 # bonne intro vpn
 http://www.symantec.com/connect/fr/articles/penetration-testing-ipsec-vpns
