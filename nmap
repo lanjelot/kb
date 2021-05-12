@@ -50,6 +50,7 @@ connection brokerin? (bypassing NATs)
 
 # top ports
 grep -v '^#' /usr/share/nmap/nmap-services | awk -F' ' '{print $3" "$2" "$1}' | sort -nr | head -n 100
+grep -v '^#' /usr/share/nmap/nmap-services | awk -F' ' '{print $3" "$2" "$1}' | grep /tcp | sort -nr | cut -d' ' -f2 | cut -d/ -f1 | head -n 50 | tr '\n' ,
 
 # more effective ping scan
 -sn (formerly known as -sP) by default does: -PE -PS443 -PA80 -PP

@@ -2,7 +2,7 @@
 
 ## docker
 # extract Dockerfile from image
-docker history --no-trunc --format 'RUN {{.CreatedBy}}' $image
+docker history --no-trunc --format 'RUN {{.CreatedBy}}' $image | tac
 
 # x11 apps
 xhost +si:localuser:root

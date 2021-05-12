@@ -1,0 +1,4 @@
+# ansible
+
+# https://docs.ansible.com/ansible/latest/user_guide/intro_adhoc.html
+ansible -i ansible-hosts -f 5 -m ansible.builtin.shell -a 'tmux new-session -d -s blah "watch df"' vps[0-9]

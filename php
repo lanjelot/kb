@@ -3,6 +3,9 @@
 # sqli in laravel and magento, phar deser, ssrf, ssti
 https://www.synacktiv.com/ressources/modern_php_security_sec4dev.pdf
 
+# laravel
+https://www.ambionics.io/blog/laravel-debug-rce
+
 # badass past vulns
 https://github.com/80vul/phpcodz
 https://blog.orange.tw/2021/02/a-journey-combining-web-and-binary-exploitation.html
