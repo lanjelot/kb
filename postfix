@@ -5,3 +5,13 @@ postqueue -p # display queued emails
 postcat -q ABCD1234 # display email header and contents
 postqueue -f # reattempt delivery
 postsuper -d ABCD1234 # delete email
+
+# internet site main.cf
+mydestination = $myhostname, localhost.localdomain, localhost
+relayhost = 
+mynetworks = 127.0.0.0/8
+mailbox_size_limit = 0
+recipient_delimiter = +
+inet_interfaces = all
+inet_protocols = ipv4
+

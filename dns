@@ -1,5 +1,13 @@
 # dns / recon
 
+# dns rebinding
+https://github.com/mpgn/ByP-SOP
+https://github.com/nccgroup/singularity
+https://bookgin.tw/2019/01/05/abusing-dns-browser-based-port-scanning-and-dns-rebinding/
+https://lock.cmpxchg8b.com/rebinder.html
+https://github.com/daeken/httprebind
+https://github.com/brannondorsey/whonow
+
 # dns history
 https://securitytrails.com/dns-trails
 

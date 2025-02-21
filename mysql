@@ -114,3 +114,7 @@ http://www.percona.com/blog/2014/12/10/recover-mysql-root-password-without-resta
 https://rdot.org/forum/showthread.php?p=37133
 https://rdot.org/forum/showthread.php?t=3167
 https://book.hacktricks.xyz/pentesting-web/sql-injection/mysql-injection/mysql-ssrf
+
+# log queries in mysql docker container
+docker exec talkback-ng-mysql-1 mysql -u root -pPassword1 -e "SET global log_output = 'FILE'; SET global general_log_file='/var/lib/mysql/queries.log'; SET global general_log = 1;"
+docker exec talkback-ng-mysql-1 tail -f /var/lib/mysql/queries.log

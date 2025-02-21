@@ -8,3 +8,26 @@ https://github.com/k4ch0w/PwnBack # generates sitemap using wayback machine
 # license check bypass
 copy ~/.java/.userPrefs/prefs.xml and provide same account username:
 java -Duser.name=john -jar burpsuite_pro_v1.5.x.jar (worked with 1.5.17)
+
+# bambdas
+
+```
+if (!requestResponse.request().isInScope()) {
+    return false;
+}
+
+if (requestResponse.request().method().equalsIgnoreCase("OPTIONS")) {
+    return false;
+}
+
+var path = requestResponse.request().pathWithoutQuery().toLowerCase();
+String[] exts = {".js", ".gif", ".jpg ", ".png", ".css", ".woff2", ".woff", ".svg", ".webp", ".ico"};
+
+for (String ext : exts) {
+    if (path.endsWith(ext)) {
+        return false;
+    }
+}
+
+return true;
+```

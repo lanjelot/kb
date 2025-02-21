@@ -4,3 +4,8 @@ http://stacksmashing.net/2010/11/15/cracking-in-the-cloud-amazons-new-ec2-gpu-in
 http://wblinks.com/notes/aws-tips-i-wish-id-known-before-i-started/
 https://rhinosecuritylabs.com/penetration-testing/penetration-testing-aws-storage/
 https://github.com/jordanpotti/AWSBucketDump
+
+# proxy aws-cli
+export HTTP_PROXY=http://127.0.0.1:8080
+export HTTPS_PROXY=http://127.0.0.1:8080
+export AWS_CA_BUNDLE=$HOME/Downloads/cacert.crt

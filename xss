@@ -7,13 +7,6 @@ https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
 http://www.xss-payloads.com/ # keylogger, screenshot ...
 https://html5sec.org/ https://github.com/cure53/H5SC https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml
 
-# dns rebinding
-https://github.com/mpgn/ByP-SOP
-https://github.com/nccgroup/singularity
-https://bookgin.tw/2019/01/05/abusing-dns-browser-based-port-scanning-and-dns-rebinding/
-https://lock.cmpxchg8b.com/rebinder.html
-https://github.com/daeken/httprebind
-
 # blind
 https://github.com/mandatoryprogrammer/xsshunter
 https://github.com/Netflix/sleepy-puppy
@@ -24,7 +17,6 @@ https://codepen.io/
 
 # evasion
 https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
-~/Documents/papers/favorite_xss_filter_and_bypass.pdf,xss_bypass.txt
 https://soroush.secproject.com/blog/2014/04/how-did-i-bypass-everything-in-modsecurity-evasion-challenge/
 http://sirdarckcat.blogspot.com.au/
 https://www.youtube.com/watch?v=e4dFCyYnCcM "Unusual Web Bugs" by kuza55

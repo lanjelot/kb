@@ -5,6 +5,7 @@ termtosvg
 byzanz
 
 # video
+peek
 simplescreenrecorder
 kazam
 recordmydesktop --no-sound --overwrite --pause-shortcut Control+p -o blah.ogv -x 2878 -y 8 --width 1049 --height 613

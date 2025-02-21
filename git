@@ -11,41 +11,38 @@ git clean # removes untracked files from working directory
 git tag v2.5 1b2ae37b
 git grep "hello" v2.5
 
-# revert: the safe way, reset: the dangerous way & permanent undo
-# NB. never do reset on published commits
 git revert HEAD # revert the most recent commit
 git reset # unstages all files without overwriting any changes
-git reset --hard # reset the staging area and the working directory to match the most recent commit
+git reset --soft HEAD~1 # undo last commit without losing changes
+git reset --hard # undo last commit AND lose changes.
 git reset --hard <commit> # obliterates all commits after <commit>
 git reset --hard HEAD~2 # remove last 2 commits
-# delete last commit (assuming i am sitting on that commit) warning you will loose your changes
-git reset --hard HEAD~1 or git reset --hard <sha1-commit-id>
 
 # forgot to add files or to make some changes
 git add ./path/to/file
 git commit -a --amend -C HEAD
 
 # undo last push
-git push -f origin HEAD^:master
+git push -f origin HEAD^:main
 
 # fork on github
 - sync
 git remote add upstream https://github.com/some/project.git
 git fetch upstream
-git checkout master
-git merge --ff-only upstream/master
+git checkout main
+git merge --ff-only upstream/main
 
 - create branch and push changes
-git checkout -b fix-blah master
+git checkout -b fix-blah main
 git commit -m Fix... core.py
 git push origin fix-blah
 
 - keep forked repo synced with upstream
-git checkout master
+git checkout main
 git fetch upstream
-git merge --ff-only upstream/master
-git rebase upstream/master
-git push origin master
+git merge --ff-only upstream/main
+git rebase upstream/main
+git push origin main
 
 - keep pr on top of upstream
 https://www.digitalocean.com/community/tutorials/how-to-rebase-and-update-a-pull-request
@@ -54,7 +51,7 @@ https://www.digitalocean.com/community/tutorials/how-to-rebase-and-update-a-pull
 git branch -d fix-blah
 git push -d origin fix-blah
 
-# master/develop/branches (newfeats/bugfixes/releases) http://nvie.com/posts/a-successful-git-branching-model/
+# main/develop/branches (newfeats/bugfixes/releases) http://nvie.com/posts/a-successful-git-branching-model/
 * new feature
 1. create branch
 git checkout -b newfeat develop
@@ -71,7 +68,7 @@ change version number
 git commit -a -m 'New release 1.2'
 
 4. finishing a release branch
-git checkout master
+git checkout main
 git merge --no-ff release-1.2
 git tag -a 1.2
 git checkout develop
@@ -79,13 +76,13 @@ git merge --no-ff release-1.2
 git branch -d release-1.2
 
 * new hotfix
-git checkout -b hotfix-1.2.1 master
+git checkout -b hotfix-1.2.1 main
 change version number
 git commit -a -m 'New bugfix version 1.2.1'
 fix bug
 git commit -m 'Fixed blah bug'
 
-git checkout master
+git checkout main
 git merge --no-ff hotfix-1.2.1
 git tag -a 1.2.1
 
@@ -100,20 +97,20 @@ git stash apply stash@{2}
 git stash show
 
 # making changes to pull request
-git fetch https://github.com/asolino/patator master
+git fetch https://github.com/asolino/patator main
 git checkout FETCH_HEAD
 make changes
 git add patator.py
 git commit -a
-git checkout master
+git checkout main
 git merge <commitid of my commit above>
 git push
 
 # skiddit
-git checkout -b release-0.3 master
+git checkout -b release-0.3 main
 change version number
 git commit -a -m 'New release 0.3'
-git checkout master
+git checkout main
 git merge --no-ff release-0.3
 git tag -a 0.3
 enter release-0.3
