@@ -1,8 +1,8 @@
 # vuln by design
 
-https://www.felipemartins.info/pentesting-vulnerable-study-frameworks-complete-list/
 http://www.irongeek.com/i.php?page=security/deliberately-insecure-web-applications-for-learning-web-app-security
 https://securitythoughts.wordpress.com/2010/03/22/vulnerable-web-applications-for-learning/
+https://orange-cyberdefense.github.io/ocd-mindmaps/
 http://www.amanhardikar.com/mindmaps/Practice.html
 https://github.com/OWASP/OWASP-VWAD
 https://github.com/google/firing-range
@@ -21,3 +21,6 @@ http://code.google.com/p/wavsep/ (to eval scanners)
 peakkk/metasploitable
 tleemcjr/metasploitable2
 
+https://github.com/juice-shop/juice-shop
+https://github.com/Checkmarx/capital/
+https://github.com/OWASP/crAPI

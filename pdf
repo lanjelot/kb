@@ -26,6 +26,7 @@ mogrify -rotate 90 0.jpg # modify in place
 
 # extract pages from pdf
 gs -sDEVICE=pdfwrite -dNOPAUSE -dBATCH -dSAFER -dFirstPage=22 -dLastPage=36 -sOutputFile=outfile_p22-p36.pdf monpdf.pdf
+doesnt seem to work anymore, simply use print to pdf and select page range
 
 # Learning the PDF basics, applying it to hide/reveal informations in documents
 http://media.ccc.de/browse/conferences/mrmcd/mrmcd14/MRMCD2014_-_6007_-_en_-_grossbaustelle_ber_-_201409051830_-_pdf_101_pdf_secrets_-_ange_albertini.html

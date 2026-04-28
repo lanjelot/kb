@@ -1,4 +1,4 @@
-# containers
+# containers / docker
 
 ## docker
 # extract Dockerfile from image
@@ -8,6 +8,9 @@ docker history --no-trunc --format 'RUN {{.CreatedBy}}' $image | tac
 xhost +si:localuser:root
 docker run .. -v /tmp/.X11-unix:/tmp/.X11-unix -e DISPLAY=DISPLAY xeyes # apt-get install -y x11-apps
 xhost -si:localuser:root
+
+# connect to host port
+docker run .. --add-host=host.docker.internal:host-gateway
 
 ## kubernetes
 https://medium.com/swlh/kubernetes-attack-path-part-2-post-initial-access-1e27aabda36d

@@ -1,9 +1,9 @@
 # xss
 
+https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
 https://github.com/s0md3v/AwesomeXSS # ./Database/jackmasa-mind-map.png
 https://netsec.expert/posts/xss-in-2021/
 https://blog.cm2.pw/exploiting-post-based-xssi/
-https://portswigger.net/web-security/cross-site-scripting/cheat-sheet
 http://www.xss-payloads.com/ # keylogger, screenshot ...
 https://html5sec.org/ https://github.com/cure53/H5SC https://github.com/cure53/XSSChallengeWiki/wiki/prompt.ml
 

@@ -1,6 +1,9 @@
 # oauth / openid
 
-https://security.lauritz-holtmann.de/post/sso-security-overview/
-https://developer.salesforce.com/page/Inside_OpenID_Connect_on_Force.com
-http://homakov.blogspot.com.au/2014/05/covert-redirect-faq.html
-http://www.oauthsecurity.com/
+https://portswigger.net/web-security/oauth
+
+bypass redirect_uri whitelisting:
+
+- try `localhost.evil.net` or `https://legit.com &@foo.evil.net#@bar.evil.net/`
+- change `response_mode` from `query` to `fragment`
+- leak code or token by pointing to other pages: `https://legit.com/callback/../pub`
